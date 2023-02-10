@@ -5,7 +5,7 @@
 
   "name": "Animalese Typing",
   "description": "Plays animal crossing villager sounds whenever you type!",
-  "version": "1.0",
+  "version": "1.2",
   "content_scripts" : [{
     "matches": ["*://*/*"],
     "js" : ["animalese.js"]
@@ -14,14 +14,14 @@
     "page": "background.html"
   },
   "browser_action": {
-    "default_icon": "icon.png",
+    "default_icon": "assests/textures/icon.png",
     "default_popup": "popup.html"
   },
   "permissions": [
           "storage"
   ],
   "icons": {
-          "48": "icon48.png",
-          "128": "icon128.png" 
+          "48": "assests/textures/icon48.png",
+          "128": "assests/textures/icon128.png" 
 	}
 }
