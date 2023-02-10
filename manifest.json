@@ -14,14 +14,14 @@
     "page": "background.html"
   },
   "browser_action": {
-    "default_icon": "assests/textures/icon.png",
+    "default_icon": "assets/textures/icon.png",
     "default_popup": "popup.html"
   },
   "permissions": [
           "storage"
   ],
   "icons": {
-          "48": "assests/textures/icon48.png",
-          "128": "assests/textures/icon128.png" 
+          "48": "assets/textures/icon48.png",
+          "128": "assets/textures/icon128.png" 
 	}
 }
