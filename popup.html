@@ -1,0 +1,208 @@
+<!doctype html>
+
+<html>
+  <head>
+    <title>Animalese</title>
+    <style>
+
+body {
+font-family: "Arial Rounded MT";
+font-size: 100%;
+background-image: url('./background.jpg');
+background-size: auto;
+background-repeat: repeat
+}
+
+#status {
+width: 249px;
+height: 150px;
+background-image: url('./backgroundBubble.png');
+background-size: cover;
+background-repeat: no-repeat;
+background-position: center;
+font-size:16px;
+text-align: center;
+overflow: hidden;
+}
+
+.title {
+  margin: 1px; color: #E2F4F0; position: absolute; top: 16px; right: 99px; font-size: 15px; font-weight: 100;
+}
+
+.in-box {
+	width: 180px;
+	height: 80px;
+	position: absolute;
+	transform: translate(30px, 50px);
+}
+
+.in-box p {
+	text-align: left; margin: 0px; color: #877358; font-size: 15px; font-weight: 100;
+}
+
+.foot {
+  margin: 7px; top: 10px; color: rgb(181, 181, 181); font-size: 10px; font-weight: 600; text-align: center;
+	padding-top:8px;
+	padding-bottom:0px;
+	border-top-color: rgb(230,230,230);
+	border-top-style: solid;
+	border-top-width: 1px;
+}
+
+
+.cbx {
+	display: none;
+}
+
+
+.lbl {
+  position: absolute;
+  transform: translate(286%, -11%);
+  display: inline-block;
+  height: 33px;
+  width: 33px;
+  background: #cccccc;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+label[for="volume"] {
+	color: #877358;
+    text-align: center;
+    margin: 0px;
+}
+
+input[type=range] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+input[type=range]:focus {
+    outline: none;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+	height: 8.4px;
+    cursor: pointer;
+    background: #dedede;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    box-shadow: 1px 1px 1px #000000, 0px 0px 0px #0d0d0d;
+    height: 16px;
+    width: 16px;
+    border-radius: 3px;
+    background: #bfa98d;
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: -4.5px;
+    transition: all 0.5s ease;
+}
+
+input {
+    width: 100px; !important;
+    height: 8.4px !important;
+}
+
+.toggled-off {
+  animation: toggle-on .25s;
+  animation-fill-mode: forwards;
+  
+  width: 0;
+  height: 0;
+  background-color: transparent;
+  border-top: 11px solid transparent;
+  border-left: 18px solid #11B0C3;
+  border-bottom: 11px solid transparent;
+  border-right: 0px solid transparent;
+  border-radius: 3px;
+  transform: translate(8px, 5.5px);
+}
+
+.toggled-on {
+  animation: toggle-off .25s;
+  animation-fill-mode: forwards;
+  
+  width: 0;
+  height: 0;
+  background-color: #11B0C3;
+  border-top: 10px solid #11B0C3;
+  border-left: 10px solid #11B0C3;
+  border-bottom: 10px solid #11B0C3;
+  border-right: 10px solid #11B0C3;
+  border-radius: 3px;
+  transform: translate(7px, 6.5px);
+}
+
+
+input[type=button] {
+	background-color: transparent;
+	border: none;
+	-webkit-appearance: none;
+	outline: none;
+	cursor: pointer;
+	
+	
+    height: 37px;
+	width: 46px;
+    min-height: 37px;
+    min-width: 46px;
+
+	margin-top: 20px;
+	margin-right: 4px;
+	margin-left: 4px;
+	display: inline;
+	background-size: cover;
+}
+
+#female {
+	background-image: url('./female.png');
+}
+#male {
+	background-image: url('./male.png');
+}
+
+
+
+@keyframes toggle-on {
+	from {background-color: #11B0C3;border-top: 10px solid #11B0C3;border-left: 10px solid #11B0C3;border-bottom: 10px solid #11B0C3;border-right: 10px solid #11B0C3;border-radius: 3px;transform: translate(7px, 6.5px);}
+	to {background-color: transparent;border-top: 11px solid transparent;border-left: 18px solid #11B0C3;border-bottom: 11px solid transparent;border-right: 0px solid transparent;border-radius: 3px;transform: translate(8px, 5.5px);}
+}
+
+@keyframes toggle-off {
+	from {background-color: transparent;border-top: 11px solid transparent;border-left: 18px solid #11B0C3;border-bottom: 11px solid transparent;border-right: 0px solid transparent;border-radius: 3px;transform: translate(8px, 5.5px);}
+	to {background-color: #11B0C3;border-top: 10px solid #11B0C3;border-left: 10px solid #11B0C3;border-bottom: 10px solid #11B0C3;border-right: 10px solid #11B0C3;border-radius: 3px;transform: translate(7px, 6.5px);}
+}
+
+    </style>
+
+  
+    <script src="popup.js"></script>
+  </head>
+  <body>  
+    <div id="status">
+		<p class="title">Animalese</p>
+		<div  class="in-box">
+			<p></p>
+			<div class="volume-slider">
+                <label for="volume">Volume</label>
+                <input type="range" min="0" max="1" id="volume" step="0.05">
+				<div id="v_select">
+					<input type="button" id="female" class="v_type"/>
+					<input type="button" id="male" class="v_type"/>
+				</div>
+				
+            </div>
+		</div>
+    	<input type="checkbox" id="unchecked" class="cbx"/>
+		<label for="unchecked" class="lbl"><div id="toggle" class="toggled-off"></div></label>
+		
+    </div>
+    
+    <p class="foot">Animal Crossing is a lifestyle.</p>
+    </div>
+    
+  </body>
+</html>
+
