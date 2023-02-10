@@ -1,4 +1,4 @@
-# animalese-typing
+# Animalese Typing
 
 A small, fun and somewhat annoying extension that will speak Animalese whenever you type online. 
 This is the first chrome extension I've ever made. I was learning some html and css mostly on my own, and was curious to see if I could make something work. 
