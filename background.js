@@ -6,9 +6,9 @@ chrome.storage.local.get('isactive', function (result) {
 	if (typeof result === 'undefined') result = { 'isactive': true };
 	if (typeof result.isactive !== 'boolean') result.isactive = true;
 	if (result.isactive) {
-		chrome.browserAction.setIcon({ path: 'assets/textures/icon.png' });
+		chrome.browserAction.setIcon({ path: 'assests/textures/icon.png' });
 	} else {
-		chrome.browserAction.setIcon({ path: 'assets/textures/icon_off.png' });
+		chrome.browserAction.setIcon({ path: 'assests/textures/icon_off.png' });
 	}
 	soundischecked = result.isactive;
 });
