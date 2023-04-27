@@ -11,24 +11,24 @@ document.addEventListener('DOMContentLoaded', function() {
 		});
 		
 		if (chrome.extension.getBackgroundPage().soundischecked) {
-		  document.getElementById('toggle').className = 'toggled-on';
+		 document.getElementById('toggle').className = 'toggled-on';
 		 document.getElementById('unchecked').checked=true;
-		 chrome.browserAction.setIcon({path: 'icon.png'});
+		 chrome.browserAction.setIcon({path: 'assets/images/icon.png'});
 		} 
 		else {
-		  document.getElementById('toggle').className = 'toggled-off';
+		 document.getElementById('toggle').className = 'toggled-off';
 		 document.getElementById('unchecked').checked=false;
-		 chrome.browserAction.setIcon({path: 'icon_off.png'});
+		 chrome.browserAction.setIcon({path: 'assets/images/icon_off.png'});
 		}
 	  
 		chrome.storage.local.get(['gender'], function (result) {
 			if(result.gender=="female") {
-				document.getElementById('female').style.backgroundImage = "url('./female_on.png')";
-				document.getElementById('male').style.backgroundImage = "url('./male.png')";
+				document.getElementById('female').style.backgroundImage = "url('./assets/images/female_on.png')";
+				document.getElementById('male').style.backgroundImage = "url('./assets/images/male.png')";
 			}
 			if(result.gender=="male") {
-				document.getElementById('male').style.backgroundImage = "url('./male_on.png')";
-				document.getElementById('female').style.backgroundImage = "url('./female.png')";
+				document.getElementById('male').style.backgroundImage = "url('./assets/images/male_on.png')";
+				document.getElementById('female').style.backgroundImage = "url('./assets/images/female.png')";
 			}
 		});
 	} 
@@ -41,8 +41,8 @@ document.addEventListener('DOMContentLoaded', function() {
 			vol = result.volume;
 		});
 		chrome.storage.local.set({'gender':"female"});
-			document.getElementById('female').style.backgroundImage = "url('./female_on.png')";
-			document.getElementById('male').style.backgroundImage = "url('./male.png')";
+			document.getElementById('female').style.backgroundImage = "url('./assets/images/female_on.png')";
+			document.getElementById('male').style.backgroundImage = "url('./assets/images/male.png')";
 			chrome.runtime.sendMessage(null);
 	});
 
@@ -51,8 +51,8 @@ document.addEventListener('DOMContentLoaded', function() {
 			vol = result.volume;
 		});
 		chrome.storage.local.set({'gender':"male"});
-			document.getElementById('male').style.backgroundImage = "url('./male_on.png')";
-			document.getElementById('female').style.backgroundImage = "url('./female.png')";
+			document.getElementById('male').style.backgroundImage = "url('./assets/images/male_on.png')";
+			document.getElementById('female').style.backgroundImage = "url('./assets/images/female.png')";
 			chrome.runtime.sendMessage(null);
 	});
 

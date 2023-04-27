@@ -1,4 +1,10 @@
 
+chrome.storage.local.get(['gender'], function (result) {
+	if (!result.gender) {
+		chrome.storage.local.set({'gender':"female"});
+	}
+});
+
 if (typeof soundischecked === 'undefined') soundischecked = true;
 
 //Icon on and off
@@ -6,13 +12,12 @@ chrome.storage.local.get('isactive', function (result) {
 	if (typeof result === 'undefined') result = { 'isactive': true };
 	if (typeof result.isactive !== 'boolean') result.isactive = true;
 	if (result.isactive) {
-		chrome.browserAction.setIcon({ path: 'icon.png' });
+		chrome.browserAction.setIcon({ path: 'assets/images/icon.png' });
 	} else {
-		chrome.browserAction.setIcon({ path: 'icon_off.png' });
+		chrome.browserAction.setIcon({ path: 'assets/images/icon_off.png' });
 	}
 	soundischecked = result.isactive;
 });
-
 
 
 
@@ -24,9 +29,6 @@ let v_type;
 chrome.storage.local.get(['gender'], function (result) {
 	v_type = result.gender;
 });
-
-
-
 
 chrome.runtime.onMessage.addListener(
 	function (request, sender, sendResponse) {
