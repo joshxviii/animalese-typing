@@ -18,7 +18,6 @@
     "default_popup": "popup.html"
   },
   "permissions": [
-          "activeTab",
           "storage",
           "offscreen"
   ],
