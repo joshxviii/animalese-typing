@@ -1,4 +1,3 @@
-
 //keypress detect
 document.addEventListener('keydown', function (e) {
 	if (!e.ctrlKey) chrome.runtime.sendMessage({ key: e.key ,  keycode: e.keyCode });

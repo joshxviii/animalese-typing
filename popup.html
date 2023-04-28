@@ -15,21 +15,20 @@
 body {
 font-family: "Arial Rounded Bold";
 font-size: 100%;
-background-image: url('./assets/images/background.jpg');
-background-size: auto;
-background-repeat: repeat
+background-image: url('./assets/images/background.png');
+background-size: cover;
 }
 
 #status {
 width: 249px;
 height: 150px;
-background-image: url('./assets/images/backgroundBubble.png');
 background-size: cover;
 background-repeat: no-repeat;
 background-position: center;
 font-size:16px;
 text-align: center;
 overflow: hidden;
+image-rendering: optimizeQuality;
 }
 
 .title {
@@ -48,14 +47,21 @@ overflow: hidden;
 }
 
 .foot {
-  margin: 7px; top: 10px; color: rgb(181, 181, 181); font-size: 10px; font-weight: 600; text-align: center;
+  margin: 7px; top: 10px; color: rgba(255, 255, 255, 0.651); font-size: 12px; font-weight: 600; text-align: center;
 	padding-top:8px;
 	padding-bottom:0px;
 	border-top-color: rgb(230,230,230);
 	border-top-style: solid;
 	border-top-width: 1px;
 }
-
+.version {display: inline;}
+.version a {
+  position: absolute;
+  right: 2%;
+  bottom: 3%;
+  margin: 1px; color: rgba(255, 255, 255, 0.493); font-size: 9px; font-weight: 600;
+  display: inline;
+}
 
 .cbx {
 	display: none;
@@ -74,15 +80,33 @@ overflow: hidden;
   transition: all 0.3s ease;
 }
 
-label[for="volume"] {
-	color: #877358;
-    text-align: center;
-    margin: 0px;
+#vol_percent {
+  position: absolute;
+  right: 5%;
+  bottom: 100%;
+  text-align: right;
+  color: #877358cc; font-size: 12px; font-weight: 600;
+}
+.vol_active {
+  visibility: visible;
+}
+.vol_inactive {
+  visibility: hidden;
+}
+
+#vol_text {
+  color: #877358;
+  text-align: left;
+  margin: 0px;
+}
+
+#volume {
+
 }
 
 input[type=range] {
-    -webkit-appearance: none;
-    -moz-appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 
 input[type=range]:focus {
@@ -90,21 +114,29 @@ input[type=range]:focus {
 }
 
 input[type=range]::-webkit-slider-runnable-track {
-	height: 8.4px;
+	  height: 8.4px;
     cursor: pointer;
-    background: #dedede;
+    background: #ece4c1;
+    border-radius: 10px;
 }
 
 input[type=range]::-webkit-slider-thumb {
-    box-shadow: 1px 1px 1px #000000, 0px 0px 0px #0d0d0d;
+    box-shadow: 1px 1px 1px #877358, 0px 0px 0px #0d0d0d;
     height: 16px;
     width: 16px;
-    border-radius: 3px;
-    background: #bfa98d;
+    border-radius: 6px;
+    background: #e0c49e;
     cursor: pointer;
     -webkit-appearance: none;
     margin-top: -4.5px;
     transition: all 0.5s ease;
+}
+
+input[type=range]::-webkit-slider-thumb:hover {
+  transition: all 0.05s ease;
+  outline-color: #109145ad;
+  outline-style: solid;
+  outline-width: 1;
 }
 
 input {
@@ -142,6 +174,15 @@ input {
   transform: translate(7px, 6.5px);
 }
 
+.background_m {
+	animation: background_m .5s;
+	animation-fill-mode: forwards;
+}
+
+.background_f {
+	animation: background_f .5s;
+	animation-fill-mode: forwards;
+}
 
 input[type=button] {
 	background-color: transparent;
@@ -150,11 +191,10 @@ input[type=button] {
 	outline: none;
 	cursor: pointer;
 	
-	
-    height: 37px;
-	width: 46px;
-    min-height: 37px;
-    min-width: 46px;
+  height: 37px;
+  width: 46px;
+  min-height: 37px;
+  min-width: 46px;
 
 	margin-top: 20px;
 	margin-right: 4px;
@@ -170,7 +210,51 @@ input[type=button] {
 	background-image: url('./assets/images/male.png');
 }
 
+#toggle .tooltiptext {
+  visibility: hidden;
+  width: auto;
+  background-color: rgba(0, 0, 0, 0.445);
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  right: 100%;
+  margin-left: -60px;
+  
+  /* Fade in tooltip - takes 1 second to go from 0% to 100% opac: */
+  opacity: 0;
+  transition: opacity 1s;
+}
 
+/*
+.lbl .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: black transparent transparent transparent;
+}
+*/
+
+#toggle:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+@keyframes background_f {
+	from {background-image: url('./assets/images/backgroundBubbleMale.png');}
+	to {background-image: url('./assets/images/backgroundBubbleFemale.png');}
+}
+
+@keyframes background_m {
+	from {background-image: url('./assets/images/backgroundBubbleFemale.png');}
+	to {background-image: url('./assets/images/backgroundBubbleMale.png');}
+}
 
 @keyframes toggle-on {
 	from {background-color: #11B0C3;border-top: 10px solid #11B0C3;border-left: 10px solid #11B0C3;border-bottom: 10px solid #11B0C3;border-right: 10px solid #11B0C3;border-radius: 3px;transform: translate(7px, 6.5px);}
@@ -185,31 +269,34 @@ input[type=button] {
     </style>
 
   
-    <script src="popup.js"></script>
-  </head>
-  <body>  
-    <div id="status">
-		<p class="title">Animalese</p>
-		<div  class="in-box">
-			<p></p>
-			<div class="volume-slider">
-                <label for="volume">Volume</label>
-                <input type="range" min="0" max="1" id="volume" step="0.05">
-				<div id="v_select">
-					<input type="button" id="female" class="v_type"/>
-					<input type="button" id="male" class="v_type"/>
-				</div>
-				
+<script src="popup.js"></script>
+</head>
+<body>  
+  <div id="status" class="background_f">
+    <p class="title">Animalese</p>
+    <div  class="in-box">
+      <p></p>
+      <div class="volume-slider">
+                <label for="volume" class="vol_inactive" id="vol_percent">%100</label>
+                <label for="volume" id="vol_text">Volume</label>
+                <input type="range" min="0" max="1" id="volume" step="0.05"></input>
+        <div id="v_select">
+          <input type="button" id="female" class="v_type"/>
+          <input type="button" id="male" class="v_type"/>
+        </div>
+        
             </div>
-		</div>
-    	<input type="checkbox" id="unchecked" class="cbx"/>
-		<label for="unchecked" class="lbl"><div id="toggle" class="toggled-off"></div></label>
-		
     </div>
     
-    <p class="foot">Animal Crossing is a lifestyle.</p>
-    </div>
-    
-  </body>
+    <input type="checkbox" id="unchecked" class="cbx"/>
+    <label for="unchecked" class="lbl"><div id="toggle" class="toggled-off"><span class="tooltiptext" id="tooltiptext">Disable</span></div></label>
+
+  </div>
+
+  <p class="foot">Animal Crossing is a lifestyle.</p>
+  <p class="version"><a id="version" href="https://chrome.google.com/webstore/detail/animalese-typing/djbgadolfboockbofalipohdncimebic">v0.0</a></p>
+  </div>
+  
+</body>
 </html>
 

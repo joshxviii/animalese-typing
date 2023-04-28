@@ -155,34 +155,9 @@ chrome.runtime.onMessage.addListener(
 			mp3_deksa = 'assets/audio/animalese/male/Deska.mp3';
 			mp3_gwah = 'assets/audio/animalese/male/Gwah.mp3';
 		}
-		mp3_back = "assets/audio/animalese/sfx/backspace.mp3"
+		mp3_back = "assets/audio/sfx/backspace.mp3"
 
 		//Play sound when typing
-		/*
-		if (soundischecked) {
-			if (request) {
-				var keycode = request.keycode;
-				var key = request.key;
-			}
-			var randomPlay = function (min, max) {
-				return Math.random() * (max - min) + min;
-			}
-
-			if (keycode >= 65 && keycode <= 90) {
-				keycode = keycode - 65;
-				send_audio(mp3_animalese[keycode], 0.6)
-			}
-			else if (keycode >= 48 && keycode <= 57) {
-				keycode = keycode - 48;
-				send_audio(mp3_vocals[keycode], 1.0)
-			}
-			else if (keycode == 189) {
-				send_audio(mp3_vocals[10], 1.0)
-			}
-			else if (keycode == 187) {
-				send_audio(mp3_vocals[11], 1.0)
-			}
-		}*/
 		if (soundischecked) {
 			if (request) {
 				var keycode = request.keycode;
@@ -194,12 +169,12 @@ chrome.runtime.onMessage.addListener(
 
 			switch (true) {
 				case (keycode == 8):
-					send_audio(mp3_back, 0.7)
+					send_audio(mp3_back, 0.6)
 					break;
 
 				case (keycode >= 48 && keycode <= 57):
 					if (key == '!') {
-						send_audio(mp3_gwah, 0.7)
+						send_audio(mp3_gwah, 0.6)
 					}
 					else {
 						send_audio(mp3_vocals[parseInt(key)], 1.0)
@@ -215,7 +190,7 @@ chrome.runtime.onMessage.addListener(
 					break;
 
 				case (keycode >= 65 && keycode <= 90):
-					send_audio(mp3_animalese[keycode - 65], 0.7)
+					send_audio(mp3_animalese[keycode - 65], 0.6)
 					break;
 
 				case (keycode == 191):

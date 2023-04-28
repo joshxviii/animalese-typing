@@ -1,6 +1,5 @@
 chrome.runtime.onMessage.addListener(
 	async function (request, sender, sendResponse) {
-		console.log(sender)
 		if (sent_from("background.js", sender)) {
 			if (request) {
 				play_audio(request.path, request.volume * request.vol)
