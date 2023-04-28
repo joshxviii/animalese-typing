@@ -1,37 +1,36 @@
-
 //Execute when popup is loaded
 document.addEventListener('DOMContentLoaded', function() {
 
 	//Get saved values for everything on popup
-	if (chrome.extension.getBackgroundPage()) {
-		
-		chrome.storage.local.get(['volume'], function (result) {
-		document.getElementById('volume').value = result.volume;
-		vol = result.volume;
-		});
-		
-		if (chrome.extension.getBackgroundPage().soundischecked) {
-		 document.getElementById('toggle').className = 'toggled-on';
-		 document.getElementById('unchecked').checked=true;
-		 chrome.browserAction.setIcon({path: 'assets/images/icon.png'});
+
+	chrome.storage.local.get(['isactive'], function (result) {
+		if (result.isactive==true) {
+			document.getElementById('toggle').className = 'toggled-on';
+			document.getElementById('unchecked').checked=true;
+			chrome.action.setIcon({path: 'assets/images/icon.png'});
 		} 
 		else {
-		 document.getElementById('toggle').className = 'toggled-off';
-		 document.getElementById('unchecked').checked=false;
-		 chrome.browserAction.setIcon({path: 'assets/images/icon_off.png'});
+			document.getElementById('toggle').className = 'toggled-off';
+			document.getElementById('unchecked').checked=false;
+			chrome.action.setIcon({path: 'assets/images/icon_off.png'});
 		}
-	  
-		chrome.storage.local.get(['gender'], function (result) {
-			if(result.gender=="female") {
-				document.getElementById('female').style.backgroundImage = "url('./assets/images/female_on.png')";
-				document.getElementById('male').style.backgroundImage = "url('./assets/images/male.png')";
-			}
-			if(result.gender=="male") {
-				document.getElementById('male').style.backgroundImage = "url('./assets/images/male_on.png')";
-				document.getElementById('female').style.backgroundImage = "url('./assets/images/female.png')";
-			}
-		});
-	} 
+	});
+
+	chrome.storage.local.get(['volume'], function (result) {
+		document.getElementById('volume').value = result.volume;
+		vol = result.volume;
+	});
+
+	chrome.storage.local.get(['gender'], function (result) {
+		if (result.gender=="female") {
+			document.getElementById('female').style.backgroundImage = "url('./assets/images/female_on.png')";
+			document.getElementById('male').style.backgroundImage = "url('./assets/images/male.png')";
+		}
+		else if(result.gender=="male") {
+			document.getElementById('male').style.backgroundImage = "url('./assets/images/male_on.png')";
+			document.getElementById('female').style.backgroundImage = "url('./assets/images/female.png')";
+		}
+	});
 
 
 
@@ -62,18 +61,19 @@ document.addEventListener('DOMContentLoaded', function() {
 		});
 	});
 
+
 	document.getElementById('unchecked').addEventListener('change', function (e) {
 		if(document.getElementById('unchecked').checked){
 		  //toggle off
 		  document.getElementById('toggle').className = 'toggled-on';
-		  chrome.browserAction.setIcon({path: 'icon.png'});
+		  chrome.action.setIcon({ path : './assets/images/icon.png' });
 		  if (chrome.extension.getBackgroundPage()) chrome.extension.getBackgroundPage().soundischecked=true;
 		  chrome.storage.local.set({'isactive':true});
 	   }
 	   else{
 		  //toggle on
 		  document.getElementById('toggle').className = 'toggled-off';
-		  chrome.browserAction.setIcon({path: 'icon_off.png'});
+		  chrome.action.setIcon({ path : './assets/images/icon_off.png' });
 		  if (chrome.extension.getBackgroundPage()) chrome.extension.getBackgroundPage().soundischecked=false;
 		  chrome.storage.local.set({'isactive':false});
 	   }
