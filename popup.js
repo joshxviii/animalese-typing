@@ -73,6 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			document.getElementById('vol_percent').className = 'vol_active'
 			document.getElementById('vol_percent').innerText = String( parseInt(document.getElementById('volume').value * 100) ) + "%"
 			chrome.runtime.sendMessage("update");
+			send_audio("assets/audio/sfx/vol.ogg",document.getElementById('volume').value * 0.4)
 		});
 	});
 
@@ -106,3 +107,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
 //End
 });
+
+function send_audio(audio_path, volume) {
+	chrome.runtime.sendMessage({
+		type: '',
+		target: 'offscreen',
+		path: audio_path,
+		volume: volume,
+		vol: vol
+	});
+}

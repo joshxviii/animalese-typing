@@ -67,19 +67,6 @@ image-rendering: optimizeQuality;
 	display: none;
 }
 
-
-.lbl {
-  position: absolute;
-  transform: translate(286%, -11%);
-  display: inline-block;
-  height: 33px;
-  width: 33px;
-  background: #cccccc;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
 #vol_percent {
   position: absolute;
   right: 5%;
@@ -207,6 +194,11 @@ input[type=button] {
 	background-image: url('./assets/images/male.png');
 }
 
+.v_type {transition: all .2s ease-in-out;}
+.v_type:hover {transform: scale(1.1); }
+
+
+
 #toggle .tooltiptext {
   visibility: hidden;
   width: auto;
@@ -225,22 +217,24 @@ input[type=button] {
   transition: opacity 1s;
 }
 
-/*
-.lbl .tooltiptext::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 100%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: black transparent transparent transparent;
-}
-*/
-
 #toggle:hover .tooltiptext {
   visibility: visible;
   opacity: 1;
+}
+.lbl {
+  position: absolute;
+  top: 2%;
+  right: 1%;
+  display: inline-block;
+  height: 33px;
+  width: 33px;
+  background: #cccccc;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all .2s ease-in-out;
+}
+.lbl:hover {
+  transform: scale(1.05);
 }
 
 .kofi {
@@ -299,7 +293,7 @@ a:hover .kofi {
   </div>
 
   <p class="foot">Animal Crossing is a lifestyle.</p>
-  <p class="version"><a id="version" href="https://chrome.google.com/webstore/detail/animalese-typing/djbgadolfboockbofalipohdncimebic">v0.0</a></p>
+  <p class="version"><a id="version" href="https://chrome.google.com/webstore/detail/animalese-typing/djbgadolfboockbofalipohdncimebic" target='_blank'>v0.0</a></p>
   <a href='https://ko-fi.com/dagexviii' target='_blank'><img height='17' class="kofi" src='./assets/images/kofi_logo.png' border='0' title="Kofi" alt='ko-fi' /></a>  
 </div>
   

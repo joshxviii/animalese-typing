@@ -2,7 +2,12 @@ chrome.runtime.onMessage.addListener(
 	async function (request, sender, sendResponse) {
 		if (sent_from("background.js", sender)) {
 			if (request) {
-				play_audio(request.path, request.volume * request.vol)
+				play_audio(request.path, request.volume * request.vol);
+			}
+		}
+		else if (sent_from("popup.html", sender)) {
+			if (request) {
+				play_audio(request.path, request.volume * request.vol);
 			}
 		}
 	}
