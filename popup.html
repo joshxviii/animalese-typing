@@ -20,19 +20,20 @@ background-size: cover;
 }
 
 #status {
-width: 249px;
-height: 150px;
-background-size: cover;
-background-repeat: no-repeat;
-background-position: center;
-font-size:16px;
-text-align: center;
-overflow: hidden;
-image-rendering: optimizeQuality;
+  user-select: none;
+  width: 249px;
+  height: 150px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  font-size:16px;
+  text-align: center;
+  overflow: hidden;
+  image-rendering: optimizeQuality;
 }
 
 .title {
-  margin: 1px; color: #E2F4F0; position: absolute; top: 16px; right: 99px; font-size: 15px; font-weight: 100;
+  margin: 1px; color: #E2F4F0; position: absolute; top: 16px; right: 99px; font-size: 15px;
 }
 
 .in-box {
@@ -43,11 +44,11 @@ image-rendering: optimizeQuality;
 }
 
 .in-box p {
-	text-align: left; margin: 0px; color: #877358; font-size: 15px; font-weight: 100;
+	text-align: left; margin: 0px; color: #877358; font-size: 15px;
 }
 
 .foot {
-  margin: 7px; top: 10px; color: rgba(255, 255, 255, 0.651); font-size: 12px; text-align: center;
+  margin: 7px; top: 10px; color: rgba(255, 255, 255, 0.651); font-size: 12px; text-align: center; user-select: none;
 	padding-top:8px;
 	padding-bottom:0px;
 	border-top-color: rgba(230, 230, 230, 0.664);
@@ -70,7 +71,7 @@ image-rendering: optimizeQuality;
 #vol_percent {
   position: absolute;
   right: 5%;
-  bottom: 100%;
+  bottom: 110%;
   text-align: right;
   color: #877358cc; font-size: 12px;
 }
@@ -93,27 +94,27 @@ input[type=range] {
 }
 
 input[type=range]:focus {
-    outline: none;
+  outline: none;
 }
 
 input[type=range]::-webkit-slider-runnable-track {
-	  height: 8.4px;
-    cursor: pointer;
-    background: #ece4c1;
-    border-radius: 10px;
+  height: 8.4px;
+  cursor: pointer;
+  background: #ece4c1;
+  border-radius: 10px;
 }
 
 input[type=range]::-webkit-slider-thumb {
-    border-style: none;
-    box-shadow: 1px 1px 1px #877358, 0px 0px 0px #0d0d0d;
-    height: 16px;
-    width: 16px;
-    border-radius: 6px;
-    background: #e0c49e;
-    cursor: pointer;
-    -webkit-appearance: none;
-    margin-top: -4.5px;
-    transition: all 0.5s ease;
+  border-style: none;
+  box-shadow: 1px 1px 1px #877358, 0px 0px 0px #0d0d0d;
+  height: 16px;
+  width: 16px;
+  border-radius: 6px;
+  background: #e0c49e;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -4.5px;
+  transition: all 0.5s ease;
 }
 
 input[type=range]::-webkit-slider-thumb:hover {
@@ -124,14 +125,13 @@ input[type=range]::-webkit-slider-thumb:hover {
 }
 
 input {
-    width: 100px; !important;
-    height: 8.4px !important;
+  width: 100px; !important;
+  height: 8.4px !important;
 }
 
 .toggled-off {
   animation: toggle-on .25s;
   animation-fill-mode: forwards;
-  
   width: 0;
   height: 0;
   background-color: transparent;
@@ -146,7 +146,6 @@ input {
 .toggled-on {
   animation: toggle-off .25s;
   animation-fill-mode: forwards;
-  
   width: 0;
   height: 0;
   background-color: #11B0C3;
@@ -156,6 +155,19 @@ input {
   border-right: 10px solid #11B0C3;
   border-radius: 3px;
   transform: translate(7px, 6.5px);
+}
+
+#volmue_slider {
+  margin-top: -10px;
+}
+
+#v_select {
+  position: absolute;
+  margin:-50% 0 0 -70%;
+  width: 140%;
+  height: 100%;
+  top: 130%;
+  left: 50%;
 }
 
 .background_m {
@@ -168,36 +180,96 @@ input {
 	animation-fill-mode: forwards;
 }
 
-input[type=button] {
+.g_type {
+  opacity: 100%;
 	background-color: transparent;
 	border: none;
 	-webkit-appearance: none;
 	outline: none;
 	cursor: pointer;
-	
   height: 37px;
   width: 46px;
   min-height: 37px;
   min-width: 46px;
-
-	margin-top: 20px;
-	margin-right: 4px;
-	margin-left: 4px;
+	margin-top: 5px;
+	margin-right: 10px;
+	margin-left: 10px;
 	display: inline;
 	background-size: cover;
+  transition: all .2s ease-in-out;
 }
 
-#female {
+.g_type:hover:enabled {transform: scale(1.1); }
+
+#female:enabled {
 	background-image: url('./assets/images/female_on.png');
 }
-#male {
+#male:enabled {
 	background-image: url('./assets/images/male.png');
 }
 
-.v_type {transition: all .2s ease-in-out;}
-.v_type:hover {transform: scale(1.1); }
+.g_type:disabled {
+  cursor: not-allowed;
+  opacity: 50%;
+}
+
+#female:disabled {
+	background-image: url('./assets/images/female.png');
+}
+#male:disabled {
+	background-image: url('./assets/images/male.png');
+}
 
 
+#v_type {
+  opacity: 30%;
+  font-size: 14px;
+  font-family: "Arial Rounded Bold";
+  text-align: center;
+  appearance: none;
+  border-style: none;
+  height: 18px;
+  width: 76px;
+  border-radius: 6px;
+  cursor: pointer;
+  content: "1";
+  position: relative;
+  top: 4px;
+  display: inline-table;
+  transition: all 0.5s ease;
+  background-color: #ECE4C1;
+}
+body:hover #v_type:enabled {
+  transition: all 0.2s ease;
+  opacity: 100%;
+}
+#v_type:disabled {
+  transition: all 0s ease;
+  visibility: hidden;
+  opacity: 0%;
+}
+
+.voice_f:enabled {
+  animation: voice_f .5s;
+  color: #ff8daf;right: 13%;
+}
+.voice_m:enabled {
+  animation: voice_m .5s;
+  color: #2baee2;right: -14%;
+}
+#v_type:focus {
+  outline-style: none;
+}
+.voice_f option:hover,
+.voice_f#v_type:hover {
+  transition: all 0.0s ease;
+  background-color: #ffdae5;
+}
+.voice_m option:hover,
+.voice_m#v_type:hover {
+  transition: all 0.0s ease;
+  background-color: #ade8ff;
+}
 
 #toggle .tooltiptext {
   visibility: hidden;
@@ -233,20 +305,23 @@ input[type=button] {
   cursor: pointer;
   transition: all .2s ease-in-out;
 }
-.lbl:hover {
-  transform: scale(1.05);
+.lbl:hover {transform: scale(1.05);}
+
+.kofi {image-rendering:optimizeQuality;border:0px;height:17px;position:absolute;right:90%;bottom:1.8%;margin:1px;display:inline;opacity:0.65;}
+a:hover .kofi {opacity: 1.0;}
+
+@keyframes voice_f {
+	from {color: #2baee2;right: -14%;}
+	to {color: #ff8daf;right: 13%;}
 }
 
-.kofi {
-  image-rendering:optimizeQuality;border:0px;height:17px;position:absolute;right:90%;bottom:1.8%;margin:1px;display:inline;opacity:0.65;
-}
-
-a:hover .kofi {
-  opacity: 1.0;
+@keyframes voice_m {
+	from {color: #ff8daf;right: 13%;}
+	to {color: #2baee2;right: -14%;}
 }
 
 @keyframes background_f {
-	from {background-image: url('./assets/images/backgroundBubbleMale.png');}
+  from {background-image: url('./assets/images/backgroundBubbleMale.png');}
 	to {background-image: url('./assets/images/backgroundBubbleFemale.png');}
 }
 
@@ -275,19 +350,28 @@ a:hover .kofi {
     <p class="title">Animalese</p>
     <div  class="in-box">
       <p></p>
-      <div class="volume-slider">
+      <div id="volmue_slider">
                 <label for="volume" class="vol_inactive" id="vol_percent">%100</label>
                 <label for="volume" id="vol_text">Volume</label>
                 <input type="range" min="0" max="1" id="volume" step="0.05"></input>
         <div id="v_select">
-          <input type="button" id="female" class="v_type"/>
-          <input type="button" id="male" class="v_type"/>
+          <input type="button" id="female" class="g_type" disabled/>
+          <input type="button" id="male" class="g_type" disabled/>
+          <br>
+          <select name="voice_type" id="v_type" class="voice_f">
+            <option value="voice_1" selected>Voice 1</option>
+            <option value="voice_2">Voice 2</option>
+            <option value="voice_3">Voice 3</option>
+            <option value="voice_4">Voice 4</option>
+          </select>
+
+          
         </div>
         
             </div>
     </div>
     
-    <input type="checkbox" id="unchecked" class="cbx"/>
+    <input type="checkbox" id="unchecked" class="cbx" />
     <label for="unchecked" class="lbl"><div id="toggle" class="toggled-off"><span class="tooltiptext" id="tooltiptext">Disable</span></div></label>
 
   </div>
