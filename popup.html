@@ -5,12 +5,40 @@
     <title>Animalese</title>
     <style>
 
-
 @font-face {
   font-family: "Arial Rounded Bold";
   src: url('assets/fonts/Arial\ Rounded\ MT\ Bold\ Regular.ttf');
 }
 
+@keyframes voice_f {
+	from {color: #2baee2;right: -14%;}
+	to {color: #ff8daf;right: 13%;}
+}
+
+@keyframes voice_m {
+	from {color: #ff8daf;right: 13%;}
+	to {color: #2baee2;right: -14%;}
+}
+
+@keyframes background_f {
+  from {background-image: url('./assets/images/backgroundBubbleMale.png');}
+	to {background-image: url('./assets/images/backgroundBubbleFemale.png');}
+}
+
+@keyframes background_m {
+	from {background-image: url('./assets/images/backgroundBubbleFemale.png');}
+	to {background-image: url('./assets/images/backgroundBubbleMale.png');}
+}
+
+@keyframes toggle-on {
+	from {background-color: #11B0C3;border-top: 10px solid #11B0C3;border-left: 10px solid #11B0C3;border-bottom: 10px solid #11B0C3;border-right: 10px solid #11B0C3;border-radius: 3px;transform: translate(7px, 6.5px);}
+	to {background-color: transparent;border-top: 11px solid transparent;border-left: 18px solid #11B0C3;border-bottom: 11px solid transparent;border-right: 0px solid transparent;border-radius: 3px;transform: translate(8px, 5.5px);}
+}
+
+@keyframes toggle-off {
+	from {background-color: transparent;border-top: 11px solid transparent;border-left: 18px solid #11B0C3;border-bottom: 11px solid transparent;border-right: 0px solid transparent;border-radius: 3px;transform: translate(8px, 5.5px);}
+	to {background-color: #11B0C3;border-top: 10px solid #11B0C3;border-left: 10px solid #11B0C3;border-bottom: 10px solid #11B0C3;border-right: 10px solid #11B0C3;border-radius: 3px;transform: translate(7px, 6.5px);}
+}
 
 body {
 font-family: "Arial Rounded Bold";
@@ -32,9 +60,7 @@ background-size: cover;
   image-rendering: optimizeQuality;
 }
 
-.title {
-  margin: 1px; color: #E2F4F0; position: absolute; top: 16px; right: 99px; font-size: 15px;
-}
+.title { margin: 1px; color: #E2F4F0; position: absolute; top: 16px; right: 99px; font-size: 15px; }
 
 .in-box {
 	width: 180px;
@@ -43,9 +69,7 @@ background-size: cover;
 	transform: translate(30px, 50px);
 }
 
-.in-box p {
-	text-align: left; margin: 0px; color: #877358; font-size: 15px;
-}
+.in-box p { text-align: left; margin: 0px; color: #877358; font-size: 15px; }
 
 .foot {
   margin: 7px; top: 10px; color: rgba(255, 255, 255, 0.651); font-size: 12px; text-align: center; user-select: none;
@@ -55,7 +79,8 @@ background-size: cover;
 	border-top-style: solid;
 	border-top-width: 2px;
 }
-.version {display: inline;}
+
+.version { display: inline; }
 .version a {
   position: absolute;
   right: 2%;
@@ -70,8 +95,8 @@ background-size: cover;
 
 #vol_percent {
   position: absolute;
-  right: 5%;
-  bottom: 110%;
+  right: 0%;
+  bottom: 70%;
   text-align: right;
   color: #877358cc; font-size: 12px;
 }
@@ -157,9 +182,7 @@ input {
   transform: translate(7px, 6.5px);
 }
 
-#volmue_slider {
-  margin-top: -10px;
-}
+#volmue_slider { margin-top: -10px; }
 
 #v_select {
   position: absolute;
@@ -201,25 +224,16 @@ input {
 
 .g_type:hover:enabled {transform: scale(1.1); }
 
-#female:enabled {
-	background-image: url('./assets/images/female_on.png');
-}
-#male:enabled {
-	background-image: url('./assets/images/male.png');
-}
+#female:enabled { background-image: url('./assets/images/female_on.png'); }
+#male:enabled { background-image: url('./assets/images/male.png'); }
 
 .g_type:disabled {
   cursor: not-allowed;
   opacity: 50%;
 }
 
-#female:disabled {
-	background-image: url('./assets/images/female.png');
-}
-#male:disabled {
-	background-image: url('./assets/images/male.png');
-}
-
+#female:disabled { background-image: url('./assets/images/female.png'); }
+#male:disabled { background-image: url('./assets/images/male.png'); }
 
 #v_type {
   opacity: 30%;
@@ -283,8 +297,6 @@ body:hover #v_type:enabled {
   z-index: 1;
   right: 100%;
   margin-left: -60px;
-  
-  /* Fade in tooltip - takes 1 second to go from 0% to 100% opac: */
   opacity: 0;
   transition: opacity 1s;
 }
@@ -310,36 +322,6 @@ body:hover #v_type:enabled {
 .kofi {image-rendering:optimizeQuality;border:0px;height:17px;position:absolute;right:90%;bottom:1.8%;margin:1px;display:inline;opacity:0.65;}
 a:hover .kofi {opacity: 1.0;}
 
-@keyframes voice_f {
-	from {color: #2baee2;right: -14%;}
-	to {color: #ff8daf;right: 13%;}
-}
-
-@keyframes voice_m {
-	from {color: #ff8daf;right: 13%;}
-	to {color: #2baee2;right: -14%;}
-}
-
-@keyframes background_f {
-  from {background-image: url('./assets/images/backgroundBubbleMale.png');}
-	to {background-image: url('./assets/images/backgroundBubbleFemale.png');}
-}
-
-@keyframes background_m {
-	from {background-image: url('./assets/images/backgroundBubbleFemale.png');}
-	to {background-image: url('./assets/images/backgroundBubbleMale.png');}
-}
-
-@keyframes toggle-on {
-	from {background-color: #11B0C3;border-top: 10px solid #11B0C3;border-left: 10px solid #11B0C3;border-bottom: 10px solid #11B0C3;border-right: 10px solid #11B0C3;border-radius: 3px;transform: translate(7px, 6.5px);}
-	to {background-color: transparent;border-top: 11px solid transparent;border-left: 18px solid #11B0C3;border-bottom: 11px solid transparent;border-right: 0px solid transparent;border-radius: 3px;transform: translate(8px, 5.5px);}
-}
-
-@keyframes toggle-off {
-	from {background-color: transparent;border-top: 11px solid transparent;border-left: 18px solid #11B0C3;border-bottom: 11px solid transparent;border-right: 0px solid transparent;border-radius: 3px;transform: translate(8px, 5.5px);}
-	to {background-color: #11B0C3;border-top: 10px solid #11B0C3;border-left: 10px solid #11B0C3;border-bottom: 10px solid #11B0C3;border-right: 10px solid #11B0C3;border-radius: 3px;transform: translate(7px, 6.5px);}
-}
-
     </style>
 
   
@@ -351,36 +333,28 @@ a:hover .kofi {opacity: 1.0;}
     <div  class="in-box">
       <p></p>
       <div id="volmue_slider">
-                <label for="volume" class="vol_inactive" id="vol_percent">%100</label>
-                <label for="volume" id="vol_text">Volume</label>
-                <input type="range" min="0" max="1" id="volume" step="0.05"></input>
+        <label for="volume" class="vol_inactive" id="vol_percent">%100</label>
+        <label for="volume" id="vol_text">Volume</label>
+        <input type="range" min="0" max="1" id="volume" step="0.05"></input>
         <div id="v_select">
-          <input type="button" id="female" class="g_type" disabled/>
-          <input type="button" id="male" class="g_type" disabled/>
-          <br>
-          <select name="voice_type" id="v_type" class="voice_f">
-            <option value="voice_1" selected>Voice 1</option>
-            <option value="voice_2">Voice 2</option>
-            <option value="voice_3">Voice 3</option>
-            <option value="voice_4">Voice 4</option>
-          </select>
-
-          
+            <input type="button" id="female" class="g_type" disabled/>
+            <input type="button" id="male" class="g_type" disabled/>
+            <br>
+            <select name="voice_type" id="v_type" class="voice_f">
+              <option value="voice_1" selected>Voice 1</option>
+              <option value="voice_2">Voice 2</option>
+              <option value="voice_3">Voice 3</option>
+              <option value="voice_4">Voice 4</option>
+            </select>
+          </div>  
         </div>
-        
-            </div>
+      </div>
+      <input type="checkbox" id="unchecked" class="cbx" />
+      <label for="unchecked" class="lbl"><div id="toggle" class="toggled-off"><span class="tooltiptext" id="tooltiptext">Disable</span></div></label>
     </div>
-    
-    <input type="checkbox" id="unchecked" class="cbx" />
-    <label for="unchecked" class="lbl"><div id="toggle" class="toggled-off"><span class="tooltiptext" id="tooltiptext">Disable</span></div></label>
-
+    <p class="foot">Animal Crossing is a lifestyle.</p>
+    <p class="version"><a id="version" href="https://chrome.google.com/webstore/detail/animalese-typing/djbgadolfboockbofalipohdncimebic" target='_blank'>v0.0</a></p>
+    <a href='https://ko-fi.com/dagexviii' target='_blank'><img height='17' class="kofi" src='./assets/images/kofi_logo.png' border='0' title="Kofi" alt='ko-fi' /></a>  
   </div>
-
-  <p class="foot">Animal Crossing is a lifestyle.</p>
-  <p class="version"><a id="version" href="https://chrome.google.com/webstore/detail/animalese-typing/djbgadolfboockbofalipohdncimebic" target='_blank'>v0.0</a></p>
-  <a href='https://ko-fi.com/dagexviii' target='_blank'><img height='17' class="kofi" src='./assets/images/kofi_logo.png' border='0' title="Kofi" alt='ko-fi' /></a>  
-</div>
-  
 </body>
 </html>
-

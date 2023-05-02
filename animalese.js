@@ -11,7 +11,3 @@ for (var i = 0; i < ifs.length; i++) {
 		if (!e.ctrlKey) chrome.runtime.sendMessage({ type: 'type', key: e.key ,  keycode: e.keyCode , input_type: e.target.type});
 	}, true);
 }
-
-
-
-

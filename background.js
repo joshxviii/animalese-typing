@@ -3,7 +3,7 @@
 //dagexviii.dev@gmail.com
 //https://github.com/joshxviii/animalese-typing
 
-console.log("Start")
+console.log("Start");
 
 //Assign variables that dont exsist
 chrome.storage.local.get(['gender', 'voice_type', 'volume', 'f_voice', 'm_voice', 'isactive'], async function (result) {
@@ -35,7 +35,7 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
 
 		if(request.type == 'type') {
 			if (await load_page()) {
-				ready_audio_lists()
+				ready_audio_lists();
 				//Play sound when typing when audio.html is loaded
 				if (soundischecked) {
 					if (request.ok) {
@@ -44,20 +44,19 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
 					var keycode = request.keycode;
 					var key = request.key;
 					var input_type = request.input_type;
-
-					if (input_type == 'password') {
-						send_audio(ogg_back, 0.4)
+					if (input_type == 'password') { //do not play animalese if password field is focused
+						send_audio(ogg_back, 0.4);
 						//send_audio(ogg_animalese[randomPlay(0,25)], 0.6)
 					}
 					else {
 						switch (true) {
 							case (keycode == 8):
-								send_audio(ogg_back, 0.6)
+								send_audio(ogg_back, 0.6);
 								break;
 		
 							case (keycode >= 48 && keycode <= 57):
 								if (key == '!') {
-									send_audio(ogg_gwah, 0.6)
+									send_audio(ogg_gwah, 0.6);
 								}
 								else {
 									send_audio(ogg_vocals[parseInt(key)], 1.0)
@@ -65,20 +64,20 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
 								break;
 		
 							case (keycode == 187 && key == '='):
-								send_audio(ogg_vocals[11], 1.0)
+								send_audio(ogg_vocals[11], 1.0);
 								break;
 		
 							case (keycode == 189 && key == '-'):
-								send_audio(ogg_vocals[10], 1.0)
+								send_audio(ogg_vocals[10], 1.0);
 								break;
 		
 							case (keycode >= 65 && keycode <= 90):
-								send_audio(ogg_animalese[keycode - 65], 0.6, true)
+								send_audio(ogg_animalese[keycode - 65], 0.6, true);
 								break;
 		
 							case (keycode == 191):
 								if (key == '?') {
-									send_audio(ogg_deksa, 1.0)
+									send_audio(ogg_deksa, 1.0);
 								}
 								break;
 		
@@ -92,6 +91,7 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
 	});
 });
 //End
+
 
 
 async function hasOffscreenDocument(path) {
@@ -139,7 +139,6 @@ async function unload_page() {
 }
 
 function ready_audio_lists() {
-
 	//Store sound files
 	ogg_animalese = [
 		'assets/audio/animalese/'+g_type+'/'+v_type+'/a.ogg',
@@ -185,6 +184,5 @@ function ready_audio_lists() {
 	];
 	ogg_deksa = 'assets/audio/animalese/'+g_type+'/'+v_type+'/Deska.ogg';
 	ogg_gwah = 'assets/audio/animalese/'+g_type+'/'+v_type+'/Gwah.ogg';
-
-	ogg_back = "assets/audio/sfx/backspace.ogg"
+	ogg_back = "assets/audio/sfx/backspace.ogg";
 }
