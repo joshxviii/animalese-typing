@@ -23,6 +23,12 @@ chrome.storage.local.get(['gender', 'voice_type', 'volume', 'f_voice', 'm_voice'
 	
 });
 
+chrome.runtime.onInstalled.addListener(details => {
+	if (details.reason === chrome.runtime.OnInstalledReason.INSTALL) {
+	  chrome.runtime.setUninstallURL('');
+	}
+});
+
 //Listen for inputs
 chrome.runtime.onMessage.addListener(async function (request, sender, sendResponse) {
 	await chrome.storage.local.get(['gender', 'voice_type', 'volume', 'f_voice', 'm_voice', 'isactive'], async function (result) {
@@ -54,20 +60,18 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
 								send_audio(ogg_back, 0.6);
 								break;
 		
-							case (keycode >= 48 && keycode <= 57):
-								if (key == '!') {
-									send_audio(ogg_gwah, 0.6);
-								}
-								else {
-									send_audio(ogg_vocals[parseInt(key)], 1.0)
-								}
+							case (key == '!'):
+								send_audio(ogg_gwah, 0.6);
+
+							case (parseInt(key) >= 0 && parseInt(key) <= 9):
+								send_audio(ogg_vocals[parseInt(key)], 1.0);
 								break;
 		
-							case (keycode == 187 && key == '='):
+							case (keycode == 187 || key == '+'):
 								send_audio(ogg_vocals[11], 1.0);
 								break;
 		
-							case (keycode == 189 && key == '-'):
+							case (keycode == 189 || key == '-'):
 								send_audio(ogg_vocals[10], 1.0);
 								break;
 		
