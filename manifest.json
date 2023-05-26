@@ -7,7 +7,7 @@
 
   "name": "Animalese Typing",
   "description": "Plays animal crossing villager sounds whenever you type!",
-  "version": "1.36",
+  "version": "1.37",
   "content_scripts" : [{
     "matches": ["<all_urls>"],
     "js" : ["animalese.js"]

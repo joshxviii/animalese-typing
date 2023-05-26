@@ -45,43 +45,43 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
 				//Play sound when typing when audio.html is loaded
 				if (soundischecked) {
 					if (request.ok) {
-						send_audio(request.ok, 0.6);
+						send_audio(request.ok, 0.4);
 					}
 					var keycode = request.keycode;
 					var key = request.key;
 					var input_type = request.input_type;
 					if (input_type == 'password') { //do not play animalese if password field is focused
-						send_audio(ogg_back, 0.4);
+						send_audio(ogg_back, 0.3);
 						//send_audio(ogg_animalese[randomPlay(0,25)], 0.6)
 					}
 					else {
 						switch (true) {
 							case (keycode == 8):
-								send_audio(ogg_back, 0.6);
+								send_audio(ogg_back, 0.4);
 								break;
 		
 							case (key == '!'):
-								send_audio(ogg_gwah, 0.6);
+								send_audio(ogg_gwah, 0.4);
 
 							case (parseInt(key) >= 0 && parseInt(key) <= 9):
-								send_audio(ogg_vocals[parseInt(key)], 1.0);
+								send_audio(ogg_vocals[parseInt(key)], 0.8);
 								break;
 		
 							case (keycode == 187 || key == '+'):
-								send_audio(ogg_vocals[11], 1.0);
+								send_audio(ogg_vocals[11], 0.8);
 								break;
 		
 							case (keycode == 189 || key == '-'):
-								send_audio(ogg_vocals[10], 1.0);
+								send_audio(ogg_vocals[10], 0.8);
 								break;
 		
 							case (keycode >= 65 && keycode <= 90):
-								send_audio(ogg_animalese[keycode - 65], 0.6, true);
+								send_audio(ogg_animalese[keycode - 65], 0.4, true);
 								break;
 		
 							case (keycode == 191):
 								if (key == '?') {
-									send_audio(ogg_deksa, 1.0);
+									send_audio(ogg_deksa, 0.8);
 								}
 								break;
 		
