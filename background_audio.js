@@ -13,11 +13,28 @@ chrome.runtime.onMessage.addListener(
 	}
 );
 
-function play_audio(audio_path, volume, rand_pitch) {
-	const audio = new Audio(audio_path)
-	audio.currentTime = 0;
-	audio.volume = volume;
-	audio.play();
+let audioCtx;
+let gainNode;
+let buffer;
+let source;
+
+async function play_audio(audio_path, volume, rand_pitch) {
+	if (!audioCtx) {
+		audioCtx = new AudioContext();
+		gainNode = audioCtx.createGain();
+	}
+
+	const response = await fetch(audio_path);
+	buffer = await audioCtx.decodeAudioData(await response.arrayBuffer());
+
+	gainNode.gain.value = volume;
+	gainNode.connect(audioCtx.destination);
+
+	source = audioCtx.createBufferSource();
+	source.connect(gainNode);
+	source.buffer = buffer;
+
+	source.start();
 }
 
 function sent_from(sender_path, msg) {

@@ -40,7 +40,7 @@ function updateList() {
 function say_OK() {
 	chrome.storage.local.get('gender', function (result) {
 		chrome.storage.local.set({'voice_type' : document.getElementById('v_type').value});
-		chrome.runtime.sendMessage({type: 'type', ok: 'assets/audio/animalese/'+result.gender+'/'+document.getElementById('v_type').value+'/OK.ogg'});
+		chrome.runtime.sendMessage({type: 'type', ok: 'assets/audio/animalese/'+result.gender+'/'+document.getElementById('v_type').value+'/OK.aac'});
 	});
 }
 

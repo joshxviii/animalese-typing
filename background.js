@@ -3,7 +3,9 @@
 //dagexviii.dev@gmail.com
 //https://github.com/joshxviii/animalese-typing
 
-console.log("Start");
+console.log("animalese typing start");
+
+const file_type = ".aac"
 
 //Assign variables that dont exsist
 chrome.storage.local.get(['gender', 'voice_type', 'volume', 'f_voice', 'm_voice', 'isactive'], async function (result) {
@@ -51,37 +53,37 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
 					var key = request.key;
 					var input_type = request.input_type;
 					if (input_type == 'password') { //do not play animalese if password field is focused
-						send_audio(ogg_back, 0.3);
-						//send_audio(ogg_animalese[randomPlay(0,25)], 0.6)
+						send_audio(audio_back, 0.3);
+						//send_audio(audio_animalese[randomPlay(0,25)], 0.6)
 					}
 					else {
 						switch (true) {
 							case (keycode == 8):
-								send_audio(ogg_back, 0.4);
+								send_audio(audio_back, 0.4);
 								break;
 		
 							case (key == '!'):
-								send_audio(ogg_gwah, 0.4);
+								send_audio(audio_gwah, 0.4);
 
 							case (parseInt(key) >= 0 && parseInt(key) <= 9):
-								send_audio(ogg_vocals[parseInt(key)], 0.8);
+								send_audio(audio_vocals[parseInt(key)], 0.8);
 								break;
 		
 							case (keycode == 187 || key == '+'):
-								send_audio(ogg_vocals[11], 0.8);
+								send_audio(audio_vocals[11], 0.8);
 								break;
 		
 							case (keycode == 189 || key == '-'):
-								send_audio(ogg_vocals[10], 0.8);
+								send_audio(audio_vocals[10], 0.8);
 								break;
 		
 							case (keycode >= 65 && keycode <= 90):
-								send_audio(ogg_animalese[keycode - 65], 0.4, true);
+								send_audio(audio_animalese[keycode - 65], 0.4, true);
 								break;
 		
 							case (keycode == 191):
 								if (key == '?') {
-									send_audio(ogg_deksa, 0.8);
+									send_audio(audio_deksa, 0.8);
 								}
 								break;
 		
@@ -144,49 +146,49 @@ async function unload_page() {
 
 function ready_audio_lists() {
 	//Store sound files
-	ogg_animalese = [
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/a.ogg',
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/b.ogg',
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/c.ogg',
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/d.ogg',
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/e.ogg',
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/f.ogg',
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/g.ogg',
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/h.ogg',
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/i.ogg',
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/j.ogg',
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/k.ogg',
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/l.ogg',
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/m.ogg',
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/n.ogg',
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/o.ogg',
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/p.ogg',
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/q.ogg',
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/r.ogg',
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/s.ogg',
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/t.ogg',
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/u.ogg',
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/v.ogg',
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/w.ogg',
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/x.ogg',
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/y.ogg',
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/z.ogg'
+	audio_animalese = [
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/a'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/b'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/c'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/d'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/e'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/f'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/g'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/h'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/i'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/j'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/k'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/l'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/m'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/n'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/o'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/p'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/q'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/r'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/s'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/t'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/u'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/v'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/w'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/x'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/y'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/z'+file_type
 	];
-	ogg_vocals = [
-		'assets/audio/vocals/'+g_type+'/'+v_type+'/0.ogg',
-		'assets/audio/vocals/'+g_type+'/'+v_type+'/1.ogg',
-		'assets/audio/vocals/'+g_type+'/'+v_type+'/2.ogg',
-		'assets/audio/vocals/'+g_type+'/'+v_type+'/3.ogg',
-		'assets/audio/vocals/'+g_type+'/'+v_type+'/4.ogg',
-		'assets/audio/vocals/'+g_type+'/'+v_type+'/5.ogg',
-		'assets/audio/vocals/'+g_type+'/'+v_type+'/6.ogg',
-		'assets/audio/vocals/'+g_type+'/'+v_type+'/7.ogg',
-		'assets/audio/vocals/'+g_type+'/'+v_type+'/8.ogg',
-		'assets/audio/vocals/'+g_type+'/'+v_type+'/9.ogg',
-		'assets/audio/vocals/'+g_type+'/'+v_type+'/10.ogg',
-		'assets/audio/vocals/'+g_type+'/'+v_type+'/11.ogg'
+	audio_vocals = [
+		'assets/audio/vocals/'+g_type+'/'+v_type+'/0'+file_type,
+		'assets/audio/vocals/'+g_type+'/'+v_type+'/1'+file_type,
+		'assets/audio/vocals/'+g_type+'/'+v_type+'/2'+file_type,
+		'assets/audio/vocals/'+g_type+'/'+v_type+'/3'+file_type,
+		'assets/audio/vocals/'+g_type+'/'+v_type+'/4'+file_type,
+		'assets/audio/vocals/'+g_type+'/'+v_type+'/5'+file_type,
+		'assets/audio/vocals/'+g_type+'/'+v_type+'/6'+file_type,
+		'assets/audio/vocals/'+g_type+'/'+v_type+'/7'+file_type,
+		'assets/audio/vocals/'+g_type+'/'+v_type+'/8'+file_type,
+		'assets/audio/vocals/'+g_type+'/'+v_type+'/9'+file_type,
+		'assets/audio/vocals/'+g_type+'/'+v_type+'/10'+file_type,
+		'assets/audio/vocals/'+g_type+'/'+v_type+'/11'+file_type
 	];
-	ogg_deksa = 'assets/audio/animalese/'+g_type+'/'+v_type+'/Deska.ogg';
-	ogg_gwah = 'assets/audio/animalese/'+g_type+'/'+v_type+'/Gwah.ogg';
-	ogg_back = "assets/audio/sfx/backspace.ogg";
+	audio_deksa = 'assets/audio/animalese/'+g_type+'/'+v_type+'/Deska'+file_type;
+	audio_gwah = 'assets/audio/animalese/'+g_type+'/'+v_type+'/Gwah'+file_type;
+	audio_back = 'assets/audio/sfx/backspace'+file_type;
 }
