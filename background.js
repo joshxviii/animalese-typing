@@ -1,197 +1,174 @@
 
-chrome.storage.local.get(['gender'], function (result) {
-	if (!result.gender) {
-		chrome.storage.local.set({'gender':"female"});
-	}
-});
 
-if (typeof soundischecked === 'undefined') soundischecked = true;
+//Joshua Sherry
+//5-1-2023
+//dagexviii.dev@gmail.com
+//https://github.com/joshxviii/animalese-typing
 
-//Icon on and off
-chrome.storage.local.get('isactive', function (result) {
-	if (typeof result === 'undefined') result = { 'isactive': true };
+console.log("Start");
+
+const file_type = ".aac"
+
+//Assign variables that dont exsist
+chrome.storage.local.get(['gender', 'voice_type', 'volume', 'f_voice', 'm_voice', 'isactive'], async function (result) {
+	if (typeof result.isactive === 'undefined') chrome.storage.local.set({'isactive':true});
+	if (typeof result.voice_type === 'undefined') chrome.storage.local.set({'voice_type':"voice_1"});
+	if (typeof result.f_voice === 'undefined') chrome.storage.local.set({'f_voice':"voice_1",'m_voice':"voice_1"});
+	if (typeof result.gender === 'undefined') chrome.storage.local.set({'gender':"female"});
+	if (typeof result.volume === 'undefined') chrome.storage.local.set({'volume':0.5});
+	if (typeof soundischecked === 'undefined') soundischecked = true;
+
 	if (typeof result.isactive !== 'boolean') result.isactive = true;
 	if (result.isactive) {
-		chrome.browserAction.setIcon({ path: 'assets/images/icon.png' });
+		chrome.action.setIcon({ path : './assets/images/icon.png' });
 	} else {
-		chrome.browserAction.setIcon({ path: 'assets/images/icon_off.png' });
+		chrome.action.setIcon({ path : './assets/images/icon_off.png' });
 	}
-	soundischecked = result.isactive;
+	
 });
 
+//Listen for inputs
+chrome.runtime.onMessage.addListener(async function (request, sender, sendResponse) {
+	await chrome.storage.local.get(['gender', 'voice_type', 'volume', 'f_voice', 'm_voice', 'isactive'], async function (result) {
 
+		vol = result.volume;
+		v_type = result.voice_type;
+		g_type = result.gender;
 
-let vol;
-chrome.storage.local.get(['volume'], function (result) {
-	vol = result.volume;
+		soundischecked = result.isactive;
+
+		if(request.type == 'type') {
+			if (true) {
+				ready_audio_lists();
+				//Play sound when typing when audio.html is loaded
+				if (soundischecked) {
+					if (request.ok) {
+						play_audio(request.ok, 0.6);
+					}
+					var keycode = request.keycode;
+					var key = request.key;
+					var input_type = request.input_type;
+					if (input_type == 'password') { //do not play animalese if password field is focused
+						play_audio(audio_back, 0.4);
+						//play_audio(audio_animalese[randomPlay(0,25)], 0.6)
+					}
+					else {
+						switch (true) {
+							case (keycode == 8):
+								play_audio(audio_back, 0.6);
+								break;
+		
+							case (key == '!'):
+								play_audio(audio_gwah, 0.6);
+
+							case (parseInt(key) >= 0 && parseInt(key) <= 9):
+								play_audio(audio_vocals[parseInt(key)], 1.0);
+								break;
+		
+							case (keycode == 187 || key == '+'):
+								play_audio(audio_vocals[11], 1.0);
+								break;
+		
+							case (keycode == 189 || key == '-'):
+								play_audio(audio_vocals[10], 1.0);
+								break;
+		
+							case (keycode >= 65 && keycode <= 90):
+								play_audio(audio_animalese[keycode - 65], 0.6, true);
+								break;
+		
+							case (keycode == 191):
+								if (key == '?') {
+									play_audio(audio_deksa, 1.0);
+								}
+								break;
+		
+							default:
+								break;
+						}
+					}
+				}
+			}
+		}
+	});
 });
-let v_type;
-chrome.storage.local.get(['gender'], function (result) {
-	v_type = result.gender;
-});
+//End
 
-chrome.runtime.onMessage.addListener(
-	function (request, sender, sendResponse) {
+function randomPlay(min, max) {
+	return Math.floor(Math.random() * (max - min) + min);
+}
 
-		//Assign and get volume
-		chrome.storage.local.get(['volume'], function (result) {
-			if (typeof result.volume === 'undefined') result = { 'volume': 0.5 };
-			vol = result.volume;
-		});
-
-		//Assign Villager Voice Type
-		mp3_OK = [
-			document.getElementById('mp3-f-OK'),
-			document.getElementById('mp3-m-OK')
-		]
-		chrome.storage.local.get(['gender'], function (result) {
-			if (typeof result.gender === 'undefined') result = { 'volume': "female" };
-			if (result.gender == "female" && v_type != result.gender) {
-				mp3_OK[0].currentTime = 0;
-				mp3_OK[0].volume = 0.6 * vol;
-				mp3_OK[0].play();
-			}
-			if (result.gender == "male" && v_type != result.gender) {
-				mp3_OK[1].currentTime = 0;
-				mp3_OK[1].volume = 0.6 * vol;
-				mp3_OK[1].play();
-			}
-			v_type = result.gender;
-		});
-
-		//Store sound files
-		if (v_type == "female") {
-			mp3_animalese = [
-				document.getElementById('mp3-f-a'),
-				document.getElementById('mp3-f-b'),
-				document.getElementById('mp3-f-c'),
-				document.getElementById('mp3-f-d'),
-				document.getElementById('mp3-f-e'),
-				document.getElementById('mp3-f-f'),
-				document.getElementById('mp3-f-g'),
-				document.getElementById('mp3-f-h'),
-				document.getElementById('mp3-f-i'),
-				document.getElementById('mp3-f-j'),
-				document.getElementById('mp3-f-k'),
-				document.getElementById('mp3-f-l'),
-				document.getElementById('mp3-f-m'),
-				document.getElementById('mp3-f-n'),
-				document.getElementById('mp3-f-o'),
-				document.getElementById('mp3-f-p'),
-				document.getElementById('mp3-f-q'),
-				document.getElementById('mp3-f-r'),
-				document.getElementById('mp3-f-s'),
-				document.getElementById('mp3-f-t'),
-				document.getElementById('mp3-f-u'),
-				document.getElementById('mp3-f-v'),
-				document.getElementById('mp3-f-w'),
-				document.getElementById('mp3-f-x'),
-				document.getElementById('mp3-f-y'),
-				document.getElementById('mp3-f-z')
-			];
-
-			mp3_vocals = [
-				document.getElementById('mp3-f-0'),
-				document.getElementById('mp3-f-1'),
-				document.getElementById('mp3-f-2'),
-				document.getElementById('mp3-f-3'),
-				document.getElementById('mp3-f-4'),
-				document.getElementById('mp3-f-5'),
-				document.getElementById('mp3-f-6'),
-				document.getElementById('mp3-f-7'),
-				document.getElementById('mp3-f-8'),
-				document.getElementById('mp3-f-9'),
-				document.getElementById('mp3-f-10'),
-				document.getElementById('mp3-f-11')
-			];
-		}
-		else if (v_type == "male") {
-			mp3_animalese = [
-				document.getElementById('mp3-m-a'),
-				document.getElementById('mp3-m-b'),
-				document.getElementById('mp3-m-c'),
-				document.getElementById('mp3-m-d'),
-				document.getElementById('mp3-m-e'),
-				document.getElementById('mp3-m-f'),
-				document.getElementById('mp3-m-g'),
-				document.getElementById('mp3-m-h'),
-				document.getElementById('mp3-m-i'),
-				document.getElementById('mp3-m-j'),
-				document.getElementById('mp3-m-k'),
-				document.getElementById('mp3-m-l'),
-				document.getElementById('mp3-m-m'),
-				document.getElementById('mp3-m-n'),
-				document.getElementById('mp3-m-o'),
-				document.getElementById('mp3-m-p'),
-				document.getElementById('mp3-m-q'),
-				document.getElementById('mp3-m-r'),
-				document.getElementById('mp3-m-s'),
-				document.getElementById('mp3-m-t'),
-				document.getElementById('mp3-m-u'),
-				document.getElementById('mp3-m-v'),
-				document.getElementById('mp3-m-w'),
-				document.getElementById('mp3-m-x'),
-				document.getElementById('mp3-m-y'),
-				document.getElementById('mp3-m-z')
-			];
-
-			mp3_vocals = [
-				document.getElementById('mp3-m-0'),
-				document.getElementById('mp3-m-1'),
-				document.getElementById('mp3-m-2'),
-				document.getElementById('mp3-m-3'),
-				document.getElementById('mp3-m-4'),
-				document.getElementById('mp3-m-5'),
-				document.getElementById('mp3-m-6'),
-				document.getElementById('mp3-m-7'),
-				document.getElementById('mp3-m-8'),
-				document.getElementById('mp3-m-9'),
-				document.getElementById('mp3-m-10'),
-				document.getElementById('mp3-m-11')
-			];
-		}
+function ready_audio_lists() {
+	//Store sound files
+	audio_animalese = [
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/a'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/b'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/c'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/d'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/e'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/f'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/g'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/h'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/i'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/j'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/k'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/l'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/m'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/n'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/o'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/p'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/q'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/r'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/s'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/t'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/u'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/v'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/w'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/x'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/y'+file_type,
+		'assets/audio/animalese/'+g_type+'/'+v_type+'/z'+file_type
+	];
+	audio_vocals = [
+		'assets/audio/vocals/'+g_type+'/'+v_type+'/0'+file_type,
+		'assets/audio/vocals/'+g_type+'/'+v_type+'/1'+file_type,
+		'assets/audio/vocals/'+g_type+'/'+v_type+'/2'+file_type,
+		'assets/audio/vocals/'+g_type+'/'+v_type+'/3'+file_type,
+		'assets/audio/vocals/'+g_type+'/'+v_type+'/4'+file_type,
+		'assets/audio/vocals/'+g_type+'/'+v_type+'/5'+file_type,
+		'assets/audio/vocals/'+g_type+'/'+v_type+'/6'+file_type,
+		'assets/audio/vocals/'+g_type+'/'+v_type+'/7'+file_type,
+		'assets/audio/vocals/'+g_type+'/'+v_type+'/8'+file_type,
+		'assets/audio/vocals/'+g_type+'/'+v_type+'/9'+file_type,
+		'assets/audio/vocals/'+g_type+'/'+v_type+'/10'+file_type,
+		'assets/audio/vocals/'+g_type+'/'+v_type+'/11'+file_type
+	];
+	audio_deksa = 'assets/audio/animalese/'+g_type+'/'+v_type+'/Deska'+file_type;
+	audio_gwah = 'assets/audio/animalese/'+g_type+'/'+v_type+'/Gwah'+file_type;
+	audio_back = 'assets/audio/sfx/backspace'+file_type;
+}
 
 
+let audioCtx;
+let gainNode;
+let buffer;
+let source;
 
-		//Play sound when typing
-		if (soundischecked) {
-			if (request) var keycode = request.keycode;
-			var randomPlay = function (min, max) {
-				return Math.random() * (max - min) + min;
-			}
-			if (keycode >= 65 && keycode <= 90) {
-				keycode = keycode - 65;
-				mp3_animalese[keycode].currentTime = 0;
-				mp3_animalese[keycode].volume = 0.6 * vol;
-				mp3_animalese[keycode].play();
-			}
-			else if (keycode >= 48 && keycode <= 57) {
-				keycode = keycode - 48;
-				mp3_vocals[keycode].currentTime = 0;
-				mp3_vocals[keycode].volume = 1.0 * vol;
-				mp3_vocals[keycode].play();
-			}
-			else if (keycode == 189) {
-				mp3_vocals[10].currentTime = 0;
-				mp3_vocals[10].volume = 1.0 * vol;
-				mp3_vocals[10].play();
-			}
-			else if (keycode == 187) {
-				mp3_vocals[11].currentTime = 0;
-				mp3_vocals[11].volume = 1.0 * vol;
-				mp3_vocals[11].play();
-			}
-		}
+async function play_audio(audio_path, volume) {
 
+	if (!audioCtx) {
+		audioCtx = new AudioContext();
+		gainNode = audioCtx.createGain();
 	}
-);
 
+	const response = await fetch(audio_path);
+	buffer = await audioCtx.decodeAudioData(await response.arrayBuffer());
 
+	gainNode.gain.value = volume * vol;
+	gainNode.connect(audioCtx.destination);
 
+	source = audioCtx.createBufferSource();
+	source.connect(gainNode);
+	source.buffer = buffer;
 
-
-
-
-
-
-
+	source.start();
+}

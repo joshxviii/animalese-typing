@@ -1,20 +1,26 @@
 {
-"update_url": "https://clients2.google.com/service/update2/crx",
+  "author": "Joshua Sherry",
 
-  "manifest_version": 2,
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "dagexviii.dev@gmail.com"
+    }
+  },
+
+  "manifest_version": 3,
 
   "name": "Animalese Typing",
   "description": "Plays animal crossing villager sounds whenever you type!",
-  "version": "1.2",
+  "version": "1.37",
   "content_scripts" : [{
-    "matches": ["*://*/*"],
+    "matches": ["<all_urls>"],
     "js" : ["animalese.js"]
   }],
   "background": {
-    "page": "background.html"
+    "page": "audio.html"
   },
-  "browser_action": {
-    "default_icon": "assets/images/icon.png",
+  "action": {
+    "default_icon": {"128" : "assets/images/icon_off.png"},
     "default_popup": "popup.html"
   },
   "permissions": [
