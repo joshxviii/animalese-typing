@@ -5,7 +5,7 @@
 //dagexviii.dev@gmail.com
 //https://github.com/joshxviii/animalese-typing
 
-console.log("Start");
+console.log("animalese typing start");
 
 const file_type = ".aac"
 
