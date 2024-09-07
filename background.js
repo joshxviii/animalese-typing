@@ -8,12 +8,13 @@ console.log("animalese typing start");
 const file_type = ".aac"
 
 //Assign variables that dont exsist
-chrome.storage.local.get(['gender', 'voice_type', 'volume', 'f_voice', 'm_voice', 'isactive'], async function (result) {
+chrome.storage.local.get(['gender', 'voice_type', 'volume', 'f_voice', 'm_voice', 'sound_config', 'isactive'], async function (result) {
 	if (typeof result.isactive === 'undefined') chrome.storage.local.set({'isactive':true});
 	if (typeof result.voice_type === 'undefined') chrome.storage.local.set({'voice_type':"voice_1"});
 	if (typeof result.f_voice === 'undefined') chrome.storage.local.set({'f_voice':"voice_1",'m_voice':"voice_1"});
 	if (typeof result.gender === 'undefined') chrome.storage.local.set({'gender':"female"});
 	if (typeof result.volume === 'undefined') chrome.storage.local.set({'volume':0.5});
+	if (typeof result.sound_config === 'undefined') chrome.storage.local.set({'sound_config':0});
 	if (typeof soundischecked === 'undefined') soundischecked = true;
 
 	if (typeof result.isactive !== 'boolean') result.isactive = true;
@@ -33,12 +34,12 @@ chrome.runtime.onInstalled.addListener(details => {
 
 //Listen for inputs
 chrome.runtime.onMessage.addListener(async function (request, sender, sendResponse) {
-	await chrome.storage.local.get(['gender', 'voice_type', 'volume', 'f_voice', 'm_voice', 'isactive'], async function (result) {
+	await chrome.storage.local.get(['gender', 'voice_type', 'volume', 'f_voice', 'm_voice', 'sound_config', 'isactive'], async function (result) {
 
 		vol = result.volume;
 		v_type = result.voice_type;
 		g_type = result.gender;
-
+		config = result.sound_config;
 		soundischecked = result.isactive;
 
 		if(request.type == 'type') {
@@ -46,48 +47,70 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
 				ready_audio_lists();
 				//Play sound when typing when audio.html is loaded
 				if (soundischecked) {
-					if (request.ok) {
-						send_audio(request.ok, 0.4);
+					if (config!=2 && request.ok) {
+						send_audio(request.ok+file_type, 0.6);
 					}
-					var keycode = request.keycode;
-					var key = request.key;
-					var input_type = request.input_type;
 					if (input_type == 'password') { //do not play animalese if password field is focused
-						send_audio(audio_back, 0.3);
-						//send_audio(audio_animalese[randomPlay(0,25)], 0.6)
+						send_audio(audio_special["default"], 0.2, 0.4);
 					}
 					else {
+						var keycode = request.keycode;
+						var key = request.key;
+						var input_type = request.input_type;
 						switch (true) {
-							case (keycode == 8):
-								send_audio(audio_back, 0.4);
+							case (keycode == 16 || keycode == 32):
 								break;
-		
+							case (config!=1 && keycode == 8):
+								send_audio(audio_special['back'], 0.6)
+								break;
+							case (config!=1 && keycode == 13):
+								send_audio(audio_special['enter'], 0.6)
+								break;
+							case (config!=1 && keycode == 9):
+								send_audio(audio_special['tab'], 0.6)
+								break;
+							case (key == '?'):
+								if (config!=2) send_audio(audio_deksa, 0.6);
+								if (config!=1) send_audio(audio_special[key], 0.6)
+								break;
 							case (key == '!'):
-								send_audio(audio_gwah, 0.4);
-
-							case (parseInt(key) >= 0 && parseInt(key) <= 9):
-								send_audio(audio_vocals[parseInt(key)], 0.8);
+								if (config!=2) send_audio(audio_gwah, 0.6);
+								if (config!=1) send_audio(audio_special[key], 0.6)
+								break;
+							case (config!=1 && key == '~'): send_audio(audio_special[key], 0.6); break;
+							case (config!=1 && key == '@'): send_audio(audio_special[key], 0.6); break;
+							case (config!=1 && key == '#'): send_audio(audio_special[key], 0.6); break;
+							case (config!=1 && key == '$'): send_audio(audio_special[key], 0.6); break;
+							case (config!=1 && key == '%'): send_audio(audio_special[key], 0.6); break;
+							case (config!=1 && key == '^'): send_audio(audio_special[key], 0.6); break;
+							case (config!=1 && key == '&'): send_audio(audio_special[key], 0.6); break;
+							case (config!=1 && key == '*'): send_audio(audio_special[key], 0.6); break;
+							case (config!=1 && key == '('): send_audio(audio_special[key], 0.6); break;
+							case (config!=1 && key == ')'): send_audio(audio_special[key], 0.6); break;
+							case (config!=1 && key == '['): send_audio(audio_special[key], 0.6); break;
+							case (config!=1 && key == ']'): send_audio(audio_special[key], 0.6); break;
+							case (config!=1 && key == '{'): send_audio(audio_special[key], 0.6); break;
+							case (config!=1 && key == '}'): send_audio(audio_special[key], 0.6); break;
+	
+							case (config!=2 && parseInt(key) >= 1 && parseInt(key) <= 9):
+								send_audio(audio_vocals[parseInt(key)-1], 1.0);
+								break;
+							case (config!=2 && parseInt(key) == 0):
+								send_audio(audio_vocals[9], 1.0);
+								break;
+							case (config!=2 && keycode == 173):
+								send_audio(audio_vocals[10], 1.0);
+								break;
+							case (config!=2 && keycode == 61):
+								send_audio(audio_vocals[11], 1.0);
 								break;
 		
-							case (keycode == 187 || key == '+'):
-								send_audio(audio_vocals[11], 0.8);
-								break;
-		
-							case (keycode == 189 || key == '-'):
-								send_audio(audio_vocals[10], 0.8);
-								break;
-		
-							case (keycode >= 65 && keycode <= 90):
-								send_audio(audio_animalese[keycode - 65], 0.4, true);
-								break;
-		
-							case (keycode == 191):
-								if (key == '?') {
-									send_audio(audio_deksa, 0.8);
-								}
+							case (config!=2 && keycode >= 65 && keycode <= 90):
+								send_audio(audio_animalese[keycode - 65], 0.6, 0.2);
 								break;
 		
 							default:
+								send_audio(config!=1 && audio_special["default"], 0.4, 0.4);
 								break;
 						}
 					}
@@ -97,8 +120,6 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
 	});
 });
 //End
-
-
 
 async function hasOffscreenDocument(path) {
 	// Check all windows controlled by the service worker to see if one 
@@ -133,9 +154,6 @@ function send_audio(audio_path, volume, rand_pitch) {
 		vol: vol,
 		rand_pitch: rand_pitch
 	});
-}
-function randomPlay(min, max) {
-	return Math.floor(Math.random() * (max - min) + min);
 }
 
 async function unload_page() {
@@ -190,5 +208,26 @@ function ready_audio_lists() {
 	];
 	audio_deksa = 'assets/audio/animalese/'+g_type+'/'+v_type+'/Deska'+file_type;
 	audio_gwah = 'assets/audio/animalese/'+g_type+'/'+v_type+'/Gwah'+file_type;
-	audio_back = 'assets/audio/sfx/backspace'+file_type;
+	audio_special = {
+		"default": 'assets/audio/sfx/default'+file_type,
+		"back": 'assets/audio/sfx/backspace'+file_type,
+		"enter": 'assets/audio/sfx/enter'+file_type,
+		"tab": 'assets/audio/sfx/tab'+file_type,
+		"?": 'assets/audio/sfx/question'+file_type,
+		"~": 'assets/audio/sfx/tilde'+file_type,
+		"!": 'assets/audio/sfx/exclamation'+file_type,
+		"@": 'assets/audio/sfx/at'+file_type,
+		"#": 'assets/audio/sfx/pound'+file_type,
+		"$": 'assets/audio/sfx/dollar'+file_type,
+		"%": 'assets/audio/sfx/percent'+file_type,
+		"^": 'assets/audio/sfx/caret'+file_type,
+		"&": 'assets/audio/sfx/ampersand'+file_type,
+		"*": 'assets/audio/sfx/asterisk'+file_type,
+		"(": 'assets/audio/sfx/parenthesis_open'+file_type,
+		")": 'assets/audio/sfx/parenthesis_closed'+file_type,
+		"[": 'assets/audio/sfx/bracket_open'+file_type,
+		"]": 'assets/audio/sfx/bracket_closed'+file_type,
+		"{": 'assets/audio/sfx/brace_open'+file_type,
+		"}": 'assets/audio/sfx/brace_closed'+file_type
+	}
 }

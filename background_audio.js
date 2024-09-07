@@ -18,21 +18,24 @@ let gainNode;
 let buffer;
 let source;
 
-async function play_audio(audio_path, volume, rand_pitch) {
+async function play_audio(audio_path, volume, random_pitch=0.0) {
+
 	if (!audioCtx) {
 		audioCtx = new AudioContext();
-		gainNode = audioCtx.createGain();
 	}
 
 	const response = await fetch(audio_path);
 	buffer = await audioCtx.decodeAudioData(await response.arrayBuffer());
 
-	gainNode.gain.value = volume;
+	gainNode = audioCtx.createGain();
+	gainNode.gain.value = volume * 0.8;
 	gainNode.connect(audioCtx.destination);
 
 	source = audioCtx.createBufferSource();
 	source.connect(gainNode);
 	source.buffer = buffer;
+
+	if(random_pitch!=0) source.detune.value = (Math.random() * (300 + 300) - 300)*random_pitch;
 
 	source.start();
 }

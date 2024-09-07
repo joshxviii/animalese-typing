@@ -60,7 +60,7 @@ background-size: cover;
   image-rendering: optimizeQuality;
 }
 
-.title { margin: 1px; color: #E2F4F0; position: absolute; top: 16px; right: 99px; font-size: 15px; }
+.title { margin: 1px; color: #E2F4F0; position: absolute; top: 34px; right: 99px; font-size: 15px; }
 
 .in-box {
 	width: 180px;
@@ -322,16 +322,41 @@ body:hover #v_type:enabled {
 .kofi {image-rendering:optimizeQuality;border:0px;height:17px;position:absolute;right:90%;bottom:1.8%;margin:1px;display:inline;opacity:0.65;}
 a:hover .kofi {opacity: 1.0;}
 
+#sound_config {
+  position: relative;
+
+  margin: 1px; color: rgba(0, 0, 0, 0.493); font-size: 9px;
+  display: inline;
+
+  font-size: 12px;
+  font-family: "Arial Rounded Bold";
+  text-align: center;
+  appearance: none;
+  border-style: none;
+
+  border-radius: 6px;
+  cursor: pointer;
+  content: "1";
+
+  background-color: #ECE4C1;
+
+}
     </style>
 
   
 <script src="popup.js"></script>
 </head>
 <body>  
+
+  <select id="sound_config">
+    <option value=0 selected>All Sounds</option>
+    <option value=1>Animalese Only</option>
+    <option value=2>Soundfx Only</option>
+  </select>
+
   <div id="status" class="background_f">
     <p class="title">Animalese</p>
     <div  class="in-box">
-      <p></p>
       <div id="volmue_slider">
         <label for="volume" class="vol_inactive" id="vol_percent">%100</label>
         <label for="volume" id="vol_text">Volume</label>
@@ -346,15 +371,15 @@ a:hover .kofi {opacity: 1.0;}
               <option value="voice_3">Voice 3</option>
               <option value="voice_4">Voice 4</option>
             </select>
-          </div>  
-        </div>
+        </div>  
       </div>
-      <input type="checkbox" id="unchecked" class="cbx" />
-      <label for="unchecked" class="lbl"><div id="toggle" class="toggled-off"><span class="tooltiptext" id="tooltiptext">Disable</span></div></label>
     </div>
-    <p class="foot">Animal Crossing is a lifestyle.</p>
-    <p class="version"><a id="version" href="https://chrome.google.com/webstore/detail/animalese-typing/djbgadolfboockbofalipohdncimebic" target='_blank'>v0.0</a></p>
-    <a href='https://ko-fi.com/dagexviii' target='_blank'><img height='17' class="kofi" src='./assets/images/kofi_logo.png' border='0' title="Kofi" alt='ko-fi' /></a>  
+    <input type="checkbox" id="unchecked" class="cbx" />
+    <label for="unchecked" class="lbl"><div id="toggle" class="toggled-off"><span class="tooltiptext" id="tooltiptext">Disable</span></div></label>
   </div>
+
+  <p class="foot">Animal Crossing is a lifestyle.</p>
+  <p class="version"><a id="version" href="https://addons.mozilla.org/en-US/firefox/addon/animalese-typing/" target='_blank'>v0.0</a></p>
+  <a href='https://ko-fi.com/dagexviii' target='_blank'><img height='17' class="kofi" src='./assets/images/kofi_logo.png' border='0' title="Kofi" alt='ko-fi' /></a>  
 </body>
 </html>
