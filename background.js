@@ -50,15 +50,15 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
 					if (config!=2 && request.ok) {
 						send_audio(request.ok+file_type, 0.6);
 					}
+					var input_type = request.input_type;
 					if (input_type == 'password') { //do not play animalese if password field is focused
 						send_audio(audio_special["default"], 0.2, 0.4);
 					}
 					else {
 						var keycode = request.keycode;
 						var key = request.key;
-						var input_type = request.input_type;
 						switch (true) {
-							case (keycode == 16 || keycode == 32):
+							case (keycode == 16 || keycode == 32 || keycode == 20 || keycode == 18):
 								break;
 							case (config!=1 && keycode == 8):
 								send_audio(audio_special['back'], 0.6)
