@@ -6,6 +6,7 @@
 console.log("animalese typing start");
 
 const file_type = ".aac"
+const isUpperCase = str => str === str.toUpperCase();
 
 //Assign variables that dont exsist
 chrome.storage.local.get(['gender', 'voice_type', 'volume', 'f_voice', 'm_voice', 'sound_config', 'isactive'], async function (result) {
@@ -48,34 +49,39 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
 				//Play sound when typing when audio.html is loaded
 				if (soundischecked) {
 					if (config!=2 && request.ok) {
-						send_audio(request.ok+file_type, 0.6);
+						send_audio(request.ok+file_type, 0.6, 0.1, 0.0, 2);
+						return;
 					}
 					var input_type = request.input_type;
 					if (input_type == 'password') { //do not play animalese if password field is focused
 						send_audio(audio_special["default"], 0.2, 0.4);
+						return;
 					}
 					else {
 						var keycode = request.keycode;
 						var key = request.key;
 						switch (true) {
-							case (keycode == 16 || keycode == 32 || keycode == 20 || keycode == 18):
+							case (keycode == 16 || keycode == 32 || keycode == 20 || keycode == 18)://spacebar, shift, caps
 								break;
-							case (config!=1 && keycode == 8):
+							case (config!=1 && keycode >= 37 && keycode <= 40)://arrow keys
+								send_audio(audio_arrows[keycode-37], 0.5);
+								break;
+							case (config!=1 && keycode == 8)://backspace
 								send_audio(audio_special['back'], 0.6)
 								break;
-							case (config!=1 && keycode == 13):
+							case (config!=1 && keycode == 13)://enter
 								send_audio(audio_special['enter'], 0.6)
 								break;
-							case (config!=1 && keycode == 9):
+							case (config!=1 && keycode == 9)://tab
 								send_audio(audio_special['tab'], 0.6)
 								break;
 							case (key == '?'):
-								if (config!=2) send_audio(audio_deksa, 0.6);
 								if (config!=1) send_audio(audio_special[key], 0.6)
+								if (config!=2) send_audio(audio_deksa, 0.6, 0.2);
 								break;
 							case (key == '!'):
-								if (config!=2) send_audio(audio_gwah, 0.6);
 								if (config!=1) send_audio(audio_special[key], 0.6)
+								if (config!=2) send_audio(audio_gwah, 0.6, 0.2);
 								break;
 							case (config!=1 && key == '~'): send_audio(audio_special[key], 0.6); break;
 							case (config!=1 && key == '@'): send_audio(audio_special[key], 0.6); break;
@@ -106,10 +112,12 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
 								break;
 		
 							case (config!=2 && keycode >= 65 && keycode <= 90):
-								send_audio(audio_animalese[keycode - 65], 0.6, 0.2);
+								if (isUpperCase(key)) send_audio(audio_animalese[keycode - 65], 0.7, 0.35, 1.6, 1);
+								else send_audio(audio_animalese[keycode - 65], 0.5, 0.2, 0, 1);
 								break;
 		
 							default:
+								//Default sound to play
 								send_audio(config!=1 && audio_special["default"], 0.4, 0.4);
 								break;
 						}
@@ -145,14 +153,16 @@ async function load_page() {
 	return true
 }
 
-function send_audio(audio_path, volume, rand_pitch) {
+function send_audio(audio_path, volume, rand_pitch, pitch, cutoff_channel) {
 	chrome.runtime.sendMessage({
 		type: 'audio',
 		target: 'offscreen',
 		path: audio_path,
 		volume: volume,
 		vol: vol,
-		rand_pitch: rand_pitch
+		rand_pitch: rand_pitch,
+		pitch: pitch,
+		cutoff_channel: cutoff_channel
 	});
 }
 
@@ -205,6 +215,12 @@ function ready_audio_lists() {
 		'assets/audio/vocals/'+g_type+'/'+v_type+'/9'+file_type,
 		'assets/audio/vocals/'+g_type+'/'+v_type+'/10'+file_type,
 		'assets/audio/vocals/'+g_type+'/'+v_type+'/11'+file_type
+	];
+	audio_arrows = [
+		'assets/audio/sfx/left'+file_type,
+		'assets/audio/sfx/up'+file_type,
+		'assets/audio/sfx/right'+file_type,
+		'assets/audio/sfx/down'+file_type	
 	];
 	audio_deksa = 'assets/audio/animalese/'+g_type+'/'+v_type+'/Deska'+file_type;
 	audio_gwah = 'assets/audio/animalese/'+g_type+'/'+v_type+'/Gwah'+file_type;
