@@ -5,6 +5,7 @@
     <title>Animalese</title>
     <style>
 
+
 @font-face {
   font-family: "Arial Rounded Bold";
   src: url('assets/fonts/Arial\ Rounded\ MT\ Bold\ Regular.ttf');
@@ -29,69 +30,47 @@
 	from {background-image: url('./assets/images/backgroundBubbleFemale.png');}
 	to {background-image: url('./assets/images/backgroundBubbleMale.png');}
 }
-
-@keyframes toggle-on {
-	from {background-color: #11B0C3;border-top: 10px solid #11B0C3;border-left: 10px solid #11B0C3;border-bottom: 10px solid #11B0C3;border-right: 10px solid #11B0C3;border-radius: 3px;transform: translate(7px, 6.5px);}
-	to {background-color: transparent;border-top: 11px solid transparent;border-left: 18px solid #11B0C3;border-bottom: 11px solid transparent;border-right: 0px solid transparent;border-radius: 3px;transform: translate(8px, 5.5px);}
-}
-
-@keyframes toggle-off {
-	from {background-color: transparent;border-top: 11px solid transparent;border-left: 18px solid #11B0C3;border-bottom: 11px solid transparent;border-right: 0px solid transparent;border-radius: 3px;transform: translate(8px, 5.5px);}
-	to {background-color: #11B0C3;border-top: 10px solid #11B0C3;border-left: 10px solid #11B0C3;border-bottom: 10px solid #11B0C3;border-right: 10px solid #11B0C3;border-radius: 3px;transform: translate(7px, 6.5px);}
-}
-
+        
 body {
   font-family: "Arial Rounded Bold";
   font-size: 100%;
   background-image: url('./assets/images/background.png');
   background-size: cover;
+   margin:0;
+   padding:0;
+   height:100%;
+    width: 300px;
 }
 
 #status {
   user-select: none;
-  width: 249px;
-  height: 150px;
+    height: 150px;
+    width: 100%;
   background-size: cover;
+    background-size: 249px ;
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: 50% 50%;
   font-size:16px;
   text-align: center;
   overflow: hidden;
   image-rendering: optimizeQuality;
+    margin-bottom: 30px;
+
+  transform: translate(0%,0%);
+    
 }
 
-.title { margin: 1px; color: #E2F4F0; position: absolute; top: 34px; right: 99px; font-size: 15px; }
+.title { margin-bottom: -24px;margin-top: 9px;margin-left: -8px; color: #E2F4F0; font-size: 15px; }
 
 .in-box {
-	width: 180px;
+	width: 190px;
 	height: 80px;
 	position: absolute;
 	transform: translate(30px, 50px);
+    margin-left: 23px;
 }
 
 .in-box p { text-align: left; margin: 0px; color: #877358; font-size: 15px; }
-
-.foot {
-  margin: 7px; top: 10px; color: rgba(255, 255, 255, 0.651); font-size: 12px; text-align: center; user-select: none;
-	padding-top:8px;
-	padding-bottom:0px;
-	border-top-color: rgba(230, 230, 230, 0.664);
-	border-top-style: solid;
-	border-top-width: 2px;
-}
-
-.version { display: inline; }
-.version a {
-  position: absolute;
-  right: 2%;
-  bottom: 3%;
-  margin: 1px; color: rgba(255, 255, 255, 0.493); font-size: 9px;
-  display: inline;
-}
-
-.cbx {
-	display: none;
-}
 
 #vol_percent {
   position: absolute;
@@ -107,7 +86,7 @@ body {
   visibility: hidden;
 }
 
-#vol_text {
+label {
   color: #877358;
   text-align: left;
   margin: 0px;
@@ -154,34 +133,6 @@ input {
   height: 8.4px !important;
 }
 
-.toggled-off {
-  animation: toggle-on .25s;
-  animation-fill-mode: forwards;
-  width: 0;
-  height: 0;
-  background-color: transparent;
-  border-top: 11px solid transparent;
-  border-left: 18px solid #11B0C3;
-  border-bottom: 11px solid transparent;
-  border-right: 0px solid transparent;
-  border-radius: 3px;
-  transform: translate(8px, 5.5px);
-}
-
-.toggled-on {
-  animation: toggle-off .25s;
-  animation-fill-mode: forwards;
-  width: 0;
-  height: 0;
-  background-color: #11B0C3;
-  border-top: 10px solid #11B0C3;
-  border-left: 10px solid #11B0C3;
-  border-bottom: 10px solid #11B0C3;
-  border-right: 10px solid #11B0C3;
-  border-radius: 3px;
-  transform: translate(7px, 6.5px);
-}
-
 #volmue_slider { margin-top: -10px; }
 
 #v_select {
@@ -196,14 +147,16 @@ input {
 .background_m {
 	animation: background_m .5s;
 	animation-fill-mode: forwards;
+    background-position: 50% 50%;
 }
 
 .background_f {
 	animation: background_f .5s;
 	animation-fill-mode: forwards;
+    background-position: 50% 50%;
 }
 
-.g_type {
+.btnStyle {
   opacity: 100%;
 	background-color: transparent;
 	border: none;
@@ -221,17 +174,19 @@ input {
 	display: inline;
 	background-size: cover;
   transition: all .2s ease-in-out;
+  z-index: 1;
 }
 
-.g_type:hover:enabled {transform: scale(1.1); }
+.btnStyle:hover:enabled {transform: scale(1.1); }
+.btnStyle:disabled {
+  cursor: not-allowed;
+  opacity: 50%;
+}
 
 #female:enabled { background-image: url('./assets/images/female_on.png'); }
 #male:enabled { background-image: url('./assets/images/male.png'); }
 
-.g_type:disabled {
-  cursor: not-allowed;
-  opacity: 50%;
-}
+
 
 #female:disabled { background-image: url('./assets/images/female.png'); }
 #male:disabled { background-image: url('./assets/images/male.png'); }
@@ -331,13 +286,18 @@ option {
 }
 .lbl:hover {transform: scale(1.05);}
 
-.kofi {image-rendering:optimizeQuality;border:0px;height:17px;position:absolute;right:90%;bottom:1.8%;margin:1px;display:inline;opacity:0.65;}
+.version { display: inline; }
+.version a {
+  position:absolute;right:10px;bottom:5px; color: rgba(255, 255, 255, 0.493); font-size: 9px;
+}
+        
+.kofi {image-rendering:optimizeQuality;position:absolute;left:10px;display:inline;opacity:0.65;}
 a:hover .kofi {opacity: 1.0;}
 
 #sound_config {
   position: relative;
 
-  margin: 1px; color: rgba(0, 0, 0, 0.493); font-size: 9px;
+  margin: 8px; color: rgba(0, 0, 0, 0.493); font-size: 9px;
   display: inline;
 
   font-size: 12px;
@@ -354,6 +314,114 @@ a:hover .kofi {opacity: 1.0;}
 
 }
 
+#profile_editor:enabled { background-image: url('./assets/images/sound_profile.png'); }
+#profile_editor {
+    position:absolute;
+    right: 42px;
+    top: 2px;
+  height: 35px;
+  width: 35px;
+  min-height: 35px;
+  min-width: 35px;
+}
+        
+#disable:checked { background-image: url('./assets/images/enable.png'); }
+#disable {
+    background-image: url('./assets/images/disable.png'); 
+    position:absolute;
+    right: -4px;
+    top: 2px;
+  height: 35px;
+  width: 35px;
+  min-height: 35px;
+  min-width: 35px;
+}
+#exit_editor:enabled { background-image: url('./assets/images/confirm.png'); }
+#exit_editor {
+  position:absolute;
+  box-shadow: inset;
+    right: 4px;
+    bottom: 8px;
+  height: 35px;
+  width: 35px;
+  min-height: 35px;
+  min-width: 35px;
+  transition: all 0s ease-in-out;
+}
+
+#footer {
+    position:absolute;
+    color: rgba(255, 255, 255, 0.651); font-size: 12px; text-align: center; user-select: none;
+    padding-top:2px;
+    padding-bottom:0px;
+
+    border-top-color: rgba(230, 230, 230, 0.664);
+    border-top-style: solid;
+    border-top-width: 2px;
+
+    bottom:0;
+    width:100%;
+    height:20px;
+   
+    display: inline-block;
+}
+ 
+#overlay {
+  visibility: hidden;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: #0d0d0d6a;
+}
+
+#profile_edit_menu {
+  position: absolute;
+  box-shadow: 0 4px 10px #0d0d0d;
+  width: 230px;
+  height: 120px;
+  left:50%;
+  top:58%;
+  transform: translate(-50%,-50%);
+  background-color: #fffae4;
+  border-radius: 16px;
+  padding: 8px;
+  padding-top: 12px;
+}
+#overlay.show {
+  visibility: visible;
+  z-index: 2;
+}
+
+.editor_slider {
+  display: inline;
+  width: 130px;
+  transition: all 0s;
+}
+.editor_label {
+  font-size: 14px;
+  display: block;
+}
+.indicator_box {
+  text-align: center;
+  width: 10px;
+  display: inline-block;
+}
+p.range_indicator {
+  font-size: x-small;
+  vertical-align: 30%;
+  display: inline;
+  color: #cbbba9;
+}
+output {
+  background-color: #ece5ca;
+  left: 10px;
+  border-radius: 8px;
+  width: 20%;
+  display: inline-block;
+  color: #6e5c44;
+  text-align: center;
+  margin-left: 10px;
+}
 
     </style>
 
@@ -362,22 +430,50 @@ a:hover .kofi {opacity: 1.0;}
 </head>
 <body>  
 
-  <select id="sound_config">
-    <option value=0 selected>All Sounds</option>
-    <option value=1>Animalese Only</option>
-    <option value=2>Soundfx Only</option>
-  </select>
+<div id="overlay" class="hide">
+  <p style="text-align: center; margin: 18px; margin-left: 60px; margin-right: 60px;color:#877358; font-size: 18px; border-radius: 32px;  background-color: #fffae4;">Animalese Editor</p>
+  <div id="profile_edit_menu">
+    <label class="editor_label">Pitch Shift</label>
+      <div class="indicator_box"><p class="range_indicator">-</p></div>
+        <input id="pitch_shift" class="editor_slider" type="range" min="-12" max="12" step="0.2" value="0"></input>
+      <div class="indicator_box"><p class="range_indicator">+</p></div>
+    <output class="editor_output" id="pitch_shift_out" for="pitch_shift">0</output>
 
-  <div id="status" class="background_f">
+    <label class="editor_label">Intonation</label>
+      <div class="indicator_box"><p class="range_indicator">-</p></div>
+        <input id="intonation" class="editor_slider" type="range" min="-0.5" max="1.0" step="0.1" value="0"></input>
+      <div class="indicator_box"><p class="range_indicator">+</p></div>
+    <output class="editor_output" id="intonation_out" for="intonation">0</output>
+
+    <label class="editor_label">Pitch Variation</label>
+      <div class="indicator_box"><p class="range_indicator">-</p></div>
+        <input id="pitch_variation" class="editor_slider" type="range" min="0" max="1" step="0.05" value="0.2"></input>
+      <div class="indicator_box"><p class="range_indicator">+</p></div>
+    <output class="editor_output" id="pitch_variation_out" for="pitch_variation">0</output>
+
+  </div>
+  <input type="button" id="exit_editor" class="btnStyle"/>
+</div>
+
+    <select id="sound_config">
+        <option value=0 selected>All Sounds</option>
+        <option value=1>Animalese Only</option>
+        <option value=2>Soundfx Only</option>
+    </select>
+
+    <input type="button" id="profile_editor" class="btnStyle"/>
+    <input type="checkbox" id="disable" class="btnStyle"/>
+
+  <div id="status" class="background_f" align="center" >
     <p class="title">Animalese</p>
-    <div  class="in-box">
+    <div  class="in-box"  align="center">
       <div id="volmue_slider">
         <label for="volume" class="vol_inactive" id="vol_percent">%100</label>
-        <label for="volume" id="vol_text">Volume</label>
+        <label for="volume" >Volume</label>
         <input type="range" min="0" max="1" id="volume" step="0.01"></input>
         <div id="v_select">
-            <input type="button" id="female" class="g_type" disabled/>
-            <input type="button" id="male" class="g_type" disabled/>
+            <input type="button" id="female" class="btnStyle" disabled/>
+            <input type="button" id="male" class="btnStyle" disabled/>
             <br>
             <select name="voice_type" id="v_type" class="voice_f">
               <option value="voice_1" selected><p class="title">Voice 1</p></option>
@@ -388,12 +484,14 @@ a:hover .kofi {opacity: 1.0;}
         </div>  
       </div>
     </div>
-    <input type="checkbox" id="unchecked" class="cbx" />
-    <label for="unchecked" class="lbl"><div id="toggle" class="toggled-off"><span class="tooltiptext" id="tooltiptext">Disable</span></div></label>
-  </div>
+    
 
-  <p class="foot">Animal Crossing is a lifestyle.</p>
-  <p class="version"><a id="version" href="https://addons.mozilla.org/en-US/firefox/addon/animalese-typing/" target='_blank'>v0.0</a></p>
-  <a href='https://ko-fi.com/dagexviii' target='_blank'><img height='17' class="kofi" src='./assets/images/kofi_logo.png' border='0' title="Kofi" alt='ko-fi' /></a>  
+  </div>
+    <div id="footer" align="center">
+        <a href='https://ko-fi.com/dagexviii' target='_blank'><img height='17' class="kofi" src='./assets/images/kofi_logo.png' title="Kofi" alt='ko-fi' /></a> 
+        <p style="display: inline; margin: 20%">Animal Crossing is a lifestyle.</p>
+        <p class="version"><a id="version" href="https://addons.mozilla.org/en-US/firefox/addon/animalese-typing/" target='_blank'>v0.0</a></p>
+    </div>
+
 </body>
 </html>

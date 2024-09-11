@@ -2,8 +2,6 @@ var female_voices = ['Sweet', 'Peppy', 'Uchi', 'Snooty'];
 var male_voices = ['Jock', 'Lazy', 'Smug', 'Cranky'];
 
 function disable() {
-	document.getElementById('tooltiptext').innerText = "Enable"
-	document.getElementById('toggle').className = 'toggled-off';
 	chrome.action.setIcon({path: 'assets/images/icon_off.png'});
 	document.getElementById('female').disabled = true;
 	document.getElementById('male').disabled = true;
@@ -12,8 +10,6 @@ function disable() {
 }
 
 function enable() {
-	document.getElementById('tooltiptext').innerText = "Disable"
-	document.getElementById('toggle').className = 'toggled-on';
 	chrome.action.setIcon({path: 'assets/images/icon.png'});
 	document.getElementById('female').disabled = false;
 	document.getElementById('male').disabled = false;
@@ -35,16 +31,17 @@ function updateList() {
 			document.getElementById('v_type').options[i].innerText = voice_list[i];
 		}
 	});
+
+	chrome.runtime.sendMessage({type: 'update_values'});
 }
 
-function say_OK() {
-	chrome.storage.local.get('gender', function (result) {
-		chrome.storage.local.set({'voice_type' : document.getElementById('v_type').value});
-		chrome.runtime.sendMessage({type: 'type', ok: 'assets/audio/animalese/'+result.gender+'/'+document.getElementById('v_type').value+'/OK'});
+function say_OK() {//send update notif to background for voice type/gender
+	chrome.storage.local.get('gender', function (g) {
+		chrome.runtime.sendMessage({type: 'type', key: 'OK', g_type: g.gender, v_type: document.getElementById('v_type').value});
 	});
 }
-function say_Gwah() {
-	chrome.runtime.sendMessage({type: 'type', key: '!'});
+function say_Gwah() {//send update notif to background for config
+	chrome.runtime.sendMessage({type: 'type', key: '!', config: document.getElementById('sound_config').value});
 }
 
 
@@ -52,14 +49,31 @@ function say_Gwah() {
 document.addEventListener('DOMContentLoaded', function() {
 	updateList();
 	document.getElementById('version').innerText = "v" + chrome.runtime.getManifest().version
+
+
+
 	//Get saved values for everything on popup==================================================================
+	let sound_profile;
+	chrome.storage.local.get('sound_profile', function (result) {
+		sound_profile = result.sound_profile;
+
+		document.getElementById('pitch_variation').value = sound_profile.pitch_variation
+		document.getElementById('pitch_variation_out').innerText = String( parseInt(document.getElementById('pitch_variation').value * 100) ) + "%"
+	
+		document.getElementById('pitch_shift').value = sound_profile.pitch_shift
+		document.getElementById('pitch_shift_out').innerText =  ((document.getElementById('pitch_shift').value>0)?"+":"") + String( parseFloat(document.getElementById('pitch_shift').value) )
+	
+		document.getElementById('intonation').value = sound_profile.intonation
+		document.getElementById('intonation_out').innerText =  ((document.getElementById('intonation').value>0)?"+":"") + String( parseFloat(document.getElementById('intonation').value))
+	});
+
 	chrome.storage.local.get(['isactive'], function (result) {
 		if (result.isactive==true) {
-			document.getElementById('unchecked').checked=false;
+			document.getElementById('disable').checked=false;
 			enable();
 		} 
 		else {
-			document.getElementById('unchecked').checked=true;
+			document.getElementById('disable').checked=true;
 			disable();
 		}
 	});
@@ -124,6 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			document.getElementById('vol_percent').className = 'vol_active'
 			document.getElementById('vol_percent').innerText = String( parseInt(document.getElementById('volume').value * 100) ) + "%"
 		});
+		chrome.runtime.sendMessage({type: 'update_values'});
 	});
 	document.getElementById('volume').addEventListener('mouseup', function (e) {
 		document.getElementById('vol_percent').className = 'vol_inactive'
@@ -142,8 +157,8 @@ document.addEventListener('DOMContentLoaded', function() {
 		say_Gwah()
 	});
 
-	document.getElementById('unchecked').addEventListener('change', function (e) {
-		if(document.getElementById('unchecked').checked){
+	document.getElementById('disable').addEventListener('change', function (e) {
+		if(document.getElementById('disable').checked){
 			//toggle off
 			disable()
 			if (chrome.extension.getBackgroundPage()) chrome.extension.getBackgroundPage().soundischecked=false;
@@ -154,7 +169,45 @@ document.addEventListener('DOMContentLoaded', function() {
 			enable()
 			if (chrome.extension.getBackgroundPage()) chrome.extension.getBackgroundPage().soundischecked=true;
 			chrome.storage.local.set({'isactive':true});
+			chrome.runtime.sendMessage({type: 'type', key: '&'});
 		}
 	});
+
+	document.getElementById('profile_editor').addEventListener('click', function (e) {
+		document.getElementById('overlay').classList.toggle("show");
+		chrome.runtime.sendMessage({type: 'type', key: 'Enter'});
+	});
+
+	document.getElementById('exit_editor').addEventListener('click', function (e) {
+		document.getElementById('overlay').classList.toggle("show");
+		chrome.runtime.sendMessage({type: 'update_values'});
+		chrome.runtime.sendMessage({type: 'type', key: 'Enter'});
+	});
+
+
+	document.getElementById('pitch_variation').addEventListener('input', function (e) {
+		sound_profile.pitch_variation = document.getElementById('pitch_variation').value
+		document.getElementById('pitch_variation_out').innerText = String( parseInt(document.getElementById('pitch_variation').value * 100) ) + "%"
+		
+		chrome.storage.local.set({'sound_profile' : sound_profile});
+	});
+
+	document.getElementById('pitch_shift').addEventListener('input', function (e) {
+		let value = document.getElementById('pitch_shift').value
+		sound_profile.pitch_shift = value
+		document.getElementById('pitch_shift_out').innerText = ((value>0)?"+":"") + String( parseFloat(value))
+
+		chrome.storage.local.set({'sound_profile' : sound_profile});
+	});
+
+	document.getElementById('intonation').addEventListener('input', function (e) {
+		let value = document.getElementById('intonation').value
+		sound_profile.intonation = value
+		document.getElementById('intonation_out').innerText = ((value>0)?"+":"") + String( parseFloat(value * 1 ))
+
+		chrome.storage.local.set({'sound_profile' : sound_profile});
+	});
 });
+
 //End
+
