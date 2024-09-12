@@ -157,19 +157,19 @@ document.addEventListener('DOMContentLoaded', function() {
 		say_Gwah()
 	});
 
-	document.getElementById('disable').addEventListener('change', function (e) {
+	document.getElementById('disable').addEventListener('input', async function (e) {
 		if(document.getElementById('disable').checked){
 			//toggle off
 			disable()
-			if (chrome.extension.getBackgroundPage()) chrome.extension.getBackgroundPage().soundischecked=false;
 			chrome.storage.local.set({'isactive':false});
+			await chrome.runtime.sendMessage({type: 'update_values'});
 		}
 		else{
 			//toggle on
 			enable()
-			if (chrome.extension.getBackgroundPage()) chrome.extension.getBackgroundPage().soundischecked=true;
 			chrome.storage.local.set({'isactive':true});
-			chrome.runtime.sendMessage({type: 'type', key: '&'});
+			await chrome.runtime.sendMessage({type: 'update_values'});
+			await chrome.runtime.sendMessage({type: 'type', key: '&'});
 		}
 	});
 
