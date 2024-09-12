@@ -65,7 +65,6 @@ async function update_values() {
 }
 
 chrome.runtime.onMessage.addListener(async function (request, sender, sendResponse) {
-	if (await load_page()) {
 		switch (request.type) {
 			case 'update_values':
 				await update_values();
@@ -153,38 +152,38 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
 				}
 			break;
 		}
-	}
+	
 });
 //End
 
+let creating;
 async function hasOffscreenDocument(path) {
-	// Check all windows controlled by the service worker to see if one 
-	// of them is the offscreen document with the given path
 	const offscreenUrl = chrome.runtime.getURL(path);
-	const matchedClients = await clients.matchAll();
-	for (const client of matchedClients) {
-		if (client.url === offscreenUrl) {
-		return true;
-		}
+	const existingContexts = await chrome.runtime.getContexts({
+	  contextTypes: ['OFFSCREEN_DOCUMENT'],
+	  documentUrls: [offscreenUrl]
+	});
+  
+	if (existingContexts.length > 0) {
+	  return;
 	}
-	return false;
-}
 
-async function load_page() {
-	while (!(await hasOffscreenDocument('audio.html'))) {
-		await chrome.offscreen.createDocument({
+	if (creating) await creating;
+	else {
+		creating = chrome.offscreen.createDocument({
 			url: 'audio.html',
 			justification: 'ignored',
 			reasons: ['AUDIO_PLAYBACK'],
 		});
 	}
-	return true
+	await creating;
+	creating = null;
+	update_values();
 }
 
-function send_audio(audio_path, volume, rand_pitch, pitch, cutoff_channel, use_profile) {
+async function send_audio(audio_path, volume, rand_pitch, pitch, cutoff_channel, use_profile) {
+	await hasOffscreenDocument('audio.html');
 	
-	console.log("AUDIO SEND");
-
 	chrome.runtime.sendMessage({
 		type: 'audio',
 		target: 'offscreen',
@@ -197,12 +196,6 @@ function send_audio(audio_path, volume, rand_pitch, pitch, cutoff_channel, use_p
 		cutoff_channel: cutoff_channel,
 		use_profile: use_profile
 	});
-}
-
-async function unload_page() {
-	if ((await hasOffscreenDocument('audio.html'))) {
-		chrome.offscreen.closeDocument();
-	}
 }
 
 async function update_paths() {

@@ -6,11 +6,6 @@ chrome.runtime.onMessage.addListener(
 				play_audio(request.path, request.volume * request.vol, request.rand_pitch, request.pitch, request.cutoff_channel, request.use_profile);
 			}
 		}
-		// else if (sent_from("popup.html", sender)) {
-		// 	if (request.type == 'audio') {
-		// 		play_audio(request.path, request.volume * request.vol, request.rand_pitch, request.pitch, request.cutoff_channel, request.use_profile);
-		// 	}
-		// }
 	}
 );
 
