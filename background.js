@@ -10,7 +10,6 @@ console.log("animalese typing start");
 const file_type = ".aac";
 const isUpperCase = str => str === str.toUpperCase();
 
-
 class AnimaleseSoundProfile {
 	constructor(pitch_shift = 0.0, pitch_variation = 0.2, intonation = 0.0) {
 		this.pitch_variation = pitch_variation;
@@ -19,6 +18,7 @@ class AnimaleseSoundProfile {
 	}
 }
 
+
 //Assign variables that dont exsist
 var vol=0.5;
 var v_type="voice_1";
@@ -26,7 +26,7 @@ var g_type="female";
 var config=0;
 var soundischecked=true;
 var sound_profile = new AnimaleseSoundProfile()
-chrome.storage.local.get(['gender', 'voice_type', 'volume', 'f_voice', 'm_voice', 'sound_config', 'selected_profile_indx', 'sound_profiles', 'isactive'], async function (result) {
+chrome.storage.local.get(['gender', 'voice_type', 'volume', 'f_voice', 'm_voice', 'sound_config', 'sound_profile', 'isactive'], async function (result) {
 	if (typeof result.isactive === 'undefined') {chrome.storage.local.set({'isactive':true}); }
 	if (typeof result.voice_type === 'undefined') {chrome.storage.local.set({'voice_type':v_type});}
 	if (typeof result.f_voice === 'undefined') {chrome.storage.local.set({'f_voice':v_type,'m_voice':v_type});}
@@ -49,7 +49,6 @@ chrome.storage.local.get(['gender', 'voice_type', 'volume', 'f_voice', 'm_voice'
 //Listen for inputs
 
 chrome.runtime.onMessage.addListener(async function (request, sender, sendResponse) {
-
 
 	switch (request.type) {
 		case 'update_values':
@@ -78,8 +77,8 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
 				let keycode = request.keycode;
 				let key = request.key;
 				switch (true) {
-					case (keycode == 16 || keycode == 32 || keycode == 20 || keycode == 18)://spacebar, shift, caps
-						break;
+					case (keycode == 16 || keycode == 32 || keycode == 20 || keycode == 18):break;//spacebar, shift, caps
+						
 					case (config!=1 && key.startsWith("Arrow"))://arrow keys
 						play_audio(audio_arrows[(keycode-37)%4], 0.4);
 					break;
@@ -256,7 +255,6 @@ async function play_audio(audio_path, volume, random_pitch=0.0, pitch=0.0, cutof
 
 	//apply pitch variation and pitch shift
 	if( !(random_pitch==0 && pitch==0) || use_profile) source.detune.value = ((parseFloat(((use_profile)?sound_profile.pitch_shift:0.0)) + pitch)*100.0) + ((Math.random() * (300 + 300) - 300)*(parseFloat(((use_profile)?sound_profile.pitch_variation:0)) + random_pitch));
-
 
 	if(use_profile && sound_profile.intonation!=0) {
 		source.playbackRate.setValueAtTime(source.playbackRate.value, audioCtx.currentTime);

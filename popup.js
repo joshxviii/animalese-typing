@@ -58,13 +58,13 @@ document.addEventListener('DOMContentLoaded', function() {
 		sound_profile = result.sound_profile;
 
 		document.getElementById('pitch_variation').value = sound_profile.pitch_variation
-		document.getElementById('pitch_variation_out').innerText = String( parseInt(document.getElementById('pitch_variation').value * 100) ) + "%"
+		document.getElementById('pitch_variation_out').value = String( parseInt(document.getElementById('pitch_variation').value * 100) ) + "%"
 	
 		document.getElementById('pitch_shift').value = sound_profile.pitch_shift
-		document.getElementById('pitch_shift_out').innerText =  ((document.getElementById('pitch_shift').value>0)?"+":"") + String( parseFloat(document.getElementById('pitch_shift').value) )
+		document.getElementById('pitch_shift_out').value =  ((document.getElementById('pitch_shift').value>0)?"+":"") + String( parseFloat(document.getElementById('pitch_shift').value).toFixed(1))
 	
 		document.getElementById('intonation').value = sound_profile.intonation
-		document.getElementById('intonation_out').innerText =  ((document.getElementById('intonation').value>0)?"+":"") + String( parseFloat(document.getElementById('intonation').value))
+		document.getElementById('intonation_out').value =  ((document.getElementById('intonation').value>0)?"+":"") + String( parseFloat(document.getElementById('intonation').value).toFixed(1))
 	});
 
 	chrome.storage.local.get(['isactive'], function (result) {
@@ -173,6 +173,15 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	});
 
+
+
+
+	//Set values for Editor
+	function updateProfile() {
+		chrome.storage.local.set({'sound_profile' : sound_profile});
+		chrome.runtime.sendMessage({type: 'update_values'});
+	}
+
 	document.getElementById('profile_editor').addEventListener('click', function (e) {
 		document.getElementById('overlay').classList.toggle("show");
 		chrome.runtime.sendMessage({type: 'type', key: 'Enter'});
@@ -180,33 +189,100 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	document.getElementById('exit_editor').addEventListener('click', function (e) {
 		document.getElementById('overlay').classList.toggle("show");
-		chrome.runtime.sendMessage({type: 'update_values'});
 		chrome.runtime.sendMessage({type: 'type', key: 'Enter'});
 	});
 
-
-	document.getElementById('pitch_variation').addEventListener('input', function (e) {
-		sound_profile.pitch_variation = document.getElementById('pitch_variation').value
-		document.getElementById('pitch_variation_out').innerText = String( parseInt(document.getElementById('pitch_variation').value * 100) ) + "%"
-		
-		chrome.storage.local.set({'sound_profile' : sound_profile});
+	//EDITOR INPUTS======
+	let pitch_variation = document.getElementById('pitch_variation');
+	let pitch_variation_out = document.getElementById('pitch_variation_out')
+	pitch_variation_out.addEventListener('click', function (e) {pitch_variation_out.select()})
+	pitch_variation_out.addEventListener('focusout', function (e) {updatePitchVariation()});
+	pitch_variation_out.addEventListener('keydown', function (e) {if (e.key=="Enter") updatePitchVariation()})
+	pitch_variation.addEventListener('input', function (e) {
+		sound_profile.pitch_variation = pitch_variation.value
+		pitch_variation_out.value = String( parseInt(pitch_variation.value * 100) ) + "%"
+		updateProfile()
 	});
+	function updatePitchVariation() {
+		let value = parseFloat(pitch_variation_out.value)
+		if (!isNaN(value)) {
+			value = ((value<100)?((value>0)?value:0):100)
+			pitch_variation_out.value = String( value.toFixed(0) ) + "%"
+		}
+		else {
+			value = 20.0;
+			pitch_variation_out.value = String( value.toFixed(0) ) + "%";
+		}
+		sound_profile.pitch_variation = value*0.01;
+		pitch_variation.value = value*0.01;
+		pitch_variation_out.blur();
 
-	document.getElementById('pitch_shift').addEventListener('input', function (e) {
-		let value = document.getElementById('pitch_shift').value
+		updateProfile();
+	}
+
+
+
+
+	let pitch_shift = document.getElementById('pitch_shift');
+	let pitch_shift_out = document.getElementById('pitch_shift_out')
+	pitch_shift_out.addEventListener('click', function (e) {pitch_shift_out.select()})
+	pitch_shift_out.addEventListener('focusout', function (e) {updatePitchShift()})
+	pitch_shift_out.addEventListener('keydown', function (e) {if (e.key=="Enter") updatePitchShift()})
+	pitch_shift.addEventListener('input', function (e) {
+		let value = pitch_shift.value
 		sound_profile.pitch_shift = value
-		document.getElementById('pitch_shift_out').innerText = ((value>0)?"+":"") + String( parseFloat(value))
-
-		chrome.storage.local.set({'sound_profile' : sound_profile});
+		pitch_shift_out.value = ((value>0)?"+":"") + String( parseFloat(value).toFixed(1))
+		updateProfile()
 	});
+	function updatePitchShift() {
+		let value = parseFloat(pitch_shift_out.value)
+		if (!isNaN(value)) {
+			value = ((value<12)?((value>-12)?value:-12):12)
+			pitch_shift_out.value = ((value>0)?"+":"") + String( value.toFixed(1) )
+		}
+		else {
+			value = 0.0;
+			pitch_shift_out.value = value.toFixed(1);
+		}
+		sound_profile.pitch_shift = value
+		pitch_shift.value = value
+		pitch_shift_out.blur();
 
-	document.getElementById('intonation').addEventListener('input', function (e) {
-		let value = document.getElementById('intonation').value
+		updateProfile();
+	}
+
+
+
+
+	let intonation = document.getElementById('intonation');
+	let intonation_out = document.getElementById('intonation_out')
+	intonation_out.addEventListener('click', function (e) {intonation_out.select()})
+	intonation_out.addEventListener('focusout', function (e) {updateIntonation()})
+	intonation_out.addEventListener('keydown', function (e) {if (e.key=="Enter") updateIntonation()})
+	intonation.addEventListener('input', function (e) {
+		let value = intonation.value
 		sound_profile.intonation = value
-		document.getElementById('intonation_out').innerText = ((value>0)?"+":"") + String( parseFloat(value * 1 ))
-
-		chrome.storage.local.set({'sound_profile' : sound_profile});
+		intonation_out.value = ((value>0)?"+":"") + String( parseFloat(value * 1 ).toFixed(1))
+		updateProfile();
 	});
+	function updateIntonation() {
+		let value = parseFloat(intonation_out.value)
+				
+		if (!isNaN(value)) {
+			value = ((value<1.0)?((value>-0.5)?value:-0.5):1)
+			intonation_out.value = ((value>0)?"+":"") + String( value.toFixed(1) )
+		}
+		else {
+			value = 0.0;
+			intonation_out.value = value.toFixed(1);
+		}
+		sound_profile.intonation = value
+		intonation.value = value
+		intonation_out.blur();
+
+		updateProfile();
+	}
+
 });
 
 //End

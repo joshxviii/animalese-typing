@@ -398,6 +398,7 @@ a:hover .kofi {opacity: 1.0;}
   transition: all 0s;
 }
 .editor_label {
+  
   font-size: 14px;
   display: block;
 }
@@ -412,7 +413,7 @@ p.range_indicator {
   display: inline;
   color: #cbbba9;
 }
-output {
+.editor_output {
   background-color: #ece5ca;
   left: 10px;
   border-radius: 8px;
@@ -421,6 +422,13 @@ output {
   color: #6e5c44;
   text-align: center;
   margin-left: 10px;
+  overflow:hidden;
+  max-height: 18px;
+  font-family: "Arial Rounded Bold";
+  font-size: 16px;
+  min-height: 18px;
+  border: 0;
+  outline:none!important;
 }
 
     </style>
@@ -437,19 +445,19 @@ output {
       <div class="indicator_box"><p class="range_indicator">-</p></div>
         <input id="pitch_shift" class="editor_slider" type="range" min="-12" max="12" step="0.2" value="0"></input>
       <div class="indicator_box"><p class="range_indicator">+</p></div>
-    <output class="editor_output" id="pitch_shift_out" for="pitch_shift">0</output>
+    <input type="text" id="pitch_shift_out" class="editor_output" />
 
     <label class="editor_label">Intonation</label>
       <div class="indicator_box"><p class="range_indicator">-</p></div>
         <input id="intonation" class="editor_slider" type="range" min="-0.5" max="1.0" step="0.1" value="0"></input>
       <div class="indicator_box"><p class="range_indicator">+</p></div>
-    <output class="editor_output" id="intonation_out" for="intonation">0</output>
+    <input type="text" id="intonation_out" class="editor_output" />
 
     <label class="editor_label">Pitch Variation</label>
       <div class="indicator_box"><p class="range_indicator">-</p></div>
         <input id="pitch_variation" class="editor_slider" type="range" min="0" max="1" step="0.05" value="0.2"></input>
       <div class="indicator_box"><p class="range_indicator">+</p></div>
-    <output class="editor_output" id="pitch_variation_out" for="pitch_variation">0</output>
+    <input type="text" id="pitch_variation_out" class="editor_output" />
 
   </div>
   <input type="button" id="exit_editor" class="btnStyle"/>
@@ -477,9 +485,9 @@ output {
             <br>
             <select name="voice_type" id="v_type" class="voice_f">
               <option value="voice_1" selected><p class="title">Voice 1</p></option>
-              <option value="voice_2"><p class="title">Voice 2</p></option>
-              <option value="voice_3"><p class="title">Voice 3</p></option>
-              <option value="voice_4"><p class="title">Voice 4</p></option>
+              <option value="voice_2">Voice 2</option>
+              <option value="voice_3">Voice 3</option>
+              <option value="voice_4">Voice 4</option>
             </select>
         </div>  
       </div>
@@ -489,7 +497,7 @@ output {
   </div>
     <div id="footer" align="center">
         <a href='https://ko-fi.com/dagexviii' target='_blank'><img height='17' class="kofi" src='./assets/images/kofi_logo.png' title="Kofi" alt='ko-fi' /></a> 
-        <p style="display: inline; margin: 20%">Animal Crossing is a lifestyle.</p>
+        <p style="display: inline; margin: 20%; opacity: 70%;" >Animal Crossing is a lifestyle!</p>
         <p class="version"><a id="version" href="https://addons.mozilla.org/en-US/firefox/addon/animalese-typing/" target='_blank'>v0.0</a></p>
     </div>
 
