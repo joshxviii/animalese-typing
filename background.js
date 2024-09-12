@@ -22,7 +22,7 @@ var v_type="voice_1";
 var g_type="female";
 var config=0;
 var soundischecked=true;
-var sound_profile = new AnimaleseSoundProfile()
+var sound_profile = new AnimaleseSoundProfile();
 chrome.storage.local.get(['gender', 'voice_type', 'volume', 'f_voice', 'm_voice', 'sound_config', 'sound_profile', 'isactive'], async function (result) {
 	if (typeof result.isactive === 'undefined') {chrome.storage.local.set({'isactive':true}); }
 	if (typeof result.voice_type === 'undefined') {chrome.storage.local.set({'voice_type':v_type});}
@@ -32,7 +32,7 @@ chrome.storage.local.get(['gender', 'voice_type', 'volume', 'f_voice', 'm_voice'
 	if (typeof result.sound_config === 'undefined') {chrome.storage.local.set({'sound_config':config});}
 	if (typeof result.sound_profile === 'undefined') {chrome.storage.local.set({'sound_profile':sound_profile});}
 
-	update_paths();
+	update_values();
 
 	if (typeof result.isactive !== 'boolean') result.isactive = true;
 	if (result.isactive) {
@@ -50,18 +50,24 @@ chrome.runtime.onInstalled.addListener(details => {
 });
 
 //Listen for inputs
+
+async function update_values() {
+	await chrome.storage.local.get(['gender', 'voice_type', 'volume', 'f_voice', 'm_voice', 'sound_config', 'sound_profile', 'isactive'], async function (result) {
+		vol = result.volume;
+		v_type = result.voice_type;
+		g_type = result.gender;
+		config = result.sound_config;
+		sound_profile = result.sound_profile;
+		soundischecked = result.isactive;
+	});
+	update_paths();
+}
+
 chrome.runtime.onMessage.addListener(async function (request, sender, sendResponse) {
 	if (await load_page()) {
 		switch (request.type) {
 			case 'update_values':
-				await chrome.storage.local.get(['gender', 'voice_type', 'volume', 'f_voice', 'm_voice', 'sound_config', 'selected_profile_indx', 'sound_profile', 'isactive'], async function (result) {
-					vol = result.volume;
-					v_type = result.voice_type;
-					g_type = result.gender;
-					config = result.sound_config;
-					sound_profile = result.sound_profile;
-					soundischecked = result.isactive;
-				});
+				await update_values();
 			break;
 			case 'type':
 				let input_type = request.input_type;

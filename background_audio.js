@@ -28,8 +28,6 @@ let buffer;
 let source;
 async function play_audio(audio_path, volume, random_pitch=0.0, pitch=0.0, cutoff_channel=0, use_profile=false) {
 
-	console.log("AUDIO PLAY");
-
 	if (!audioCtx) audioCtx = new AudioContext();
 
 	const response = await fetch(audio_path);
