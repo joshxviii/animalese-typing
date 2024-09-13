@@ -27,7 +27,7 @@ var vol=0.5;
 var v_type="voice_1";
 var g_type="female";
 var config=0;
-var soundischecked=true;
+var soundischecked=false;
 var sound_profile = new AnimaleseSoundProfile()
 chrome.storage.local.get(['gender', 'voice_type', 'volume', 'f_voice', 'm_voice', 'sound_config', 'sound_profile', 'isactive'], async function (result) {
 	if (typeof result.isactive === 'undefined') {chrome.storage.local.set({'isactive':soundischecked}); }
@@ -68,6 +68,7 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
 			await update_values();
 		break;
 		case 'type':
+			if (!soundischecked) return;// exit early if disabled.
 			let input_type = request.input_type;
 			if (request.config) config = request.config;
 			if (request.g_type) {
@@ -154,7 +155,6 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
 //End
 
 async function update_paths() {
-
 	//Store sound files
 	audio_vocals = [
 		'assets/audio/vocals/'+g_type+'/'+v_type+'/0'+file_type,
