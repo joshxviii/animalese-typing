@@ -38,7 +38,7 @@ async function play_audio(audio_path, volume, random_pitch=0.0, pitch=0.0, cutof
 
 	//apply volume gain
 	gainNode = audioCtx.createGain();
-	gainNode.gain.value = volume * 0.9;
+	gainNode.gain.value = volume * 0.95;
 	gainNode.connect(audioCtx.destination);
 
 	source = audioCtx.createBufferSource();

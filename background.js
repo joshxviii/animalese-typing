@@ -133,10 +133,10 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
 						case (config!=2 && parseInt(key) == 0):
 							send_audio(audio_vocals[9], 1.0);
 						break;
-						case (config!=2 && keycode == 189):
+						case (config!=2 && keycode == 45):
 							send_audio(audio_vocals[10], 1.0);
 						break;
-						case (config!=2 && keycode == 187):
+						case (config!=2 && keycode == 61):
 							send_audio(audio_vocals[11], 1.0);
 						break;
 
