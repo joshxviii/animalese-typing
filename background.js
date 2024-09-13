@@ -3,7 +3,11 @@
 //dagexviii.dev@gmail.com
 //https://github.com/joshxviii/animalese-typing
 
-console.log("animalese typing start");
+console.log("animalese-typing start");
+
+function isAlpha(str) {
+	return (str.length === 1)?(/[a-zA-Z]/).test(str.charAt(0)):false;
+}
 
 const file_type = ".aac"
 const isUpperCase = str => str === str.toUpperCase();
@@ -21,7 +25,7 @@ var vol=0.5;
 var v_type="voice_1";
 var g_type="female";
 var config=0;
-var soundischecked=true;
+var soundischecked=false;
 var sound_profile = new AnimaleseSoundProfile();
 chrome.storage.local.get(['gender', 'voice_type', 'volume', 'f_voice', 'm_voice', 'sound_config', 'sound_profile', 'isactive'], async function (result) {
 	if (typeof result.isactive === 'undefined') {chrome.storage.local.set({'isactive':soundischecked}); }
@@ -70,84 +74,84 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
 				await update_values();
 			break;
 			case 'type':
-				if (soundischecked) {
-					let input_type = request.input_type;
-					if (request.config) config = request.config;
-					if (request.g_type) {
-						g_type = request.g_type; 
-						v_type = request.v_type;
-						update_paths()
-					}
-					if (input_type == 'password') { //do not play animalese if password field is focused
-						send_audio(audio_special["default"], 0.2, 0.4);
-						return;
-					}
-					else {
-						let keycode = request.keycode;
-						let key = request.key;
-						switch (true) {
-							case (keycode == 16 || keycode == 32 || keycode == 20 || keycode == 18):break;//spacebar, shift, caps
-								
-							case (config!=1 && key.startsWith("Arrow"))://arrow keys
-								send_audio(audio_arrows[(keycode-37)%4], 0.4);
-							break;
-							case (config!=1 && key == "Backspace" || key == "Delete" )://backspace, delete
-								send_audio(audio_special['back'], 1.0)
-							break;
-							case (config!=1 && key == "Enter")://enter
-								send_audio(audio_special['enter'], 0.2)
-							break;
-							case (config!=1 && key == "Tab")://tab
-								send_audio(audio_special['tab'], 0.5)
-							break;
-							case (key == '?'):
-								if (config!=1) send_audio(audio_special[key], 0.6)
-								if (config!=2) send_audio(audio_deksa, 0.6, 0.2, 0.0, 1, true);
-							break;
-							case (key == '!'):
-								if (config!=1) send_audio(audio_special[key], 0.6)
-								if (config!=2) send_audio(audio_gwah, 0.6, 0.2, 0.0, 1, true);
-							break;
-							case (config!=1 && key == '~'): send_audio(audio_special[key], 0.6); break;
-							case (config!=1 && key == '@'): send_audio(audio_special[key], 0.6); break;
-							case (config!=1 && key == '#'): send_audio(audio_special[key], 0.6); break;
-							case (config!=1 && key == '$'): send_audio(audio_special[key], 0.6); break;
-							case (config!=1 && key == '%'): send_audio(audio_special[key], 0.6); break;
-							case (config!=1 && key == '^'): send_audio(audio_special[key], 0.6); break;
-							case (config!=1 && key == '&'): send_audio(audio_special[key], 0.6); break;
-							case (config!=1 && key == '*'): send_audio(audio_special[key], 0.6); break;
-							case (config!=1 && key == '('): send_audio(audio_special[key], 0.6); break;
-							case (config!=1 && key == ')'): send_audio(audio_special[key], 0.6); break;
-							case (config!=1 && key == '['): send_audio(audio_special[key], 0.6); break;
-							case (config!=1 && key == ']'): send_audio(audio_special[key], 0.6); break;
-							case (config!=1 && key == '{'): send_audio(audio_special[key], 0.6); break;
-							case (config!=1 && key == '}'): send_audio(audio_special[key], 0.6); break;
+				if (!soundischecked) return;
+				let input_type = request.input_type;
+				if (request.config) config = request.config;
+				if (request.g_type) {
+					g_type = request.g_type; 
+					v_type = request.v_type;
+					update_paths()
+				}
+				if (input_type == 'password') { //do not play animalese if password field is focused
+					send_audio(audio_special["default"], 0.2, 0.4);
+					return;
+				}
+				else {
+					let keycode = request.keycode;
+					let key = request.key;
+					switch (true) {
+						case (keycode == 16 || keycode == 32 || keycode == 20 || keycode == 18):break;//spacebar, shift, caps
+							
+						case (config!=1 && key.startsWith("Arrow"))://arrow keys
+							send_audio(audio_arrows[(keycode-37)%4], 0.4);
+						break;
+						case (config!=1 && key == "Backspace" || key == "Delete" )://backspace, delete
+							send_audio(audio_special['back'], 1.0)
+						break;
+						case (config!=1 && key == "Enter")://enter
+							send_audio(audio_special['enter'], 0.2)
+						break;
+						case (config!=1 && key == "Tab")://tab
+							send_audio(audio_special['tab'], 0.5)
+						break;
+						case (key == '?'):
+							if (config!=1) send_audio(audio_special[key], 0.6)
+							if (config!=2) send_audio(audio_deksa, 0.6, 0.2, 0.0, 1, true);
+						break;
+						case (key == '!'):
+							if (config!=1) send_audio(audio_special[key], 0.6)
+							if (config!=2) send_audio(audio_gwah, 0.6, 0.2, 0.0, 1, true);
+						break;
+						case (config!=1 && key == '~'): send_audio(audio_special[key], 0.6); break;
+						case (config!=1 && key == '@'): send_audio(audio_special[key], 0.6); break;
+						case (config!=1 && key == '#'): send_audio(audio_special[key], 0.6); break;
+						case (config!=1 && key == '$'): send_audio(audio_special[key], 0.6); break;
+						case (config!=1 && key == '%'): send_audio(audio_special[key], 0.6); break;
+						case (config!=1 && key == '^'): send_audio(audio_special[key], 0.6); break;
+						case (config!=1 && key == '&'): send_audio(audio_special[key], 0.6); break;
+						case (config!=1 && key == '*'): send_audio(audio_special[key], 0.6); break;
+						case (config!=1 && key == '('): send_audio(audio_special[key], 0.6); break;
+						case (config!=1 && key == ')'): send_audio(audio_special[key], 0.6); break;
+						case (config!=1 && key == '['): send_audio(audio_special[key], 0.6); break;
+						case (config!=1 && key == ']'): send_audio(audio_special[key], 0.6); break;
+						case (config!=1 && key == '{'): send_audio(audio_special[key], 0.6); break;
+						case (config!=1 && key == '}'): send_audio(audio_special[key], 0.6); break;
 
-							case (config!=2 && parseInt(key) >= 1 && parseInt(key) <= 9):
-								send_audio(audio_vocals[parseInt(key)-1], 1.0);
-							break;
-							case (config!=2 && parseInt(key) == 0):
-								send_audio(audio_vocals[9], 1.0);
-							break;
-							case (config!=2 && keycode == 189):
-								send_audio(audio_vocals[10], 1.0);
-							break;
-							case (config!=2 && keycode == 187):
-								send_audio(audio_vocals[11], 1.0);
-							break;
+						case (config!=2 && parseInt(key) >= 1 && parseInt(key) <= 9):
+							send_audio(audio_vocals[parseInt(key)-1], 1.0);
+						break;
+						case (config!=2 && parseInt(key) == 0):
+							send_audio(audio_vocals[9], 1.0);
+						break;
+						case (config!=2 && keycode == 189):
+							send_audio(audio_vocals[10], 1.0);
+						break;
+						case (config!=2 && keycode == 187):
+							send_audio(audio_vocals[11], 1.0);
+						break;
 
-							case (config!=2 && key == 'OK'): send_audio(audio_ok, 0.6, 0.0, 0.0, 1, true); break;
-							case (config!=2 && (keycode >= 65 && keycode <= 90 || (keycode >= 97 && keycode <= 122))):
-								//When typing in caps have a slighty higher and louder pitch with more variation
-								if (isUpperCase(key)) send_audio(audio_animalese[keycode - 65], 0.7, 0.15, 1.6, 1, true);
-								else send_audio(audio_animalese[keycode - 97], 0.5, 0.0, 0, 1, true);
-							break;
+						case (config!=2 && key == 'OK'): send_audio(audio_ok, 0.6, 0.0, 0.0, 1, true); break;
+						case (config!=2 && isAlpha(key)):
+							let audioPath = 'assets/audio/animalese/'+g_type+'/'+v_type+'/'+ key.toLowerCase() +''+file_type;
+							//When typing in caps have a slighty higher and louder pitch with more variation
+							if (isUpperCase(key)) send_audio(audioPath, 0.7, 0.15, 1.6, 1, true);
+							else send_audio(audioPath, 0.5, 0.0, 0, 1, true);
+						break;
 
-							default:
-								//Default sound to play
-								send_audio(config!=1 && audio_special["default"], 0.4, 0.4);
-							break;
-						}
+						default:
+							//Default sound to play
+							send_audio(config!=1 && audio_special["default"], 0.4, 0.4);
+						break;
 					}
 				}
 			break;
@@ -200,34 +204,6 @@ async function send_audio(audio_path, volume, rand_pitch, pitch, cutoff_channel,
 
 async function update_paths() {
 	//Store sound files
-	audio_animalese = [
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/a'+file_type,
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/b'+file_type,
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/c'+file_type,
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/d'+file_type,
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/e'+file_type,
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/f'+file_type,
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/g'+file_type,
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/h'+file_type,
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/i'+file_type,
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/j'+file_type,
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/k'+file_type,
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/l'+file_type,
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/m'+file_type,
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/n'+file_type,
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/o'+file_type,
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/p'+file_type,
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/q'+file_type,
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/r'+file_type,
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/s'+file_type,
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/t'+file_type,
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/u'+file_type,
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/v'+file_type,
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/w'+file_type,
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/x'+file_type,
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/y'+file_type,
-		'assets/audio/animalese/'+g_type+'/'+v_type+'/z'+file_type
-	];
 	audio_vocals = [
 		'assets/audio/vocals/'+g_type+'/'+v_type+'/0'+file_type,
 		'assets/audio/vocals/'+g_type+'/'+v_type+'/1'+file_type,

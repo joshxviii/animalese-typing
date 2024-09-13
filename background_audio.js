@@ -17,7 +17,7 @@ function sent_from(sender_path, msg) {
 }
 
 var sound_profile;
-let audioCtx;
+let audioCtx = new AudioContext();
 let gainNode;
 let buffer;
 let source;
