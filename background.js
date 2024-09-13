@@ -5,7 +5,8 @@
 //dagexviii.dev@gmail.com
 //https://github.com/joshxviii/animalese-typing
 
-console.log("animalese typing start");
+console.log("animalese-typing start");
+
 function isAlpha(str) {
 	return (str.length === 1)?(/[a-zA-Z]/).test(str.charAt(0)):false;
 }
