@@ -31,7 +31,7 @@ var config=0;
 var soundischecked=false;
 var sound_profile = new AnimaleseSoundProfile()
 chrome.storage.local.get(['gender', 'voice_type', 'volume', 'f_voice', 'm_voice', 'sound_config', 'sound_profile', 'isactive'], async function (result) {
-	if (typeof result.isactive === 'undefined') {chrome.storage.local.set({'isactive':soundischecked}); }
+	if (typeof result.isactive === 'undefined') {chrome.storage.local.set({'isactive':true}); }
 	if (typeof result.voice_type === 'undefined') {chrome.storage.local.set({'voice_type':v_type});}
 	if (typeof result.f_voice === 'undefined') {chrome.storage.local.set({'f_voice':v_type,'m_voice':v_type});}
 	if (typeof result.gender === 'undefined') {chrome.storage.local.set({'gender':g_type});}
