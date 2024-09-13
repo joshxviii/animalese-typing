@@ -3,7 +3,7 @@ chrome.runtime.sendMessage({type: 'update_values'});
 
 let keyFallback;
 document.addEventListener('input', function (e) {
-	keyFallback = e.data===null ? "" : e.data.slice(-1);
+	keyFallback = e.data===null ? "" :( (typeof e.data === 'undefined') ? "" : e.data.slice(-1));
 }, true);
 document.addEventListener('keydown', function (e) {
 	//chrome.runtime.sendMessage({type: 'load'});
@@ -20,6 +20,6 @@ for (var i = 0; i < ifs.length; i++) {
 		if (!e.ctrlKey) chrome.runtime.sendMessage({ type: 'type', key: e.key ,  keycode: (e.key.length==1)?e.key.charCodeAt(0):e.keyCode , input_type: e.target.type});
 	}, true);
 	fc.addEventListener('input', function (e) {
-		keyFallback = e.data===null ? "" : e.data.slice(-1);
+		keyFallback = e.data===null ? "" :( (typeof e.data === 'undefined') ? "" : e.data.slice(-1));
 	}, true);
 }
