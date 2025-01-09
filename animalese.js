@@ -1,7 +1,6 @@
 //keypress detect
 chrome.runtime.sendMessage({type: 'update_values'});
 
-let keyFallback;
 let useFallback=false;
 document.addEventListener('input', function (e) {
 	if(useFallback){
