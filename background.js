@@ -7,11 +7,12 @@
 
 console.log("animalese-typing start");
 
-function isAlpha(str) {
-	return (str.length === 1)?(/[a-zA-Z]/).test(str.charAt(0)):false;
-}
+function isAlpha(str) {return (str.length === 1)?(/[a-zA-Z]/).test(str.charAt(0)):false;}
 
-const file_type = ".aac";
+function isMoney(str) {return (str.length === 1)?(/[$£€¥₩₱¢]/).test(str.charAt(0)):false;}
+
+function isWhitespace(str) {return (str.length === 1)?(/\s/).test(str.charAt(0)):false;}
+
 const isUpperCase = str => str === str.toUpperCase();
 
 class AnimaleseSoundProfile {
@@ -27,7 +28,7 @@ class AnimaleseSoundProfile {
 var vol=0.5;
 var v_type="voice_1";
 var g_type="female";
-var config=0;
+var config=0; // sound configuration setting. 0 = all sounds. 1 = animalese only. 2 = sndfx only.
 var soundischecked=false;
 var sound_profile = new AnimaleseSoundProfile()
 chrome.storage.local.get(['gender', 'voice_type', 'volume', 'f_voice', 'm_voice', 'sound_config', 'sound_profile', 'isactive'], async function (result) {
@@ -85,8 +86,8 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
 				let keycode = request.keycode;
 				let key = request.key;
 				switch (true) {
-					case (keycode == 16 || keycode == 32 || keycode == 20 || keycode == 18):break;//spacebar, shift, caps
-						
+					case (isWhitespace(key) || keycode == 16 || keycode == 32 || keycode == 20 || keycode == 18):break;//spacebar, shift, caps
+	
 					case (config!=1 && key.startsWith("Arrow"))://arrow keys
 						play_audio(audio_arrows[(keycode-37)%4], 0.4);
 					break;
@@ -107,20 +108,23 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
 						if (config!=1) play_audio(audio_special[key], 0.6)
 						if (config!=2) play_audio(audio_gwah, 0.6, 0.2, 0.0, 1, true);
 					break;
-					case (config!=1 && key == '~'): play_audio(audio_special[key], 0.6); break;
-					case (config!=1 && key == '@'): play_audio(audio_special[key], 0.6); break;
-					case (config!=1 && key == '#'): play_audio(audio_special[key], 0.6); break;
-					case (config!=1 && key == '$'): play_audio(audio_special[key], 0.6); break;
-					case (config!=1 && key == '%'): play_audio(audio_special[key], 0.6); break;
-					case (config!=1 && key == '^'): play_audio(audio_special[key], 0.6); break;
-					case (config!=1 && key == '&'): play_audio(audio_special[key], 0.6); break;
-					case (config!=1 && key == '*'): play_audio(audio_special[key], 0.6); break;
-					case (config!=1 && key == '('): play_audio(audio_special[key], 0.6); break;
-					case (config!=1 && key == ')'): play_audio(audio_special[key], 0.6); break;
-					case (config!=1 && key == '['): play_audio(audio_special[key], 0.6); break;
-					case (config!=1 && key == ']'): play_audio(audio_special[key], 0.6); break;
-					case (config!=1 && key == '{'): play_audio(audio_special[key], 0.6); break;
-					case (config!=1 && key == '}'): play_audio(audio_special[key], 0.6); break;
+
+					case (config!=1 && key == '~'): 	play_audio(audio_special[key], 0.6); break;
+					case (config!=1 && key == '@'): 	play_audio(audio_special[key], 0.6); break;
+					case (config!=1 && key == '#'): 	play_audio(audio_special[key], 0.6); break;
+					case (config!=1 && isMoney(key)): 	play_audio(audio_special['$'], 0.6); break;
+					case (config!=1 && key == '%'): 	play_audio(audio_special[key], 0.6); break;
+					case (config!=1 && key == '^'): 	play_audio(audio_special[key], 0.6); break;
+					case (config!=1 && key == '&'): 	play_audio(audio_special[key], 0.6); break;
+					case (config!=1 && key == '*'): 	play_audio(audio_special[key], 0.6); break;
+					case (config!=1 && key == '('): 	play_audio(audio_special[key], 0.6); break;
+					case (config!=1 && key == ')'): 	play_audio(audio_special[key], 0.6); break;
+					case (config!=1 && key == '['): 	play_audio(audio_special[key], 0.6); break;
+					case (config!=1 && key == ']'): 	play_audio(audio_special[key], 0.6); break;
+					case (config!=1 && key == '{'): 	play_audio(audio_special[key], 0.6); break;
+					case (config!=1 && key == '}'): 	play_audio(audio_special[key], 0.6); break;
+					case (config!=1 && key == '/'): 	play_audio(audio_special[key], 0.6); break;
+					case (config!=1 && key == '\\'): 	play_audio(audio_special[key], 0.6); break;
 
 					case (config!=2 && parseInt(key) >= 1 && parseInt(key) <= 9):
 						play_audio(audio_vocals[parseInt(key)-1], 1.0);
@@ -137,7 +141,7 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
 
 					case (config!=2 && key == 'OK'): play_audio(audio_ok, 0.6, 0.0, 0.0, 1, true); break;
 					case (config!=2 && isAlpha(key) ):
-						let audioPath = 'assets/audio/animalese/'+g_type+'/'+v_type+'/'+ key.toLowerCase() +''+file_type;
+						let audioPath = 'assets/audio/animalese/'+g_type+'/'+v_type+'/'+ key.toLowerCase();
 						//When typing in caps have a slighty higher and louder pitch with more variation
 						if (isUpperCase(key)) play_audio(audioPath, 0.7, 0.15, 1.6, 1, true);
 						else play_audio(audioPath, 0.5, 0.0, 0, 1, true);
@@ -158,52 +162,55 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
 async function update_paths() {
 	//Store sound files
 	audio_vocals = [
-		'assets/audio/vocals/'+g_type+'/'+v_type+'/0'+file_type,
-		'assets/audio/vocals/'+g_type+'/'+v_type+'/1'+file_type,
-		'assets/audio/vocals/'+g_type+'/'+v_type+'/2'+file_type,
-		'assets/audio/vocals/'+g_type+'/'+v_type+'/3'+file_type,
-		'assets/audio/vocals/'+g_type+'/'+v_type+'/4'+file_type,
-		'assets/audio/vocals/'+g_type+'/'+v_type+'/5'+file_type,
-		'assets/audio/vocals/'+g_type+'/'+v_type+'/6'+file_type,
-		'assets/audio/vocals/'+g_type+'/'+v_type+'/7'+file_type,
-		'assets/audio/vocals/'+g_type+'/'+v_type+'/8'+file_type,
-		'assets/audio/vocals/'+g_type+'/'+v_type+'/9'+file_type,
-		'assets/audio/vocals/'+g_type+'/'+v_type+'/10'+file_type,
-		'assets/audio/vocals/'+g_type+'/'+v_type+'/11'+file_type
+		'assets/audio/vocals/'+g_type+'/'+v_type+'/0',
+		'assets/audio/vocals/'+g_type+'/'+v_type+'/1',
+		'assets/audio/vocals/'+g_type+'/'+v_type+'/2',
+		'assets/audio/vocals/'+g_type+'/'+v_type+'/3',
+		'assets/audio/vocals/'+g_type+'/'+v_type+'/4',
+		'assets/audio/vocals/'+g_type+'/'+v_type+'/5',
+		'assets/audio/vocals/'+g_type+'/'+v_type+'/6',
+		'assets/audio/vocals/'+g_type+'/'+v_type+'/7',
+		'assets/audio/vocals/'+g_type+'/'+v_type+'/8',
+		'assets/audio/vocals/'+g_type+'/'+v_type+'/9',
+		'assets/audio/vocals/'+g_type+'/'+v_type+'/10',
+		'assets/audio/vocals/'+g_type+'/'+v_type+'/11'
 	];
 	audio_arrows = [
-		'assets/audio/sfx/left'+file_type,
-		'assets/audio/sfx/up'+file_type,
-		'assets/audio/sfx/right'+file_type,
-		'assets/audio/sfx/down'+file_type
+		'assets/audio/sfx/arrow_left',
+		'assets/audio/sfx/arrow_up',
+		'assets/audio/sfx/arrow_right',
+		'assets/audio/sfx/arrow_down'
 	];
-	audio_deksa = 'assets/audio/animalese/'+g_type+'/'+v_type+'/Deska'+file_type;
-	audio_gwah = 'assets/audio/animalese/'+g_type+'/'+v_type+'/Gwah'+file_type;
-	audio_ok = 'assets/audio/animalese/'+g_type+'/'+v_type+'/OK'+file_type;
+	audio_deksa = 'assets/audio/animalese/'+g_type+'/'+v_type+'/Deska';
+	audio_gwah = 'assets/audio/animalese/'+g_type+'/'+v_type+'/Gwah';
+	audio_ok = 'assets/audio/animalese/'+g_type+'/'+v_type+'/OK';
 	audio_special = {
-		"default": 'assets/audio/sfx/default'+file_type,
-		"back": 'assets/audio/sfx/backspace'+file_type,
-		"enter": 'assets/audio/sfx/enter'+file_type,
-		"tab": 'assets/audio/sfx/tab'+file_type,
-		"?": 'assets/audio/sfx/question'+file_type,
-		"~": 'assets/audio/sfx/tilde'+file_type,
-		"!": 'assets/audio/sfx/exclamation'+file_type,
-		"@": 'assets/audio/sfx/at'+file_type,
-		"#": 'assets/audio/sfx/pound'+file_type,
-		"$": 'assets/audio/sfx/dollar'+file_type,
-		"%": 'assets/audio/sfx/percent'+file_type,
-		"^": 'assets/audio/sfx/caret'+file_type,
-		"&": 'assets/audio/sfx/ampersand'+file_type,
-		"*": 'assets/audio/sfx/asterisk'+file_type,
-		"(": 'assets/audio/sfx/parenthesis_open'+file_type,
-		")": 'assets/audio/sfx/parenthesis_closed'+file_type,
-		"[": 'assets/audio/sfx/bracket_open'+file_type,
-		"]": 'assets/audio/sfx/bracket_closed'+file_type,
-		"{": 'assets/audio/sfx/brace_open'+file_type,
-		"}": 'assets/audio/sfx/brace_closed'+file_type
+		"default": 'assets/audio/sfx/default',
+		"back": 'assets/audio/sfx/backspace',
+		"enter": 'assets/audio/sfx/enter',
+		"tab": 'assets/audio/sfx/tab',
+		"?": 'assets/audio/sfx/question',
+		"~": 'assets/audio/sfx/tilde',
+		"!": 'assets/audio/sfx/exclamation',
+		"@": 'assets/audio/sfx/at',
+		"#": 'assets/audio/sfx/pound',
+		"$": 'assets/audio/sfx/dollar',
+		"%": 'assets/audio/sfx/percent',
+		"^": 'assets/audio/sfx/caret',
+		"&": 'assets/audio/sfx/ampersand',
+		"*": 'assets/audio/sfx/asterisk',
+		"(": 'assets/audio/sfx/parenthesis_open',
+		")": 'assets/audio/sfx/parenthesis_closed',
+		"[": 'assets/audio/sfx/bracket_open',
+		"]": 'assets/audio/sfx/bracket_closed',
+		"{": 'assets/audio/sfx/brace_open',
+		"}": 'assets/audio/sfx/brace_closed',
+		"/": 'assets/audio/sfx/slash_forward',
+		"\\": 'assets/audio/sfx/slash_back'
 	}
 }
 
+const file_type = ".aac";
 let audioCtx = new AudioContext();;
 let gainNode;
 let buffer;
@@ -212,7 +219,7 @@ async function play_audio(audio_path, volume, random_pitch=0.0, pitch=0.0, cutof
 
 	if (!audioCtx) audioCtx = new AudioContext();
 
-	const response = await fetch(audio_path);
+	const response = await fetch(audio_path+file_type);
 	buffer = await audioCtx.decodeAudioData(await response.arrayBuffer());
 
 	//allow sounds on the same channel to cut eachother off.
