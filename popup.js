@@ -1,4 +1,4 @@
-var female_voices = ['Sweet', 'Peppy', 'Uchi', 'Snooty'];
+var female_voices = ['Sweet', 'Peppy', 'Big sister', 'Snooty'];
 var male_voices = ['Jock', 'Lazy', 'Smug', 'Cranky'];
 
 function disable() {
