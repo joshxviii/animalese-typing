@@ -1,5 +1,19 @@
-var female_voices = ['Sweet', 'Peppy', 'Big sister', 'Snooty'];
-var male_voices = ['Jock', 'Lazy', 'Smug', 'Cranky'];
+var female_voices = [chrome.i18n.getMessage("f_voice_1"), chrome.i18n.getMessage("f_voice_2"), chrome.i18n.getMessage("f_voice_3"), chrome.i18n.getMessage("f_voice_4")];
+var male_voices = 	[chrome.i18n.getMessage("m_voice_1"), chrome.i18n.getMessage("m_voice_2"), chrome.i18n.getMessage("m_voice_3"), chrome.i18n.getMessage("m_voice_4")];
+
+function updateLabelLanguage() {
+	document.getElementById('label_footer').textContent = chrome.i18n.getMessage("footer");
+
+	document.getElementById('label_volume').textContent = chrome.i18n.getMessage("volume");
+	document.getElementById('label_config_1').textContent = chrome.i18n.getMessage("config_1");
+	document.getElementById('label_config_2').textContent = chrome.i18n.getMessage("config_2");
+	document.getElementById('label_config_3').textContent = chrome.i18n.getMessage("config_3");
+	
+	document.getElementById('label_editor_title').textContent = chrome.i18n.getMessage("editor_title");
+	document.getElementById('label_editor_1').textContent = chrome.i18n.getMessage("editor_1");
+	document.getElementById('label_editor_2').textContent = chrome.i18n.getMessage("editor_2");
+	document.getElementById('label_editor_3').textContent = chrome.i18n.getMessage("editor_3");
+}
 
 function disable() {
 	chrome.action.setIcon({path: 'assets/images/icon_off.png'});
@@ -47,7 +61,9 @@ function say_Gwah() {//send update notif to background for config
 
 //Execute when popup is loaded
 document.addEventListener('DOMContentLoaded', function() {
+	updateLabelLanguage()
 	updateList();
+	
 	document.getElementById('version').innerText = "v" + chrome.runtime.getManifest().version
 
 

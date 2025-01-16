@@ -300,6 +300,8 @@ a:hover .kofi {opacity: 1.0;}
   margin: 8px; color: rgba(0, 0, 0, 0.493); font-size: 9px;
   display: inline;
 
+  width: 80px;
+
   font-size: 12px;
   font-family: "Arial Rounded Bold";
   text-align: center;
@@ -352,12 +354,8 @@ a:hover .kofi {opacity: 1.0;}
 #footer {
     position:absolute;
     color: rgba(255, 255, 255, 0.651); font-size: 12px; text-align: center; user-select: none;
-    padding-top:2px;
+    padding-top:0px;
     padding-bottom:0px;
-
-    border-top-color: rgba(230, 230, 230, 0.664);
-    border-top-style: solid;
-    border-top-width: 2px;
 
     bottom:0;
     width:100%;
@@ -442,21 +440,21 @@ p.range_indicator {
 <body>  
 
 <div id="overlay" class="hide">
-  <p style="text-align: center; margin: 18px; margin-left: 60px; margin-right: 60px;color:#877358; font-size: 18px; border-radius: 32px;  background-color: #fffae4;">Animalese Editor</p>
+  <p id="label_editor_title" style="text-align: center; margin: 18px; margin-left: 60px; margin-right: 60px;color:#877358; font-size: 18px; border-radius: 32px;  background-color: #fffae4;">Animalese Editor</p>
   <div id="profile_edit_menu">
-    <label class="editor_label">Pitch Shift</label>
+    <label id="label_editor_1" class="editor_label">Pitch Shift</label>
       <div class="indicator_box"><p class="range_indicator">-</p></div>
         <input id="pitch_shift" class="editor_slider" type="range" min="-12" max="12" step="0.2" value="0"></input>
       <div class="indicator_box"><p class="range_indicator">+</p></div>
     <input type="text" id="pitch_shift_out" class="editor_output" />
 
-    <label class="editor_label">Intonation</label>
+    <label id="label_editor_2" class="editor_label">Intonation</label>
       <div class="indicator_box"><p class="range_indicator">-</p></div>
         <input id="intonation" class="editor_slider" type="range" min="-0.5" max="1.0" step="0.1" value="0"></input>
       <div class="indicator_box"><p class="range_indicator">+</p></div>
     <input type="text" id="intonation_out" class="editor_output" />
 
-    <label class="editor_label">Pitch Variation</label>
+    <label id="label_editor_3" class="editor_label">Pitch Variation</label>
       <div class="indicator_box"><p class="range_indicator">-</p></div>
         <input id="pitch_variation" class="editor_slider" type="range" min="0" max="1" step="0.05" value="0.2"></input>
       <div class="indicator_box"><p class="range_indicator">+</p></div>
@@ -467,9 +465,9 @@ p.range_indicator {
 </div>
 
     <select id="sound_config">
-        <option value=0 selected>All Sounds</option>
-        <option value=1>Animalese Only</option>
-        <option value=2>Soundfx Only</option>
+        <option id="label_config_1" value=0 selected>All Sounds</option>
+        <option id="label_config_2" value=1>Animalese Only</option>
+        <option id="label_config_3" value=2>Soundfx Only</option>
     </select>
 
     <input type="button" id="profile_editor" class="btnStyle"/>
@@ -480,17 +478,17 @@ p.range_indicator {
     <div  class="in-box"  align="center">
       <div id="volmue_slider">
         <label for="volume" class="vol_inactive" id="vol_percent">%100</label>
-        <label for="volume" >Volume</label>
+        <label id="label_volume" for="volume" >Volume</label>
         <input type="range" min="0" max="1" id="volume" step="0.01"></input>
         <div id="v_select">
             <input type="button" id="female" class="btnStyle" disabled/>
             <input type="button" id="male" class="btnStyle" disabled/>
             <br>
             <select name="voice_type" id="v_type" class="voice_f">
-              <option value="voice_1" selected>Voice 1</option>
-              <option value="voice_2">Voice 2</p></option>
-              <option value="voice_3">Voice 3</p></option>
-              <option value="voice_4">Voice 4</option>
+              <option id="label_voice_1" value="voice_1" selected>Voice 1</option>
+              <option id="label_voice_2" value="voice_2">Voice 2</p></option>
+              <option id="label_voice_3" value="voice_3">Voice 3</p></option>
+              <option id="label_voice_4" value="voice_4">Voice 4</option>
             </select>
         </div>  
       </div>
@@ -500,7 +498,7 @@ p.range_indicator {
   </div>
     <div id="footer" align="center">
         <a href='https://ko-fi.com/dagexviii' target='_blank'><img height='17' class="kofi" src='./assets/images/kofi_logo.png' title="Kofi" alt='ko-fi' /></a> 
-        <p style="display: inline; margin: 20%; opacity: 70%;" >Animal Crossing is a lifestyle!</p>
+        <p id="label_footer" style="display: inline; margin: 20%; opacity: 70%;" >Animal Crossing is a lifestyle!</p>
         <p class="version"><a id="version" href="https://chromewebstore.google.com/detail/animalese-typing/djbgadolfboockbofalipohdncimebic" target='_blank'>v0.0</a></p>
     </div>
 

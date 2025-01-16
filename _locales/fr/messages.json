@@ -1,0 +1,60 @@
+{
+    "footer":{
+        "message": ""
+    },
+    "description":{
+        "message": "Joue des sons d'Animal Crossing chaque fois que vous tapez !"
+    },
+
+    "volume":{
+        "message": "Volume"
+    },
+
+    "config_1":{
+        "message": "Les deux"
+    },
+    "config_2":{
+        "message": "Voix"
+    },
+    "config_3":{
+        "message": "Effets sonores"
+    },
+
+    "editor_title":{
+        "message": "Éditeur"
+    },
+    "editor_1":{
+        "message": "Déplacement de hauteur"
+    },
+    "editor_2":{
+        "message": "Intonation"
+    },
+    "editor_3":{
+        "message": "Variation de ton"
+    },
+
+    "f_voice_1":{
+        "message": "Normal"
+    },
+    "f_voice_2":{
+        "message": "Impétueuse"
+    },
+    "f_voice_3":{
+        "message": "Modèle"
+    },
+    "f_voice_4":{
+        "message": "Arrogante"
+    },
+    "m_voice_1":{
+        "message": "Sportif"
+    },
+    "m_voice_2":{
+        "message": "Paresseux"
+    },
+    "m_voice_3":{
+        "message": "Star"
+    },
+    "m_voice_4":{
+        "message": "Versatile"
+    }
+}

@@ -5,14 +5,8 @@
 
 console.log("animalese-typing start");
 
-function isAlpha(str) {return (str.length === 1)?(/[a-zA-Z]/).test(str.charAt(0)):false;}
-
-function isMoney(str) {return (str.length === 1)?(/[$£€¥₩₱¢]/).test(str.charAt(0)):false;}
-
-function isWhitespace(str) {return (str.length === 1)?(/\s/).test(str.charAt(0)):false;}
-
-const isUpperCase = str => str === str.toUpperCase();
-
+// #region On install
+//Assign variables that dont exsist
 class AnimaleseSoundProfile {
 	constructor(pitch_shift = 0.0, pitch_variation = 0.2, intonation = 0.0) {
 		this.pitch_variation = pitch_variation;
@@ -20,8 +14,6 @@ class AnimaleseSoundProfile {
 		this.intonation = intonation;
 	}
 }
-
-//Assign variables that dont exsist
 var vol=0.5;
 var v_type="voice_1";
 var g_type="female";
@@ -45,16 +37,59 @@ chrome.storage.local.get(['gender', 'voice_type', 'volume', 'f_voice', 'm_voice'
 	} else {
 		chrome.action.setIcon({ path : './assets/images/icon_off.png' });
 	}
-	
 });
 
 chrome.runtime.onInstalled.addListener(details => {
+	injectAnimaleseAllTabs();
 	if (details.reason === chrome.runtime.OnInstalledReason.INSTALL) {
 	  chrome.runtime.setUninstallURL('');
 	}
 });
+function injectAnimaleseAllTabs() {
+	console.log("reinject content scripts into all tabs");
+	var manifest = chrome.runtime.getManifest();
+	chrome.windows.getAll({},function(windows){
+		for(var win in windows){
+			chrome.tabs.query({}, function(tabs) {
+			for (var i in tabs) {
+				if (typeof tabs[i].url === 'undefined') continue;
+				var scripts = manifest.content_scripts[0].js;
+				chrome.scripting.executeScript({
+					target: {tabId: tabs[i].id},
+					files: scripts
+				});
+			}
+		});
+		}
+	});
+};
+let creating;
+async function hasOffscreenDocument(path) {
+	const offscreenUrl = chrome.runtime.getURL(path);
+	const existingContexts = await chrome.runtime.getContexts({
+	  contextTypes: ['OFFSCREEN_DOCUMENT'],
+	  documentUrls: [offscreenUrl]
+	});
+  
+	if (existingContexts.length > 0) {
+	  return;
+	}
 
-//Listen for inputs
+	if (creating) await creating;
+	else {
+		creating = chrome.offscreen.createDocument({
+			url: 'audio.html',
+			justification: 'ignored',
+			reasons: ['AUDIO_PLAYBACK'],
+		});
+	}
+	await creating;
+	creating = null;
+	update_values();
+}
+// #endregion
+
+// #region Listen for and process Inputs
 async function update_values() {
 	await chrome.storage.local.get(['gender', 'voice_type', 'volume', 'f_voice', 'm_voice', 'sound_config', 'sound_profile', 'isactive'], async function (result) {
 		vol = result.volume;
@@ -88,9 +123,13 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
 				else {
 					let keycode = request.keycode;
 					let key = request.key;
+
+					console.log(key);
+
 					switch (true) {
 						case (isWhitespace(key) || keycode == 16 || keycode == 32 || keycode == 20 || keycode == 18):break;//spacebar, shift, caps
 						
+						//Input characters
 						case (config!=1 && key.startsWith("Arrow"))://arrow keys
 							send_audio(audio_arrows[(keycode-37)%4], 0.4);
 						break;
@@ -111,7 +150,8 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
 							if (config!=1) send_audio(audio_special[key], 0.6)
 							if (config!=2) send_audio(audio_gwah, 0.6, 0.2, 0.0, 1, true);
 						break;
-
+						
+						//Special characters
 						case (config!=1 && key == '~'): 	send_audio(audio_special[key], 0.6); break;
 						case (config!=1 && key == '@'): 	send_audio(audio_special[key], 0.6); break;
 						case (config!=1 && key == '#'): 	send_audio(audio_special[key], 0.6); break;
@@ -128,7 +168,8 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
 						case (config!=1 && key == '}'): 	send_audio(audio_special[key], 0.6); break;
 						case (config!=1 && key == '/'): 	send_audio(audio_special[key], 0.6); break;
 						case (config!=1 && key == '\\'): 	send_audio(audio_special[key], 0.6); break;
-
+						
+						//Numbers & Vocal characters
 						case (config!=2 && parseInt(key) >= 1 && parseInt(key) <= 9):
 							send_audio(audio_vocals[parseInt(key)-1], 1.0);
 						break;
@@ -143,15 +184,17 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
 						break;
 
 						case (config!=2 && key == 'OK'): send_audio(audio_ok, 0.6, 0.0, 0.0, 1, true); break;
+						
+						//Alphabet characters
 						case (config!=2 && isAlpha(key)):
-							let audioPath = 'assets/audio/animalese/'+g_type+'/'+v_type+'/'+ key.toLowerCase();
-							//When typing in caps have a slighty higher and louder pitch with more variation
+							let audioPath = 'assets/audio/animalese/'+g_type+'/'+v_type+'/'+ getAlphaSound(key);
+							//When typing in uppercase have a slighty higher and louder pitch with more variation
 							if (isUpperCase(key)) send_audio(audioPath, 0.7, 0.15, 1.6, 1, true);
 							else send_audio(audioPath, 0.5, 0.0, 0, 1, true);
 						break;
 
 						default:
-							//Default sound to play
+							//Default sound
 							send_audio(config!=1 && audio_special["default"], 0.4, 0.4);
 						break;
 					}
@@ -160,37 +203,42 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
 		}
 	
 });
-//End
+// #endregion
 
-let creating;
-async function hasOffscreenDocument(path) {
-	const offscreenUrl = chrome.runtime.getURL(path);
-	const existingContexts = await chrome.runtime.getContexts({
-	  contextTypes: ['OFFSCREEN_DOCUMENT'],
-	  documentUrls: [offscreenUrl]
-	});
-  
-	if (existingContexts.length > 0) {
-	  return;
-	}
+// #region Regex checks
+function isAlpha(str) {return (str.length === 1)?(/\p{Letter}/gu).test(str.charAt(0)):false;}
 
-	if (creating) await creating;
-	else {
-		creating = chrome.offscreen.createDocument({
-			url: 'audio.html',
-			justification: 'ignored',
-			reasons: ['AUDIO_PLAYBACK'],
-		});
+const isUpperCase = str => str === str.toUpperCase();
+
+function isMoney(str) {return (str.length === 1)?(/[$£€¥₩₱¢]/).test(str.charAt(0)):false;}
+
+function isWhitespace(str) {return (str.length === 1)?(/\s/).test(str.charAt(0)):false;}
+
+//Used for typing in other languages
+function getAlphaSound(key) {
+	key = key.toLowerCase().charAt(0);
+	switch (true) {
+		case (/[aàáäāæ]/)	.test(key):return "a";
+		case (/[cčç]/)		.test(key):return "c";
+		case (/[eèéē]/)		.test(key):return "e";
+		case (/[gğģ]/)		.test(key):return "g";
+		case (/[iîíļī]/)	.test(key):return "i";
+		case (/[kķ]/)		.test(key):return "k";
+		case (/[nñņ]/)		.test(key):return "n";
+		case (/[oóöœ]/)		.test(key):return "o";
+		case (/[sšşß]/)		.test(key):return "s";
+		case (/[uúüūø]/)	.test(key):return "u";
+		case (/[zž]/)		.test(key):return "z";
+		default: return key;
 	}
-	await creating;
-	creating = null;
-	update_values();
+	return "";
 }
+// #endregion
 
+// #region Play sounds
 const file_type = ".aac"
 async function send_audio(audio_path, volume, rand_pitch, pitch, cutoff_channel, use_profile) {
 	await hasOffscreenDocument('audio.html');
-	
 	chrome.runtime.sendMessage({
 		type: 'audio',
 		target: 'offscreen',
@@ -204,9 +252,10 @@ async function send_audio(audio_path, volume, rand_pitch, pitch, cutoff_channel,
 		use_profile: use_profile
 	});
 }
+// #endregion
 
+//Update sound file paths
 async function update_paths() {
-	//Store sound files
 	audio_vocals = [
 		'assets/audio/vocals/'+g_type+'/'+v_type+'/0',
 		'assets/audio/vocals/'+g_type+'/'+v_type+'/1',
@@ -227,31 +276,31 @@ async function update_paths() {
 		'assets/audio/sfx/arrow_right',
 		'assets/audio/sfx/arrow_down'
 	];
-	audio_deksa = 'assets/audio/animalese/'+g_type+'/'+v_type+'/Deska';
-	audio_gwah = 'assets/audio/animalese/'+g_type+'/'+v_type+'/Gwah';
-	audio_ok = 'assets/audio/animalese/'+g_type+'/'+v_type+'/OK';
+	audio_deksa = 	'assets/audio/animalese/'+g_type+'/'+v_type+'/Deska';
+	audio_gwah = 	'assets/audio/animalese/'+g_type+'/'+v_type+'/Gwah';
+	audio_ok = 		'assets/audio/animalese/'+g_type+'/'+v_type+'/OK';
 	audio_special = {
-		"default": 'assets/audio/sfx/default',
-		"back": 'assets/audio/sfx/backspace',
-		"enter": 'assets/audio/sfx/enter',
-		"tab": 'assets/audio/sfx/tab',
-		"?": 'assets/audio/sfx/question',
-		"~": 'assets/audio/sfx/tilde',
-		"!": 'assets/audio/sfx/exclamation',
-		"@": 'assets/audio/sfx/at',
-		"#": 'assets/audio/sfx/pound',
-		"$": 'assets/audio/sfx/dollar',
-		"%": 'assets/audio/sfx/percent',
-		"^": 'assets/audio/sfx/caret',
-		"&": 'assets/audio/sfx/ampersand',
-		"*": 'assets/audio/sfx/asterisk',
-		"(": 'assets/audio/sfx/parenthesis_open',
-		")": 'assets/audio/sfx/parenthesis_closed',
-		"[": 'assets/audio/sfx/bracket_open',
-		"]": 'assets/audio/sfx/bracket_closed',
-		"{": 'assets/audio/sfx/brace_open',
-		"}": 'assets/audio/sfx/brace_closed',
-		"/": 'assets/audio/sfx/slash_forward',
-		"\\": 'assets/audio/sfx/slash_back'
+		"default": 	'assets/audio/sfx/default',
+		"back": 	'assets/audio/sfx/backspace',
+		"enter": 	'assets/audio/sfx/enter',
+		"tab": 		'assets/audio/sfx/tab',
+		"?": 		'assets/audio/sfx/question',
+		"~": 		'assets/audio/sfx/tilde',
+		"!": 		'assets/audio/sfx/exclamation',
+		"@": 		'assets/audio/sfx/at',
+		"#": 		'assets/audio/sfx/pound',
+		"$": 		'assets/audio/sfx/dollar',
+		"%": 		'assets/audio/sfx/percent',
+		"^": 		'assets/audio/sfx/caret',
+		"&": 		'assets/audio/sfx/ampersand',
+		"*": 		'assets/audio/sfx/asterisk',
+		"(": 		'assets/audio/sfx/parenthesis_open',
+		")": 		'assets/audio/sfx/parenthesis_closed',
+		"[": 		'assets/audio/sfx/bracket_open',
+		"]": 		'assets/audio/sfx/bracket_closed',
+		"{": 		'assets/audio/sfx/brace_open',
+		"}": 		'assets/audio/sfx/brace_closed',
+		"/": 		'assets/audio/sfx/slash_forward',
+		"\\": 		'assets/audio/sfx/slash_back'
 	}
 }

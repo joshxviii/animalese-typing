@@ -1,0 +1,60 @@
+{
+    "footer":{
+        "message": ""
+    },
+    "description":{
+        "message": "タイピングするたびに、どうぶつの森の音が鳴ります！"
+    },
+
+    "volume":{
+        "message": "音量"
+    },
+
+    "config_1":{
+        "message": "両方"
+    },
+    "config_2":{
+        "message": "声"
+    },
+    "config_3":{
+        "message": "効果音"
+    },
+     
+    "editor_title":{
+        "message": "編集ソフト"
+    },
+    "editor_1":{
+        "message": "ピッチシフト"
+    },
+    "editor_2":{
+        "message": "抑揚"
+    },
+    "editor_3":{
+        "message": "音程変化"
+    },
+
+    "f_voice_1":{
+        "message": "ふつう"
+    },
+    "f_voice_2":{
+        "message": "元気"
+    },
+    "f_voice_3":{
+        "message": "アネキ"
+    },
+    "f_voice_4":{
+        "message": "オトナ"
+    },
+    "m_voice_1":{
+        "message": "はきはき"
+    },
+    "m_voice_2":{
+        "message": "ぼんやり"
+    },
+    "m_voice_3":{
+        "message": "キザ"
+    },
+    "m_voice_4":{
+        "message": "コワイ"
+    }
+}

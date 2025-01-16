@@ -6,8 +6,9 @@
   "manifest_version": 3,
 
   "name": "Animalese Typing",
-  "description": "Plays Animal Crossing sounds whenever you type!",
-  "version": "1.44.5",
+  "description": "__MSG_description__",
+  "version": "1.45",
+  "default_locale": "en",
   "content_scripts" : [{
     "matches": ["<all_urls>"],
     "js" : ["animalese.js"]
@@ -19,10 +20,13 @@
     "default_icon": {"128" : "assets/images/icon_off.png"},
     "default_popup": "popup.html"
   },
+  "host_permissions": ["*://*/*"],
   "permissions": [
+    "scripting",
     "storage",
     "offscreen"
   ],
+  
   "icons": {
     "48": "assets/images/icon48.png",
     "128": "assets/images/icon128.png" 
