@@ -32,6 +32,6 @@ function processKeydown(e) {
 	},0)
 }
 function processFallback(e) {
-	let keyFallback = e.code.startsWith("Key")?e.code.charAt(3):""
+	let keyFallback = e.code.startsWith("Key")?e.code.charAt(3).toLowerCase():""
 	chrome.runtime.sendMessage({ type: 'type', key: keyFallback ,  keycode: (keyFallback.length==1)?keyFallback.charCodeAt(0):keyFallback.keyCode , input_type: e.target.type});
 }
