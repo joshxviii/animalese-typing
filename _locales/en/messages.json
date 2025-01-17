@@ -1,0 +1,60 @@
+{
+    "footer":{
+        "message": ""
+    },
+    "description":{
+        "message": "Plays Animal Crossing sounds whenever you type!"
+    },
+    
+    "volume":{
+        "message": "Volume"
+    },
+
+    "config_1":{
+        "message": "All"
+    },
+    "config_2":{
+        "message": "Animalese"
+    },
+    "config_3":{
+        "message": "Soundfx"
+    },
+
+    "editor_title":{
+        "message": "Editor"
+    },
+    "editor_1":{
+        "message": "Pitch Shift"
+    },
+    "editor_2":{
+        "message": "Intonation"
+    },
+    "editor_3":{
+        "message": "Pitch Variation"
+    },
+
+    "f_voice_1":{
+        "message": "Sweet"
+    },
+    "f_voice_2":{
+        "message": "Peppy"
+    },
+    "f_voice_3":{
+        "message": "Big sister"
+    },
+    "f_voice_4":{
+        "message": "Snooty"
+    },
+    "m_voice_1":{
+        "message": "Jock"
+    },
+    "m_voice_2":{
+        "message": "Lazy"
+    },
+    "m_voice_3":{
+        "message": "Smug"
+    },
+    "m_voice_4":{
+        "message": "Cranky"
+    }
+}

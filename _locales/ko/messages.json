@@ -1,0 +1,60 @@
+{
+    "footer":{
+        "message": ""
+    },
+    "description":{
+        "message": "타이핑할 때마다 동물의 숲 소리가 재생됩니다!"
+    },
+
+    "volume":{
+        "message": "볼륨"
+    },
+
+    "config_1":{
+        "message": "둘 다"
+    },
+    "config_2":{
+        "message": "목소리"
+    },
+    "config_3":{
+        "message": "사운드 이펙트"
+    },
+
+    "editor_title":{
+        "message": "편집기"
+    },
+    "editor_1":{
+        "message": "음정 변경"
+    },
+    "editor_2":{
+        "message": "억양"
+    },
+    "editor_3":{
+        "message": "음높이 변화"
+    },
+
+    "f_voice_1":{
+        "message": "친절함"
+    },
+    "f_voice_2":{
+        "message": "건강한"
+    },
+    "f_voice_3":{
+        "message": "누님"
+    },
+    "f_voice_4":{
+        "message": "어른"
+    },
+    "m_voice_1":{
+        "message": "운동광"
+    },
+    "m_voice_2":{
+        "message": "먹보"
+    },
+    "m_voice_3":{
+        "message": "느끼하긴"
+    },
+    "m_voice_4":{
+        "message": "무뚝뚝"
+    }
+}

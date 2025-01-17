@@ -1,0 +1,60 @@
+{
+    "footer":{
+        "message": ""
+    },
+    "description":{
+        "message": "Spielt Animal Crossing-Geräusche, jedes Mal, wenn du tippst!"
+    },
+
+    "volume":{
+        "message": "Lautstärke"
+    },
+
+    "config_1":{
+        "message": "Beide"
+    },
+    "config_2":{
+        "message": "Stimme"
+    },
+    "config_3":{
+        "message": "Soundeffekte"
+    },
+
+    "editor_title":{
+        "message": "Editor"
+    },
+    "editor_1":{
+        "message": "Tonhöhenverschiebung"
+    },
+    "editor_2":{
+        "message": "Intonation"
+    },
+    "editor_3":{
+        "message": "Tonvariation"
+    },
+
+    "f_voice_1":{
+        "message": "Ausgeglichen"
+    },
+    "f_voice_2":{
+        "message": "Schwungvoll"
+    },
+    "f_voice_3":{
+        "message": "Große Schwester"
+    },
+    "f_voice_4":{
+        "message": "Abgehoben"
+    },
+    "m_voice_1":{
+        "message": "Sportlich"
+    },
+    "m_voice_2":{
+        "message": "Schlafmütze"
+    },
+    "m_voice_3":{
+        "message": "Arrogant"
+    },
+    "m_voice_4":{
+        "message": "Miesepeter"
+    }
+}

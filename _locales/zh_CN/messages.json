@@ -1,0 +1,60 @@
+{
+    "footer":{
+        "message": ""
+    },
+    "description":{
+        "message": "每次输入时都会播放《动物森友会》的声音！"
+    },
+    
+    "volume":{
+        "message": "音量"
+    },
+
+    "config_1":{
+        "message": "两者"
+    },
+    "config_2":{
+        "message": "声音"
+    },
+    "config_3":{
+        "message": "音效"
+    },
+
+    "editor_title":{
+        "message": "编辑器"
+    },
+    "editor_1":{
+        "message": "音调变化"
+    },
+    "editor_2":{
+        "message": "语调"
+    },
+    "editor_3":{
+        "message": "音高变化"
+    },
+
+    "f_voice_1":{
+        "message": "Sweet"
+    },
+    "f_voice_2":{
+        "message": "Peppy"
+    },
+    "f_voice_3":{
+        "message": "Big sister"
+    },
+    "f_voice_4":{
+        "message": "Snooty"
+    },
+    "m_voice_1":{
+        "message": "Jock"
+    },
+    "m_voice_2":{
+        "message": "Lazy"
+    },
+    "m_voice_3":{
+        "message": "Smug"
+    },
+    "m_voice_4":{
+        "message": "Cranky"
+    }
+}
