@@ -15,7 +15,7 @@ function sent_from(sender_path, msg) {
 	}
 	else return false;
 }
-
+const file_type = ".aac"
 var sound_profile;
 let audioCtx = new AudioContext();
 let gainNode;
@@ -25,7 +25,7 @@ async function play_audio(audio_path, volume, random_pitch=0.0, pitch=0.0, cutof
 
 	if (!audioCtx) audioCtx = new AudioContext();
 
-	const response = await fetch(audio_path);
+	const response = await fetch(audio_path+file_type);
 	buffer = await audioCtx.decodeAudioData(await response.arrayBuffer());
 
 	//allow sounds on the same channel to cut eachother off.

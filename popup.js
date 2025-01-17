@@ -59,7 +59,7 @@ function say_Gwah() {//send update notif to background for config
 }
 
 
-//Execute when popup is loaded
+// #region Execute when Loaded
 document.addEventListener('DOMContentLoaded', function() {
 	updateLabelLanguage()
 	updateList();
@@ -116,8 +116,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	chrome.storage.local.get(['sound_config'], function (result) {
 		document.getElementById('sound_config').value = result.sound_config;
 	});
+	//# endregion
 
-
+	// #region Save Values
 	//Set values for anything altered on popup=================================================================
 	document.getElementById('female').addEventListener('click', function (e) {
 		chrome.storage.local.get(['volume'], function (result) {
@@ -188,10 +189,10 @@ document.addEventListener('DOMContentLoaded', function() {
 			await chrome.runtime.sendMessage({type: 'type', key: '&'});
 		}
 	});
+	// #endregion
 
 
-
-
+	//#region EDITOR INPUTS
 	//Set values for Editor
 	function updateProfile() {
 		chrome.storage.local.set({'sound_profile' : sound_profile});
@@ -208,18 +209,19 @@ document.addEventListener('DOMContentLoaded', function() {
 		chrome.runtime.sendMessage({type: 'type', key: 'Enter'});
 	});
 
-	//EDITOR INPUTS======
 	let pitch_variation = document.getElementById('pitch_variation');
-	let pitch_variation_out = document.getElementById('pitch_variation_out')
-	pitch_variation_out.addEventListener('click', function (e) {pitch_variation_out.select()})
-	pitch_variation_out.addEventListener('focusout', function (e) {updatePitchVariation()});
-	pitch_variation_out.addEventListener('keydown', function (e) {if (e.key=="Enter") updatePitchVariation()})
-	pitch_variation.addEventListener('input', function (e) {
+	let pitch_variation_out = document.getElementById('pitch_variation_out');
+	pitch_variation_out.addEventListener('click', function (e) {pitch_variation_out.select()});// highlight value text on click
+	pitch_variation_out.addEventListener('focusout', function (e) {changePitchVariation2()});// update value from text on focus out
+	pitch_variation_out.addEventListener('keydown', function (e) {if (e.key=="Enter") changePitchVariation2()});// update value from text with enter 
+	pitch_variation.addEventListener('dblclick', function (e) {pitch_variation.value=0.2;changePitchVariation1()});//Reset value on double click
+	pitch_variation.addEventListener('input', function (e) {changePitchVariation1()});//update value with slider
+	function changePitchVariation1() {
 		sound_profile.pitch_variation = pitch_variation.value
 		pitch_variation_out.value = String( parseInt(pitch_variation.value * 100) ) + "%"
 		updateProfile()
-	});
-	function updatePitchVariation() {
+	}
+	function changePitchVariation2() {
 		let value = parseFloat(pitch_variation_out.value)
 		if (!isNaN(value)) {
 			value = ((value<100)?((value>0)?value:0):100)
@@ -240,17 +242,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 	let pitch_shift = document.getElementById('pitch_shift');
-	let pitch_shift_out = document.getElementById('pitch_shift_out')
-	pitch_shift_out.addEventListener('click', function (e) {pitch_shift_out.select()})
-	pitch_shift_out.addEventListener('focusout', function (e) {updatePitchShift()})
-	pitch_shift_out.addEventListener('keydown', function (e) {if (e.key=="Enter") updatePitchShift()})
-	pitch_shift.addEventListener('input', function (e) {
+	let pitch_shift_out = document.getElementById('pitch_shift_out');
+	pitch_shift_out.addEventListener('click', function (e) {pitch_shift_out.select()});// highlight value text on click
+	pitch_shift_out.addEventListener('focusout', function (e) {changePitchShift2()});// update value from text on focus out
+	pitch_shift_out.addEventListener('keydown', function (e) {if (e.key=="Enter") changePitchShift2()});// update value from text with enter 
+	pitch_shift.addEventListener('dblclick', function (e) {pitch_shift.value=0.0;changePitchShift1()});//Reset value on double click
+	pitch_shift.addEventListener('input', function (e) {changePitchShift1()});//update value with slider
+	function changePitchShift1() {
 		let value = pitch_shift.value
 		sound_profile.pitch_shift = value
 		pitch_shift_out.value = ((value>0)?"+":"") + String( parseFloat(value).toFixed(1))
 		updateProfile()
-	});
-	function updatePitchShift() {
+	}
+	function changePitchShift2() {
 		let value = parseFloat(pitch_shift_out.value)
 		if (!isNaN(value)) {
 			value = ((value<12)?((value>-12)?value:-12):12)
@@ -271,17 +275,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 	let intonation = document.getElementById('intonation');
-	let intonation_out = document.getElementById('intonation_out')
-	intonation_out.addEventListener('click', function (e) {intonation_out.select()})
-	intonation_out.addEventListener('focusout', function (e) {updateIntonation()})
-	intonation_out.addEventListener('keydown', function (e) {if (e.key=="Enter") updateIntonation()})
-	intonation.addEventListener('input', function (e) {
+	let intonation_out = document.getElementById('intonation_out');
+	intonation_out.addEventListener('click', function (e) {intonation_out.select()});// highlight value text on click
+	intonation_out.addEventListener('focusout', function (e) {changeIntonation2()});// update value from text on focus out
+	intonation_out.addEventListener('keydown', function (e) {if (e.key=="Enter") changeIntonation2()});// update value from text with enter 
+	intonation.addEventListener('dblclick', function (e) {intonation.value=0.0;changeIntonation1()});//Reset value on double click
+	intonation.addEventListener('input', function (e) {changeIntonation1()});//update value with slider
+	function changeIntonation1() {
 		let value = intonation.value
 		sound_profile.intonation = value
 		intonation_out.value = ((value>0)?"+":"") + String( parseFloat(value * 1 ).toFixed(1))
 		updateProfile();
-	});
-	function updateIntonation() {
+	}
+	function changeIntonation2() {
 		let value = parseFloat(intonation_out.value)
 				
 		if (!isNaN(value)) {
@@ -300,5 +306,5 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 });
-
+// #endregion
 //End

@@ -26,7 +26,6 @@
     "storage",
     "offscreen"
   ],
-  
   "icons": {
     "48": "assets/images/icon48.png",
     "128": "assets/images/icon128.png" 
