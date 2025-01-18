@@ -150,6 +150,12 @@ document.addEventListener('DOMContentLoaded', function() {
 		updateList();
 		say_OK()
 	});
+	//Reset volume on double click
+	document.getElementById('volume').addEventListener('dblclick', function (e) {
+		document.getElementById('volume').value=0.5;
+		chrome.storage.local.set({'volume' : document.getElementById('volume').value});
+		chrome.runtime.sendMessage({type: 'update_values'});
+	});
 	document.getElementById('volume').addEventListener('input', function (e) {
 		chrome.storage.local.set({'volume' : document.getElementById('volume').value}, function () {
 			document.getElementById('vol_percent').className = 'vol_active'
@@ -186,7 +192,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			enable()
 			chrome.storage.local.set({'isactive':true});
 			await chrome.runtime.sendMessage({type: 'update_values'});
-			await chrome.runtime.sendMessage({type: 'type', key: '&'});
+			setTimeout(function(){chrome.runtime.sendMessage({type: 'type', key: '&'});},1)
 		}
 	});
 	// #endregion
