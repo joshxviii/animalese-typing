@@ -105,7 +105,7 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
 				let keycode = request.keycode;
 				let key = request.key;
 				switch (true) {
-					case (isWhitespace(key) || keycode == 16 || keycode == 32 || keycode == 20 || keycode == 18):break;//spacebar, shift, caps
+					case (isWhitespace(key) || key == "Control" || keycode == 16 || keycode == 32 || keycode == 20 || keycode == 18):break;//spacebar, shift, caps
 	
 					//Input characters
 					case (config!=1 && key.startsWith("Arrow"))://arrow keys
@@ -215,13 +215,15 @@ function isAlpha(str) {return (str.length === 1)?(/\p{Letter}/gu).test(str.charA
 
 const isUpperCase = str => str === str.toUpperCase();
 
-function isMoney(str) {return (str.length === 1)?(/[\u0024\u00a3\u20ac\u00a5\u20a9\u20b1\u00a2]/).test(str.charAt(0)):false;}
+function isMoney(str) {return (str.length === 1)?(/[$£€¥₩₱¢\u0024\u00a3\u20ac\u00a5\u20a9\u20b1\u00a2]/).test(str.charAt(0)):false;}
 
 function isWhitespace(str) {return (str.length === 1)?(/\s/).test(str.charAt(0)):false;}
 
+//Used for typing in other languages
 function getAlphaSound(key) {
-	key = key.toLowerCase().charAt(0);
-    for (const { letter, regex } of regexMap) if (regex.test(key)) return letter;
+	key = key.toLowerCase().charAt(0);// Set to lowercase
+	if ((/[a-z]/).test(key)) return key;// If basic letter return letter
+    for (const { letter, regex } of regexMap) if (regex.test(key)) return letter;// If special letter check regexMap and return basic letter
     return key;// Default case for unmatched keys
 }
 // #endregion
