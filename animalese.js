@@ -22,7 +22,8 @@ function destructor() {
 }
 
 function processKeydown(e) {
-	if (typeof chrome.runtime.id === 'undefined') {//deconstruct when disconnected to bg script.
+	//deconstruct when disconnected to bg script.
+	if (typeof chrome.runtime === 'undefined' || typeof chrome.runtime.id === 'undefined') {
 		destructor();
 		return;
 	}

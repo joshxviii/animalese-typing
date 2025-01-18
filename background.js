@@ -60,6 +60,14 @@ chrome.runtime.onInstalled.addListener(details => {
 		}
 	});
 });
+chrome.tabs.onUpdated.addListener(function(id,changeInfo,tab){
+	if (changeInfo.url === undefined && changeInfo.status == 'complete' && tab.status == 'complete') {
+		chrome.scripting.executeScript({
+			target: {tabId: id},
+			files: chrome.runtime.getManifest().content_scripts[0].js
+		}).catch(()=>{});
+	}
+});
 // #endregion
 
 // #region Process Inputs
@@ -156,9 +164,7 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
 					//Alphabet characters
 					case (config!=2 && key == 'OK'): play_audio(audio_ok, 0.6, 0.0, 0.0, 1, true); break;
 					case (config!=2 && isAlpha(key) ):
-						let a = getAlphaSound(key)
-						console.log(a);
-						let audioPath = 'assets/audio/animalese/'+g_type+'/'+v_type+'/'+ a;
+						let audioPath = 'assets/audio/animalese/'+g_type+'/'+v_type+'/'+ getAlphaSound(key);
 						//When typing in caps have a slighty higher and louder pitch with more variation
 						if (isUpperCase(key)) play_audio(audioPath, 0.7, 0.15, 1.6, 1, true);
 						else play_audio(audioPath, 0.5, 0.0, 0, 1, true);
