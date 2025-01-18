@@ -30,7 +30,7 @@ function processKeydown(e) {
 
 	setTimeout(function(){
 		if (e.key == "Process" || typeof e.key === 'undefined') processFallback(e);
-		else { if (!e.ctrlKey) chrome.runtime.sendMessage({ type: 'type', key: e.key ,  keycode: (e.key.length==1)?e.key.charCodeAt(0):e.keyCode , input_type: e.target.type})};
+		else { chrome.runtime.sendMessage({ type: 'type', key: e.key ,  keycode: (e.key.length==1)?e.key.charCodeAt(0):e.keyCode , input_type: e.target.type})};
 	},0)
 }
 function processFallback(e) {
