@@ -22,10 +22,12 @@ function destructor() {
 }
 
 function processKeydown(e) {
-	if (typeof chrome.runtime.id === 'undefined') {//deconstruct when disconnected to bg script.
+	//deconstruct when disconnected to bg script.
+	if (typeof chrome.runtime === 'undefined' || typeof chrome.runtime.id === 'undefined') {
 		destructor();
 		return;
 	}
+
 	setTimeout(function(){
 		if (e.key == "Process" || typeof e.key === 'undefined') processFallback(e);
 		else { if (!e.ctrlKey) chrome.runtime.sendMessage({ type: 'type', key: e.key ,  keycode: (e.key.length==1)?e.key.charCodeAt(0):e.keyCode , input_type: e.target.type})};
