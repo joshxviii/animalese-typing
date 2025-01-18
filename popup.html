@@ -12,13 +12,13 @@
 }
 
 @keyframes voice_f {
-	from {color: #2baee2;right: -14%;}
-	to {color: #ff8daf;right: 13%;}
+	from {color: #2baee2;right: -25%;}
+	to {color: #ff8daf;right: 25%;}
 }
 
 @keyframes voice_m {
-	from {color: #ff8daf;right: 13%;}
-	to {color: #2baee2;right: -14%;}
+	from {color: #ff8daf;right: 25%;}
+	to {color: #2baee2;right: -25%;}
 }
 
 @keyframes background_f {
@@ -63,19 +63,18 @@ body {
 .title { margin-bottom: -24px;margin-top: 9px;margin-left: -8px; color: #E2F4F0; font-size: 15px; }
 
 .in-box {
-	width: 190px;
-	height: 80px;
+	width: 100%;
+	height: 90px;
 	position: absolute;
-	transform: translate(30px, 50px);
-    margin-left: 23px;
+	transform: translate(0px, 40px);
 }
 
 .in-box p { text-align: left; margin: 0px; color: #877358; font-size: 15px; }
 
 #vol_percent {
   position: absolute;
-  right: 0%;
-  bottom: 70%;
+  right: 20%;
+  bottom: 65%;
   text-align: right;
   color: #877358cc; font-size: 12px;
 }
@@ -118,11 +117,11 @@ input[type=range]::-moz-range-thumb {
   cursor: pointer;
   -webkit-appearance: none;
   margin-top: -4.5px;
-  transition: all 0.5s ease;
+  transition: outline-width 0.5s ease;
 }
 
 input[type=range]::-moz-range-thumb:hover {
-  transition: all 0.05s ease;
+  transition: outline-width 0.05s ease;
   outline-color: #109145ad;
   outline-style: solid;
   outline-width: 1;
@@ -133,15 +132,13 @@ input {
   height: 8.4px !important;
 }
 
-#volmue_slider { margin-top: -10px; }
+#volmue_slider {
+  width: 100%;
+}
 
 #v_select {
   position: absolute;
-  margin:-50% 0 0 -70%;
-  width: 140%;
-  height: 100%;
-  top: 130%;
-  left: 50%;
+  left: 26%;
 }
 
 .background_m {
@@ -216,7 +213,7 @@ input {
 }
 
 body:hover #v_type:enabled {
-  transition: all 0.2s ease;
+  transition: opacity 0.2s ease;
   opacity: 100%;
 }
 #v_type:disabled {
@@ -227,11 +224,11 @@ body:hover #v_type:enabled {
 
 .voice_f:enabled {
   animation: voice_f .5s;
-  color: #ff8daf;right: 13%;
+  color: #ff8daf;right: 25%;
 }
 .voice_m:enabled {
   animation: voice_m .5s;
-  color: #2baee2;right: -14%;
+  color: #2baee2;right: -25%;
 }
 #v_type:focus {
   outline-style: none;
@@ -243,12 +240,12 @@ option {
 
 .voice_f option:hover,
 .voice_f#v_type:hover {
-  transition: all 0.0s ease;
+  transition: background-color 0.5s ease;
   background-color: #ffdae5;
 }
 .voice_m option:hover,
 .voice_m#v_type:hover {
-  transition: all 0.0s ease;
+  transition: background-color 0.5s ease;
   background-color: #ade8ff;
 }
 
@@ -299,6 +296,7 @@ a:hover .kofi {opacity: 1.0;}
 
   margin: 8px; color: rgba(0, 0, 0, 0.493); font-size: 9px;
   display: inline;
+  width: 80px;
 
   font-size: 12px;
   font-family: "Arial Rounded Bold";
@@ -351,21 +349,17 @@ a:hover .kofi {opacity: 1.0;}
 
 #footer {
     position:absolute;
-    color: rgba(255, 255, 255, 0.651); font-size: 12px; text-align: center; user-select: none;
-    padding-top:2px;
+    color: rgba(255, 255, 255, 0.651); font-size: 11px; text-align: center; user-select: none;
+    padding-top:0px;
     padding-bottom:0px;
 
-    border-top-color: rgba(230, 230, 230, 0.664);
-    border-top-style: solid;
-    border-top-width: 2px;
-
-    bottom:0;
+    bottom:0px;
     width:100%;
     height:20px;
    
     display: inline-block;
 }
- 
+
 #overlay {
   visibility: hidden;
   width: 100%;
@@ -441,68 +435,67 @@ p.range_indicator {
 </head>
 <body>  
 
-<div id="overlay" class="hide">
-  <p style="text-align: center; margin: 18px; margin-left: 60px; margin-right: 60px;color:#877358; font-size: 18px; border-radius: 32px;  background-color: #fffae4;">Animalese Editor</p>
-  <div id="profile_edit_menu">
-    <label class="editor_label">Pitch Shift</label>
-      <div class="indicator_box"><p class="range_indicator">-</p></div>
-        <input id="pitch_shift" class="editor_slider" type="range" min="-12" max="12" step="0.2" value="0"></input>
-      <div class="indicator_box"><p class="range_indicator">+</p></div>
-    <input type="text" id="pitch_shift_out" class="editor_output" />
+  <div id="overlay" class="hide">
+    <p id="label_editor_title" style="text-align: center; margin: 18px; margin-left: 60px; margin-right: 60px;color:#877358; font-size: 18px; border-radius: 32px;  background-color: #fffae4;">Animalese Editor</p>
+    <div id="profile_edit_menu">
+      <label id="label_editor_1" class="editor_label">Pitch Shift</label>
+        <div class="indicator_box"><p class="range_indicator">-</p></div>
+          <input id="pitch_shift" class="editor_slider" type="range" min="-12" max="12" step="0.2" value="0"></input>
+        <div class="indicator_box"><p class="range_indicator">+</p></div>
+      <input type="text" id="pitch_shift_out" class="editor_output" />
 
-    <label class="editor_label">Intonation</label>
-      <div class="indicator_box"><p class="range_indicator">-</p></div>
-        <input id="intonation" class="editor_slider" type="range" min="-0.5" max="1.0" step="0.1" value="0"></input>
-      <div class="indicator_box"><p class="range_indicator">+</p></div>
-    <input type="text" id="intonation_out" class="editor_output" />
+      <label id="label_editor_2" class="editor_label">Intonation</label>
+        <div class="indicator_box"><p class="range_indicator">-</p></div>
+          <input id="intonation" class="editor_slider" type="range" min="-0.5" max="1.0" step="0.1" value="0"></input>
+        <div class="indicator_box"><p class="range_indicator">+</p></div>
+      <input type="text" id="intonation_out" class="editor_output" />
 
-    <label class="editor_label">Pitch Variation</label>
-      <div class="indicator_box"><p class="range_indicator">-</p></div>
-        <input id="pitch_variation" class="editor_slider" type="range" min="0" max="1" step="0.05" value="0.2"></input>
-      <div class="indicator_box"><p class="range_indicator">+</p></div>
-    <input type="text" id="pitch_variation_out" class="editor_output" />
+      <label id="label_editor_3" class="editor_label">Pitch Variation</label>
+        <div class="indicator_box"><p class="range_indicator">-</p></div>
+          <input id="pitch_variation" class="editor_slider" type="range" min="0" max="1" step="0.05" value="0.2"></input>
+        <div class="indicator_box"><p class="range_indicator">+</p></div>
+      <input type="text" id="pitch_variation_out" class="editor_output" />
 
+    </div>
+    <input type="button" id="exit_editor" class="btnStyle"/>
   </div>
-  <input type="button" id="exit_editor" class="btnStyle"/>
-</div>
 
-    <select id="sound_config">
-        <option value=0 selected>All Sounds</option>
-        <option value=1>Animalese Only</option>
-        <option value=2>Soundfx Only</option>
-    </select>
+  <select id="sound_config">
+    <option id="label_config_1" value=0 selected>All Sounds</option>
+    <option id="label_config_2" value=1>Animalese Only</option>
+    <option id="label_config_3" value=2>Soundfx Only</option>
+  </select>
 
-    <input type="button" id="profile_editor" class="btnStyle"/>
-    <input type="checkbox" id="disable" class="btnStyle"/>
+  <input type="button" id="profile_editor" class="btnStyle"/>
+  <input type="checkbox" id="disable" class="btnStyle"/>
 
   <div id="status" class="background_f" align="center" >
     <p class="title">Animalese</p>
     <div  class="in-box"  align="center">
       <div id="volmue_slider">
         <label for="volume" class="vol_inactive" id="vol_percent">%100</label>
-        <label for="volume" >Volume</label>
+        <label id="label_volume" for="volume" >Volume</label>
         <input type="range" min="0" max="1" id="volume" step="0.01"></input>
         <div id="v_select">
             <input type="button" id="female" class="btnStyle" disabled/>
             <input type="button" id="male" class="btnStyle" disabled/>
             <br>
             <select name="voice_type" id="v_type" class="voice_f">
-              <option value="voice_1" selected><p class="title">Voice 1</p></option>
-              <option value="voice_2">Voice 2</option>
-              <option value="voice_3">Voice 3</option>
-              <option value="voice_4">Voice 4</option>
+              <option id="label_voice_1" value="voice_1" selected>Voice 1</option>
+              <option id="label_voice_2" value="voice_2">Voice 2</p></option>
+              <option id="label_voice_3" value="voice_3">Voice 3</p></option>
+              <option id="label_voice_4" value="voice_4">Voice 4</option>
             </select>
         </div>  
       </div>
     </div>
-    
-
   </div>
-    <div id="footer" align="center">
-        <a href='https://ko-fi.com/dagexviii' target='_blank'><img height='17' class="kofi" src='./assets/images/kofi_logo.png' title="Kofi" alt='ko-fi' /></a> 
-        <p style="display: inline; margin: 20%; opacity: 70%;" >Animal Crossing is a lifestyle!</p>
-        <p class="version"><a id="version" href="https://addons.mozilla.org/en-US/firefox/addon/animalese-typing" target='_blank'>v0.0</a></p>
-    </div>
+
+  <div id="footer" align="center">
+      <a href='https://ko-fi.com/dagexviii' target='_blank'><img height='17' class="kofi" src='./assets/images/kofi_logo.png' title="Kofi" alt='ko-fi' /></a> 
+      <p id="label_footer" style="display: inline; margin: 20%; opacity: 55%;" >Animal Crossing is a lifestyle!</p>
+      <p class="version"><a id="version" href="https://addons.mozilla.org/en-US/firefox/addon/animalese-typing" target='_blank'>v0.0</a></p>
+  </div>
 
 </body>
 </html>
