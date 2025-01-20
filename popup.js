@@ -125,7 +125,10 @@ document.addEventListener('DOMContentLoaded', function() {
 			vol = result.volume;
 		});
 		chrome.storage.local.get(['f_voice'], function (result) {
-			if(result.f_voice) document.getElementById('v_type').value = result.f_voice;
+			if(result.f_voice) {
+				document.getElementById('v_type').value = result.f_voice;
+				chrome.storage.local.set({'voice_type' : result.f_voice});
+			}
 		});
 		chrome.storage.local.set({'gender':"female"});
 		document.getElementById('v_type').className = 'voice_f';
@@ -140,7 +143,10 @@ document.addEventListener('DOMContentLoaded', function() {
 			vol = result.volume;
 		});
 		chrome.storage.local.get(['m_voice', 'gender'], function (result) {
-			if(result.m_voice) document.getElementById('v_type').value = result.m_voice;
+			if(result.m_voice) {
+				document.getElementById('v_type').value = result.m_voice;
+				chrome.storage.local.set({'voice_type' : result.m_voice});
+			};
 		});
 		chrome.storage.local.set({'gender':"male"});
 		document.getElementById('v_type').className = 'voice_m';
