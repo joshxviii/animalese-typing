@@ -60,14 +60,6 @@ chrome.runtime.onInstalled.addListener(details => {
 		}
 	});
 });
-chrome.tabs.onUpdated.addListener(function(id,changeInfo,tab){
-	if (changeInfo.url === undefined && changeInfo.status == 'complete' && tab.status == 'complete') {
-		chrome.scripting.executeScript({
-			target: {tabId: id},
-			files: chrome.runtime.getManifest().content_scripts[0].js
-		}).catch(()=>{});
-	}
-});
 // #endregion
 
 // #region Process Inputs
