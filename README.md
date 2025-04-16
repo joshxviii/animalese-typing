@@ -12,4 +12,4 @@ Due to security restrictions on certain websites this extension will not work on
 
 Thank you and enjoy!
 
-[Extension Demo](https://www.youtube.com/watch?v=utp0RiIAsOc&ab_channel=JoshuaSherry)
+[Extension Demo](https://www.youtube.com/watch?v=wdxvKpUY7q8)
