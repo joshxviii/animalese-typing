@@ -1,6 +1,8 @@
 # Animalese Typing
 
-A small, fun and somewhat annoying extension that will speak Animalese whenever you type online. You can choose from 8 different voice options to customize the sound!
+
+
+A small, fun and somewhat annoying extension for [Chrome](https://chromewebstore.google.com/detail/animalese-typing/djbgadolfboockbofalipohdncimebic) and [Firefox](https://addons.mozilla.org/en-US/firefox/addon/animalese-typing/) that will speak Animalese whenever you type online. You can choose from 8 different voice options to customize the sound!
 Some of the features of this extension include:
 - Changing voice types by clicking the name below the icons in the extension window (4 male voices, 4 female voices).
 - Customizable pitch and intonation.
