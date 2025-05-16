@@ -7,7 +7,7 @@
 
   "name": "Animalese Typing",
   "description": "__MSG_description__",
-  "version": "1.45.1",
+  "version": "1.45.3",
   "default_locale": "en",
   "content_scripts" : [{
     "matches": ["<all_urls>"],

@@ -183,10 +183,10 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
 						
 						//Alphabet characters
 						case (config!=2 && isAlpha(key)):
-							if (key in koreanKeyMap) key = koreanKeyMap[key];
-							let audioPath = 'assets/audio/animalese/'+g_type+'/'+v_type+'/'+ getAlphaSound(key);
+							const letter = getLetterSound(key);
+							let audioPath = 'assets/audio/animalese/'+g_type+'/'+v_type+'/'+ letter.toLowerCase();
 							//When typing in uppercase have a slighty higher and louder pitch with more variation
-							if (isUpperCase(key)) send_audio(audioPath, 0.7, 0.15, 1.6, 1, true);
+							if (isUpperCase(letter)) send_audio(audioPath, 0.7, 0.15, 1.6, 1, true);
 							else send_audio(audioPath, 0.5, 0.0, 0, 1, true);
 						break;
 
@@ -203,34 +203,69 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
 // #endregion
 
 // #region Regex checks
-const regexMap = [
-    { letter: "a", regex: /[\u00e0\u00e1\u00e2\u00e3\u00e4\u00e5\u00e6\u0101\u0103\u0105\u01ce]/ },
-    { letter: "b", regex: /[\u1e03\u1e05\u1e07]/ },
-    { letter: "c", regex: /[\u00e7\u0107\u0109\u010b\u010d]/ },
-    { letter: "d", regex: /[\u010f\u0111\u1e0b\u1e0d\u1e0f\u1e11\u1e13]/ },
-    { letter: "e", regex: /[\u00e8\u00e9\u00ea\u00eb\u0113\u0115\u0117\u0119\u011b\u1eb9\u1ebb\u1ebd\u1ebf\u1ec1\u1ec3\u1ec5\u1ec7\u011f]/ },
-    { letter: "f", regex: /[\u1e1f]/ },
-    { letter: "g", regex: /[\u011d\u011f\u0121\u0123\u1e21]/ },
-    { letter: "h", regex: /[\u0125\u021f\u1e23\u1e25\u1e27\u1e29\u1e2b\u1e96]/ },
-    { letter: "i", regex: /[\u00ec\u00ed\u00ee\u00ef\u0129\u012b\u012d\u012f\u0131\u1ec9\u1ecb]/ },
-    { letter: "j", regex: /[\u0135\u01f0]/ },
-    { letter: "k", regex: /[\u0137\u1e31\u1e33\u1e35\u0199]/ },
-    { letter: "l", regex: /[\u013a\u013c\u013e\u0140\u0142\u1e37\u1e39\u1e3b\u1e3d]/ },
-    { letter: "m", regex: /[\u1e3f\u1e41\u1e43]/ },
-    { letter: "n", regex: /[\u00f1\u0144\u0146\u0148\u0149\u014b\u1e45\u1e47\u1e49\u1e4b]/ },
-    { letter: "o", regex: /[\u00f2\u00f3\u00f4\u00f5\u00f6\u00f8\u014d\u014f\u0151\u01a1\u01eb\u01ed\u1ecd\u1ecf\u1ed1\u1ed3\u1ed5\u1ed7\u1ed9\u1edb\u1edd\u1edf\u1ee1\u1ee3]/ },
-    { letter: "p", regex: /[\u1e55\u1e57]/ },
-    { letter: "q", regex: /[\u024b]/ },
-    { letter: "r", regex: /[\u0155\u0157\u0159\u0211\u0213\u1e59\u1e5b\u1e5d\u1e5f]/ },
-    { letter: "s", regex: /[\u00df\u015b\u015d\u015f\u0161\u1e61\u1e63\u1e65\u1e67\u1e69\u1e9b]/ },
-    { letter: "t", regex: /[\u0163\u0165\u0167\u1e6b\u1e6d\u1e6f\u1e71\u1e97]/ },
-    { letter: "u", regex: /[\u00f9\u00fa\u00fb\u00fc\u0169\u016b\u016d\u016f\u0171\u0173\u01b0\u1e73\u1e75\u1e77\u1e79\u1e7b\u1e7d\u1ee5\u1ee7\u1ee9\u1eeb\u1eed\u1eef\u1ef1]/ },
-    { letter: "v", regex: /[\u1e7f\u028b]/ },
-    { letter: "w", regex: /[\u0175\u1e81\u1e83\u1e85\u1e87\u1e89\u1e98]/ },
-    { letter: "x", regex: /[\u1e8b\u1e8d]/ },
-    { letter: "y", regex: /[\u00fd\u00ff\u0177\u0233\u1e8f\u1e99\u1ef3\u1ef5\u1ef7\u1ef9]/ },
-    { letter: "z", regex: /[\u017a\u017c\u017e\u1e91\u1e93\u1e95\u0225]/ },
-];
+const getPhoneticMapping = (() => {
+	const phonemeToRegexMap = {
+		'a': /[ㅋàáâãäåæāăąǎ]/,
+		'A': /[ÀÁÂÃÄÅÆĀĂĄǍ]/,
+		'b': /[ㅣḃḅḇ]/,
+		'B': /[ḂḄḆ]/,
+		'c': /[ㅠçćĉċč]/,
+		'C': /[ÇĆĈĊČ]/,
+		'd': /[ㅍďđḋḍḏḑḓ]/,
+		'D': /[ĎĐḊḌḎḐḒ]/,
+		'e': /[ㄷèéêëēĕėęěẹẻẽếềểễệğ]/,
+		'E': /[ÈÉÊËĒĔĖĘĚẸẺẼẾỀỂỄỆĞ]/,
+		'f': /[ㅎẟ]/,
+		'F': /[]/,
+		'g': /[ㅏĝğġģḡ]/,
+		'G': /[ĜĞĠĢḠ]/,
+		'h': /[ㅑĥȟḥḧḩḫẖ]/,
+		'H': /[ĤȞḤḦḨḪ]/,
+		'i': /[ㅇìíîïĩīĭįıỉị]/,
+		'I': /[ÌÍÎÏĨĪĬĮİỈỊ]/,
+		'j': /[ㅓĵǰ]/,
+		'J': /[Ĵ]/,
+		'k': /[ㅕķḱḳḵƙ]/,
+		'K': /[ĶḰḲḴƘ]/,
+		'l': /[ㅗĺļľŀłḷḹḻḽ]/,
+		'L': /[ĹĻĽĿŁḶḸḺḼ]/,
+		'm': /[ㅔḿṁṃ]/,
+		'M': /[ṀṂ]/,
+		'n': /[ㅐñńņňŉŋṅṇṉṋ]/,
+		'N': /[ÑŃŅŇŊṄṆṈṊ]/,
+		'o': /[ㅈòóôõöøōŏőơǫǭọỏốồổỗộớờởỡợ]/,
+		'O': /[ÒÓÔÕÖØŌŎŐƠǪǬỌỎỐỒỔỖỘỚỜỞỠỢ]/,
+		'p': /[ㅊṕṗ]/,
+		'P': /[ṔṖ]/,
+		'q': /[ㄱɋ]/,
+		'Q': /[]/,
+		'r': /[ㄹŕŗřȑȓṛṝṟ]/,
+		'R': /[ŔŖŘȐȒṚṜṞ]/,
+		's': /[ㅌßśŝşšṡṣṥṧṩẛ]/,
+		'S': /[ŚŜŞŠṠṢṤṦṨ]/,
+		't': /[ㅁţťŧṫṭṯṱẗ]/,
+		'T': /[ŢŤŦṪṬṮṰ]/,
+		'u': /[ㅅùúûüũūŭůűųưṳṵṷṹṻụủứừửữự]/,
+		'U': /[ÙÚÛÜŨŪŬŮŰŲƯṲṴṶṸṺỤỦỨỪỬỮỰ]/,
+		'v': /[ㅡṿʋ]/,
+		'V': /[Ṿ]/,
+		'w': /[ㄴŵẁẃẅẇẉẘ]/,
+		'W': /[ŴẀẂẄẆẈ]/,
+		'x': /[ㅜẋẍ]/,
+		'X': /[ẊẌ]/,
+		'y': /[ㅂýÿŷȳẏẙỳỵỷỹ]/,
+		'Y': /[ÝŸŶȲẎỲỴỶỸ]/,
+		'z': /[ㅛźżžẑẓẕȥ]/,
+		'Z': /[ŹŻŽẐẒẔ]/,
+	}
+
+	const charToPhoneme = {}; // set up map. runs once on startup.
+	for (const [phoneme, regex] of Object.entries(phonemeToRegexMap)) {
+		const chars = regex.source.replace(/^\[|\]$/g, '').split('');
+		for (const char of chars) charToPhoneme[char] = phoneme;
+	}
+	return (char) => charToPhoneme[char] || null;
+})();
 
 function isAlpha(str) {return (str.length === 1)?(/\p{Letter}/gu).test(str.charAt(0)):false;}
 
@@ -241,11 +276,11 @@ function isMoney(str) {return (str.length === 1)?(/[$£€¥₩₱¢\u0024\u00a3
 function isWhitespace(str) {return (str.length === 1)?(/\s/).test(str.charAt(0)):false;}
 
 //Used for typing in other languages
-function getAlphaSound(key) {
-	key = key.toLowerCase().charAt(0);// Set to lowercase
-	if ((/[a-z]/).test(key)) return key;// If basic letter return letter
-    for (const { letter, regex } of regexMap) if (regex.test(key)) return letter;// If special letter check regexMap and return basic letter
-    return key;// Default case for unmatched keys
+function getLetterSound(key) {
+	key = key.charAt(0);
+	if ((/[a-zA-Z]/).test(key)) return key;// If basic letter return letter
+	const letter = getPhoneticMapping(key)// If special letter check regexMap and return basic letter
+	return letter || key;// Default case for unmatched keys
 }
 // #endregion
 
@@ -264,44 +299,6 @@ async function send_audio(audio_path, volume, rand_pitch, pitch, cutoff_channel,
 		cutoff_channel: cutoff_channel,
 		use_profile: use_profile
 	});
-}
-// #endregion
-
-// #region Korean key mapping
-const koreanKeyMap = {
-	'ㄱ': 'q',
-	'ㄲ': 'Q',
-	'ㄴ': 'w',
-	'ㄷ': 'e',
-	'ㄸ': 'E',
-	'ㄹ': 'r',
-	'ㅁ': 't',
-	'ㅂ': 'y',
-	'ㅃ': 'Y',
-	'ㅅ': 'u',
-	'ㅆ': 'U',
-	'ㅇ': 'i',
-	'ㅈ': 'o',
-	'ㅉ': 'O',
-	'ㅊ': 'p',
-	'ㅋ': 'a',
-	'ㅌ': 's',
-	'ㅍ': 'd',
-	'ㅎ': 'f',
-	'ㅏ': 'g',
-	'ㅑ': 'h',
-	'ㅓ': 'j',
-	'ㅕ': 'k',
-	'ㅗ': 'l',
-	'ㅛ': 'z',
-	'ㅜ': 'x',
-	'ㅠ': 'c',
-	'ㅡ': 'v',
-	'ㅣ': 'b',
-	'ㅐ': 'n',
-	'ㅒ': 'N',
-	'ㅔ': 'm',
-	'ㅖ': 'M'
 }
 // #endregion
 
