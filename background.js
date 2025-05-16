@@ -178,71 +178,67 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
 // #region Regex checks
 const getPhoneticMapping = (() => {
 	const phonemeToRegexMap = {// firefox version needs the unicode for some reason
-		'a': /[\u314b\u00e0\u00e1\u00e2\u00e3\u00e4\u00e5\u00e6\u0101\u0103\u0105\u01ce]/,
-		'A': /[\u00c0\u00c1\u00c2\u00c3\u00c4\u00c5\u00c6\u0100\u0102\u0104\u01cd]/,
-		'b': /[\u3153\u1e03\u1e05\u1e07]/,
-		'B': /[\u1e02\u1e04\u1e06]/,
-		'c': /[\u315c\u00e7\u0107\u0109\u010b\u010d]/,
-		'C': /[\u00c7\u0106\u0108\u010a\u010c]/,
-		'd': /[\u314d\u010f\u0111\u1e0b\u1e0d\u1e0f\u1e11\u1e13]/,
-		'D': /[\u010e\u0110\u1e0a\u1e0c\u1e0e\u1e10\u1e12]/,
-		'e': /[\u3137\u00e8\u00e9\u00ea\u00eb\u0113\u0115\u0117\u0119\u011b\u1eb9\u1ebb\u1ebd\u1ebf\u1ec1\u1ec3\u1ec5\u1ec7\u011f]/,
-		'E': /[\u3140\u00c8\u00c9\u00ca\u00cb\u0112\u0114\u0116\u0118\u011a\u1eb8\u1eba\u1ebc\u1ebe\u1ec0\u1ec2\u1ec4\u1ec6\u011e]/,
-		'f': /[\u314e\u1e9f]/,
-		'F': /[]/,
-		'g': /[\u314f\u011d\u011f\u0121\u0123\u1e21]/,
-		'G': /[\u011c\u011e\u0120\u0122\u1e20]/,
-		'h': /[\u3151\u0125\u021f\u1e23\u1e25\u1e27\u1e29\u1e2b\u1e96]/,
-		'H': /[\u0124\u021e\u1e22\u1e24\u1e26\u1e28\u1e2a]/,
-		'i': /[\u3147\u00ec\u00ed\u00ee\u00ef\u0129\u012b\u012d\u012f\u0131\u1ec9\u1ecb]/,
-		'I': /[\u00cc\u00cd\u00ce\u00cf\u0128\u012a\u012c\u012e\u0130\u1ec8\u1eca]/,
-		'j': /[\u3153\u0135\u01f0]/,
-		'J': /[\u0134]/,
-		'k': /[\u3155\u0137\u1e31\u1e33\u1e35\u0199]/,
-		'K': /[\u0136\u1e30\u1e32\u1e34\u0198]/,
-		'l': /[\u3157\u013a\u013c\u013e\u0140\u0142\u1e37\u1e39\u1e3b\u1e3d]/,
-		'L': /[\u0139\u013b\u013d\u013f\u0141\u1e36\u1e38\u1e3a\u1e3c]/,
-		'm': /[\u3158\u1e3f\u1e41\u1e43]/,
-		'M': /[\u3159\u1e40\u1e42]/,
-		'n': /[\u3150\u00f1\u0144\u0146\u0148\u0149\u014b\u1e45\u1e47\u1e49\u1e4b]/,
-		'N': /[\u3152\u00d1\u0143\u0145\u0147\u014a\u1e44\u1e46\u1e48\u1e4a]/,
-		'o': /[\u3148\u00f2\u00f3\u00f4\u00f5\u00f6\u00f8\u014d\u014f\u0151\u01a1\u01eb\u01ed\u1ecd\u1ecf\u1ed1\u1ed3\u1ed5\u1ed7\u1ed9\u1edb\u1edd\u1edf\u1ee1\u1ee3]/,
-		'O': /[\u3149\u00d2\u00d3\u00d4\u00d5\u00d6\u00d8\u014c\u014e\u0150\u01a0\u01ea\u01ec\u1ecc\u1ece\u1ed0\u1ed2\u1ed4\u1ed6\u1ed8\u1eda\u1edc\u1ede\u1ee0\u1ee2]/,
-		'p': /[\u314a\u1e55\u1e57]/,
-		'P': /[\u1e54\u1e56]/,
-		'q': /[\u3131\u024b]/,
-		'Q': /[\u3132]/,
-		'r': /[\u3139\u0155\u0157\u0159\u0211\u0213\u1e59\u1e5b\u1e5d\u1e5f]/,
-		'R': /[\u0154\u0156\u0158\u0210\u0212\u1e58\u1e5a\u1e5c\u1e5e]/,
-		's': /[\u314c\u00df\u015b\u015d\u015f\u0161\u1e61\u1e63\u1e65\u1e67\u1e69\u1e9b]/,
-		'S': /[\u015a\u015c\u015e\u0160\u1e60\u1e62\u1e64\u1e66\u1e68]/,
-		't': /[\u3141\u0163\u0165\u0167\u1e6b\u1e6d\u1e6f\u1e71\u1e97]/,
-		'T': /[\u0162\u0164\u0166\u1e6a\u1e6c\u1e6e\u1e70]/,
-		'u': /[\u3145\u00f9\u00fa\u00fb\u00fc\u0169\u016b\u016d\u016f\u0171\u0173\u01b0\u1e73\u1e75\u1e77\u1e79\u1e7b\u1e7d\u1ee5\u1ee7\u1ee9\u1eeb\u1eed\u1eef\u1ef1]/,
-		'U': /[\u3146\u00d9\u00da\u00db\u00dc\u0168\u016a\u016c\u016e\u0170\u0172\u01af\u1e72\u1e74\u1e76\u1e78\u1e7a\u1e7c\u1ee4\u1ee6\u1ee8\u1eea\u1eec\u1eee\u1ef0]/,
-		'v': /[\u3161\u1e7f\u028b]/,
-		'V': /[\u1e7e]/,
-		'w': /[\u3134\u0175\u1e81\u1e83\u1e85\u1e87\u1e89\u1e98]/,
-		'W': /[\u0174\u1e80\u1e82\u1e84\u1e86\u1e88]/,
-		'x': /[\u315c\u1e8b\u1e8d]/,
-		'X': /[\u1e8a\u1e8c]/,
-		'y': /[\u3142\u00fd\u00ff\u0177\u0233\u1e8f\u1e99\u1ef3\u1ef5\u1ef7\u1ef9]/,
-		'Y': /[\u3143\u00dd\u0176\u0232\u1e8e\u1ef2\u1ef4\u1ef6\u1ef8]/,
-		'z': /[\u315b\u017a\u017c\u017e\u1e91\u1e93\u1e95\u0225]/,
-		'Z': /[\u0179\u017b\u017d\u1e90\u1e92\u1e94]/
+		'a': ['\u314b', '\u00e0', '\u00e1', '\u00e2', '\u00e3', '\u00e4', '\u00e5', '\u00e6', '\u0101', '\u0103', '\u0105', '\u01ce'],
+		'A': ['\u00c0', '\u00c1', '\u00c2', '\u00c3', '\u00c4', '\u00c5', '\u00c6', '\u0100', '\u0102', '\u0104', '\u01cd'],
+		'b': ['\u3153', '\u1e03', '\u1e05', '\u1e07'],
+		'B': ['\u1e02', '\u1e04', '\u1e06'],
+		'c': ['\u315c', '\u00e7', '\u0107', '\u0109', '\u010b', '\u010d'],
+		'C': ['\u00c7', '\u0106', '\u0108', '\u010a', '\u010c'],
+		'd': ['\u314d', '\u010f', '\u0111', '\u1e0b', '\u1e0d', '\u1e0f', '\u1e11', '\u1e13'],
+		'D': ['\u010e', '\u0110', '\u1e0a', '\u1e0c', '\u1e0e', '\u1e10', '\u1e12'],
+		'e': ['\u3137', '\u00e8', '\u00e9', '\u00ea', '\u00eb', '\u0113', '\u0115', '\u0117', '\u0119', '\u011b', '\u1eb9', '\u1ebb', '\u1ebd', '\u1ebf', '\u1ec1', '\u1ec3', '\u1ec5', '\u1ec7', '\u011f'],
+		'E': ['\u3138', '\u00c8', '\u00c9', '\u00ca', '\u00cb', '\u0112', '\u0114', '\u0116', '\u0118', '\u011a', '\u1eb8', '\u1eba', '\u1ebc', '\u1ebe', '\u1ec0', '\u1ec2', '\u1ec4', '\u1ec6', '\u011e'],
+		'f': ['\u314e', '\u1e1f'],
+		'F': [],
+		'g': ['\u314f', '\u011d', '\u011f', '\u0121', '\u0123', '\u1e21'],
+		'G': ['\u011c', '\u011e', '\u0120', '\u0122', '\u1e20'],
+		'h': ['\u3151', '\u0125', '\u021f', '\u1e23', '\u1e25', '\u1e27', '\u1e29', '\u1e2b', '\u1e96'],
+		'H': ['\u0124', '\u021e', '\u1e22', '\u1e24', '\u1e26', '\u1e28', '\u1e2a'],
+		'i': ['\u3147', '\u00ec', '\u00ed', '\u00ee', '\u00ef', '\u0129', '\u012b', '\u012d', '\u012f', '\u0131', '\u1ec9', '\u1ecb'],
+		'I': ['\u00cc', '\u00cd', '\u00ce', '\u00cf', '\u0128', '\u012a', '\u012c', '\u012e', '\u0130', '\u1ec8', '\u1eca'],
+		'j': ['\u3153', '\u0135', '\u01f0'],
+		'J': ['\u0134'],
+		'k': ['\u3155', '\u0137', '\u1e31', '\u1e33', '\u1e35', '\u0199'],
+		'K': ['\u0136', '\u1e30', '\u1e32', '\u1e34', '\u0198'],
+		'l': ['\u3157', '\u013a', '\u013c', '\u013e', '\u0140', '\u0142', '\u1e37', '\u1e39', '\u1e3b', '\u1e3d'],
+		'L': ['\u0139', '\u013b', '\u013d', '\u013f', '\u0141', '\u1e36', '\u1e38', '\u1e3a', '\u1e3c'],
+		'm': ['\u3158', '\u1e3f', '\u1e41', '\u1e43'],
+		'M': ['\u3159', '\u1e3e', '\u1e40', '\u1e42'],
+		'n': ['\u3150', '\u00f1', '\u0144', '\u0146', '\u0148', '\u0149', '\u014b', '\u1e45', '\u1e47', '\u1e49', '\u1e4b'],
+		'N': ['\u3152', '\u00d1', '\u0143', '\u0145', '\u0147', '\u014a', '\u1e44', '\u1e46', '\u1e48', '\u1e4a'],
+		'o': ['\u3148', '\u00f2', '\u00f3', '\u00f4', '\u00f5', '\u00f6', '\u00f8', '\u014d', '\u014f', '\u0151', '\u01a1', '\u01eb', '\u01ed', '\u1ecd', '\u1ecf', '\u1ed1', '\u1ed3', '\u1ed5', '\u1ed7', '\u1ed9', '\u1edb', '\u1edd', '\u1edf', '\u1ee1', '\u1ee3'],
+		'O': ['\u3149', '\u00d2', '\u00d3', '\u00d4', '\u00d5', '\u00d6', '\u00d8', '\u014c', '\u014e', '\u0150', '\u01a0', '\u01ea', '\u01ec', '\u1ecc', '\u1ece', '\u1ed0', '\u1ed2', '\u1ed4', '\u1ed6', '\u1ed8', '\u1eda', '\u1edc', '\u1ede', '\u1ee0', '\u1ee2'],
+		'p': ['\u314a', '\u1e55', '\u1e57'],
+		'P': ['\u1e54', '\u1e56'],
+		'q': ['\u3131', '\u024b'],
+		'Q': [],
+		'r': ['\u3139', '\u0155', '\u0157', '\u0159', '\u0211', '\u0213', '\u1e59', '\u1e5b', '\u1e5d', '\u1e5f'],
+		'R': ['\u0154', '\u0156', '\u0158', '\u0210', '\u0212', '\u1e58', '\u1e5a', '\u1e5c', '\u1e5e'],
+		's': ['\u314c', '\u00df', '\u015b', '\u015d', '\u015f', '\u0161', '\u1e61', '\u1e63', '\u1e65', '\u1e67', '\u1e69', '\u1e9b'],
+		'S': ['\u015a', '\u015c', '\u015e', '\u0160', '\u1e60', '\u1e62', '\u1e64', '\u1e66', '\u1e68'],
+		't': ['\u3141', '\u0163', '\u0165', '\u0167', '\u1e6b', '\u1e6d', '\u1e6f', '\u1e71', '\u1e97'],
+		'T': ['\u0162', '\u0164', '\u0166', '\u1e6a', '\u1e6c', '\u1e6e', '\u1e70'],
+		'u': ['\u3145', '\u00f9', '\u00fa', '\u00fb', '\u00fc', '\u0169', '\u016b', '\u016d', '\u016f', '\u0171', '\u0173', '\u01b0', '\u1e73', '\u1e75', '\u1e77', '\u1e79', '\u1e7b', '\u1e7d', '\u1ee5', '\u1ee7', '\u1ee9', '\u1eeb', '\u1eed', '\u1eef', '\u1ef1'],
+		'U': ['\u3146', '\u00d9', '\u00da', '\u00db', '\u00dc', '\u0168', '\u016a', '\u016c', '\u016e', '\u0170', '\u0172', '\u01af', '\u1e72', '\u1e74', '\u1e76', '\u1e78', '\u1e7a', '\u1e7c', '\u1ee4', '\u1ee6', '\u1ee8', '\u1eea', '\u1eec', '\u1eee', '\u1ef0'],
+		'v': ['\u3161', '\u1e7f', '\u028b'],
+		'V': ['\u1e7e'],
+		'w': ['\u3134', '\u0175', '\u1e81', '\u1e83', '\u1e85', '\u1e87', '\u1e89', '\u1e98'],
+		'W': ['\u0174', '\u1e80', '\u1e82', '\u1e84', '\u1e86', '\u1e88'],
+		'x': ['\u315c', '\u1e8b', '\u1e8d'],
+		'X': ['\u1e8a', '\u1e8c'],
+		'y': ['\u3142', '\u00fd', '\u00ff', '\u0177', '\u0233', '\u1e8f', '\u1e99', '\u1ef3', '\u1ef5', '\u1ef7', '\u1ef9'],
+		'Y': ['\u3143', '\u00dd', '\u0176', '\u0232', '\u1e8e', '\u1ef2', '\u1ef4', '\u1ef6', '\u1ef8'],
+		'z': ['\u315b', '\u017a', '\u017c', '\u017e', '\u1e91', '\u1e93', '\u1e95', '\u0225'],
+		'Z': ['\u0179', '\u017b', '\u017d', '\u1e90', '\u1e92', '\u1e94']
 	};
 
 	const charToPhoneme = {}; // set up map. runs once on startup.
-	for (const [phoneme, regex] of Object.entries(phonemeToRegexMap)) {
-		const source = regex.source.replace(/^\[|\]$/g, '');
-		const chars = [];
-		const unicodeMatches = source.matchAll(/\\u([0-9a-fA-F]{4})/g);
-		for (const match of unicodeMatches) {
-			const codePoint = parseInt(match[1], 16);
-			chars.push(String.fromCodePoint(codePoint));
+	for (const [phoneme, chars] of Object.entries(phonemeToRegexMap)) {
+		for (const char of chars) {
+			charToPhoneme[char] = phoneme;
 		}
-		for (const char of chars) charToPhoneme[char] = phoneme;
 	}
+
 	return (char) => charToPhoneme[char] || null;
 })();
 
@@ -258,6 +254,7 @@ function isWhitespace(str) {return (str.length === 1)?(/\s/).test(str.charAt(0))
 function getLetterSound(key) {
 	key = key.charAt(0);
 	if ((/[a-zA-Z]/).test(key)) return key;// If basic letter return letter
+	console.log(key)
 	const letter = getPhoneticMapping(key)// If special letter check regexMap and return basic letter
 	return letter;// Default case for unmatched keys
 }
