@@ -256,7 +256,6 @@ function isWhitespace(str) {return (str.length === 1)?(/\s/).test(str.charAt(0))
 
 //Used for typing in other languages
 function getLetterSound(key) {
-	console.log(key);
 	key = key.charAt(0);
 	if ((/[a-zA-Z]/).test(key)) return key;// If basic letter return letter
 	const letter = getPhoneticMapping(key)// If special letter check regexMap and return basic letter
@@ -323,8 +322,6 @@ let gainNode;
 let buffer;
 let source;
 async function play_audio(audio_path, volume, random_pitch=0.0, pitch=0.0, cutoff_channel=0, use_profile=false) {
-
-	console.log(audio_path);
 
 	if (!audioCtx) audioCtx = new AudioContext();
 
