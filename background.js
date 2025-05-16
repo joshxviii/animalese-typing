@@ -183,6 +183,7 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
 						
 						//Alphabet characters
 						case (config!=2 && isAlpha(key)):
+							if (key in koreanKeyMap) key = koreanKeyMap[key];
 							let audioPath = 'assets/audio/animalese/'+g_type+'/'+v_type+'/'+ getAlphaSound(key);
 							//When typing in uppercase have a slighty higher and louder pitch with more variation
 							if (isUpperCase(key)) send_audio(audioPath, 0.7, 0.15, 1.6, 1, true);
@@ -263,6 +264,44 @@ async function send_audio(audio_path, volume, rand_pitch, pitch, cutoff_channel,
 		cutoff_channel: cutoff_channel,
 		use_profile: use_profile
 	});
+}
+// #endregion
+
+// #region Korean key mapping
+const koreanKeyMap = {
+	'ㄱ': 'q',
+	'ㄲ': 'Q',
+	'ㄴ': 'w',
+	'ㄷ': 'e',
+	'ㄸ': 'E',
+	'ㄹ': 'r',
+	'ㅁ': 't',
+	'ㅂ': 'y',
+	'ㅃ': 'Y',
+	'ㅅ': 'u',
+	'ㅆ': 'U',
+	'ㅇ': 'i',
+	'ㅈ': 'o',
+	'ㅉ': 'O',
+	'ㅊ': 'p',
+	'ㅋ': 'a',
+	'ㅌ': 's',
+	'ㅍ': 'd',
+	'ㅎ': 'f',
+	'ㅏ': 'g',
+	'ㅑ': 'h',
+	'ㅓ': 'j',
+	'ㅕ': 'k',
+	'ㅗ': 'l',
+	'ㅛ': 'z',
+	'ㅜ': 'x',
+	'ㅠ': 'c',
+	'ㅡ': 'v',
+	'ㅣ': 'b',
+	'ㅐ': 'n',
+	'ㅒ': 'N',
+	'ㅔ': 'm',
+	'ㅖ': 'M'
 }
 // #endregion
 
